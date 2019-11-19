@@ -1,1 +1,11 @@
-<p>login works!</p>
+<div>
+    <input #nick type="text" placeholder="nick" />
+    <input #pass type="password" placeholder="password" />
+    <button (click)="logIn(nick.value, pass.value)">Log in</button>
+    <div *ngIf="isError">
+        <p>Invalid credentials</p>
+    </div>
+    <div *ngIf="isCompleted">
+        <p>Success!</p>
+    </div>
+</div>

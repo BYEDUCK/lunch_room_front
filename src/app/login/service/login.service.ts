@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,26 +7,30 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
-  private serverUrl = "/users";
+  private serverUrl = '/users';
 
   constructor(private http: HttpClient) { }
 
-  public signUp(userNick: string, userPassword: string): Observable<Object> {
-    return this.http.post(this.serverUrl + "/signUp", {
+  public signUp(userNick: string, userPassword: string): Observable<any> {
+    return this.http.post<any>(this.serverUrl + '/signUp', {
       nick: userNick,
       password: userPassword
     }, {
       headers: {
-        "Content-Type": ["application/json"]
+        'Content-Type': ['application/json']
       }
     });
   }
 
   public signIn(userNick: string, userPassword: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.serverUrl + "/signIn", {
+    return this.http.post<LoginResponse>(this.serverUrl + '/signIn', {
       nick: userNick,
       password: userPassword
-    })
+    }, {
+      headers: {
+        'Content-Type': ['application/json']
+      }
+    });
   }
 }
 

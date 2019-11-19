@@ -1,0 +1,12 @@
+<div>
+    <input [(ngModel)]="nick" #nickInput="ngModel" type="text" placeholder="nick" />
+    <input [(ngModel)]="pass" #passwordInput="ngModel" type="password" placeholder="password" (input)="passChange()" />
+    <input [(ngModel)]="confirmPass" #confirm_passwordInput="ngModel" type="password" placeholder="confirm password"
+        (input)="passChange()" />
+    <div *ngIf="(nickInput?.value?.length > 0 && passwordsMatch) else error">
+        <button (onClick)="signUp(nickInput?.value, passwordInput?.value)">Sign Up</button>
+    </div>
+    <ng-template #error>
+        <p>Please fill all fields with correct values!</p>
+    </ng-template>
+</div>
