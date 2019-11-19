@@ -12,6 +12,7 @@ export class SignupComponent implements OnInit {
   pass = '';
   confirmPass = '';
   passwordsMatch = false;
+  isCompleted = false;
 
   constructor(private loginService: LoginService) { }
 
@@ -22,7 +23,10 @@ export class SignupComponent implements OnInit {
     this.loginService.signUp(nick, password).subscribe({
       next: (response) => console.log(response),
       error: (err) => console.log(err),
-      complete: () => console.log('success')
+      complete: () => {
+        console.log('success');
+        this.isCompleted = true;
+      }
     });
   }
 
