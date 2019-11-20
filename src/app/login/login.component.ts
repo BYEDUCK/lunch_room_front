@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, OnDestroy } from '@angular/core';
 import { LoginService } from './service/login.service';
 import { User } from '../model/User';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   userNick = '';
   routeSubscription: Subscription;
 
-  constructor(private loginService: LoginService, private route: ActivatedRoute) { }
+  constructor(private loginService: LoginService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   }
@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
     this.loginService.signIn(nick, pass).subscribe({
       next: response => {
         this.loginService.setCurrentUser(new User(response.userId, nick, response.token));
+        this.router.navigateByUrl("rooms");
       },
       error: err => {
         console.log(err);
