@@ -1,1 +1,8 @@
-<p>rooms works!</p>
+<p>Hello {{currentUser?.nick}}</p>
+<p>You have {{rooms?.length}} room(s)</p>
+<div id="roomList">
+    <div *ngFor="let room of rooms">
+        <p>Room id : {{room.id}}</p>
+        <p>Room name : {{room.name}}</p>
+    </div>
+</div>
