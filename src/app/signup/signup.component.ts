@@ -14,7 +14,7 @@ export class SignupComponent implements OnInit {
   confirmPass = '';
   passwordsMatch = false;
   isCompleted = false;
-  isNickAvailable = false;
+  isNickAvailable = true;
   isEverythingOk = false;
   tryAgain = false;
 
@@ -50,7 +50,7 @@ export class SignupComponent implements OnInit {
 
   checkNick(userNick: string) {
     if (!userNick || userNick.length == 0) {
-      this.isNickAvailable = false;
+      this.isNickAvailable = true;
       this.isEverythingOk = false;
     } else {
       setTimeout(() => {
