@@ -1,11 +1,20 @@
-<div>
-    <input [(ngModel)]="userNick" #nick type="text" placeholder="nick" />
-    <input #pass type="password" placeholder="password" />
-    <button (click)="logIn(nick.value, pass.value)">Log in</button>
-    <div *ngIf="isError">
-        <p>Invalid credentials</p>
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+    <div class="justify-content-center">
+        <div class="form-group">
+            <input [(ngModel)]="userNick" #nick type="text" class="form-control" placeholder="nick" id="nickInput"
+                required autofocus />
+        </div>
+        <div class="form-group">
+            <input #pass type="password" class="form-control" placeholder="password" id="passwordInput" required />
+        </div>
+        <button (click)="logIn(nick.value, pass.value)" class="btn btn-lg btn-primary">Log in</button>
     </div>
-    <div *ngIf="isCompleted">
-        <p>Success!</p>
+    <div class="errorMsgs">
+        <div *ngIf="isError" class="panel-danger">
+            <h5 class="alert-danger">Invalid credentials</h5>
+        </div>
+        <div *ngIf="isCompleted" class="panel-danger">
+            <h5 class="alert-success">Success!</h5>
+        </div>
     </div>
 </div>

@@ -16,6 +16,7 @@ export class SignupComponent implements OnInit {
   isCompleted = false;
   isNickAvailable = false;
   isEverythingOk = false;
+  tryAgain = false;
 
   constructor(private loginService: LoginService, private router: Router) { }
 
@@ -27,7 +28,10 @@ export class SignupComponent implements OnInit {
       next: (response) => {
         this.router.navigateByUrl(`/signIn?user=${nick}`);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        console.log(err);
+        this.tryAgain = true;
+      },
       complete: () => {
         console.log('success');
         this.isCompleted = true;
@@ -38,7 +42,9 @@ export class SignupComponent implements OnInit {
   passChange() {
     setTimeout(() => {
       this.passwordsMatch = this.pass.length > 0 && this.confirmPass.length > 0 && this.pass === this.confirmPass;
-      this.isEverythingOk = this.passwordsMatch;
+      if (this.passwordsMatch) {
+        this.isEverythingOk = this.isNickAvailable;
+      }
     }, 100);
   }
 
@@ -46,21 +52,21 @@ export class SignupComponent implements OnInit {
     if (!userNick || userNick.length == 0) {
       this.isNickAvailable = false;
       this.isEverythingOk = false;
-      return;
+    } else {
+      setTimeout(() => {
+        this.loginService.isNickAvailable(userNick).subscribe({
+          next: (response) => {
+            this.isNickAvailable = true;
+            this.isEverythingOk = this.passwordsMatch;
+          },
+          error: (err) => {
+            this.isNickAvailable = false;
+            this.isEverythingOk = false;
+          },
+          complete: () => { console.log("completed"); }
+        });
+      }, 200);
     }
-    setTimeout(() => {
-      this.loginService.isNickAvailable(userNick).subscribe({
-        next: (response) => {
-          this.isNickAvailable = true;
-          this.isEverythingOk = true;
-        },
-        error: (err) => {
-          this.isNickAvailable = false;
-          this.isEverythingOk = false;
-        },
-        complete: () => { console.log("completed"); }
-      });
-    }, 200);
   }
 
 }

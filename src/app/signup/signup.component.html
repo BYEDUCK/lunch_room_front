@@ -1,21 +1,34 @@
-<div>
-    <input [(ngModel)]="nick" #nickInput="ngModel" type="text" placeholder="nick" (input)="checkNick(nick)"/>
-    <input [(ngModel)]="pass" #passwordInput="ngModel" type="password" placeholder="password" (input)="passChange()" />
-    <input [(ngModel)]="confirmPass" #confirm_passwordInput="ngModel" type="password" placeholder="confirm password"
-        (input)="passChange()" />
-    <div *ngIf="isEverythingOk else error">
-        <button (click)="signUp(nickInput.value, passwordInput.value)">Sign Up</button>
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+    <div class="justify-content-center">
+        <div class="form-group">
+            <input [(ngModel)]="nick" #nickInput="ngModel" class="form-control" type="text" placeholder="nick"
+                (input)="checkNick(nick)" />
+        </div>
+        <div class="form-group">
+            <input [(ngModel)]="pass" #passwordInput="ngModel" class="form-control" type="password"
+                placeholder="password" (input)="passChange()" />
+        </div>
+        <div class="form-group">
+            <input [(ngModel)]="confirmPass" #confirm_passwordInput="ngModel" class="form-control" type="password"
+                placeholder="confirm password" (input)="passChange()" />
+        </div>
+        <div *ngIf="isEverythingOk else error">
+            <button (click)="signUp(nickInput.value, passwordInput.value)" class="btn btn-lg btn-primary">Create
+                account</button>
+        </div>
     </div>
-    <ng-template #error>
-        <p>Please fill all fields with correct values!</p>
-    </ng-template>
-    <div *ngIf="isCompleted else tryAgain">
-        <p>Successfuly signed up!</p>
+    <div class="errorMsgs" class="panel-warning">
+        <ng-template #error>
+            <h4 class="alert-warning">Please fill all fields with correct values!</h4>
+        </ng-template>
+        <div *ngIf="!isNickAvailable">
+            <h4 class="alert-warning">Given nick is already registered</h4>
+        </div>
+        <div *ngIf="tryAgain">
+            <h4 class="alert-warning">Please try again</h4>
+        </div>
     </div>
-    <div *ngIf="!isNickAvailable">
-        <p>Given nick is already registered</p>
+    <div *ngIf="isCompleted" class="panel-sucess">
+        <h4 class="alert-success">Successfuly signed up!</h4>
     </div>
-    <ng-template #tryAgain>
-        <p>Please try again</p>
-    </ng-template>
 </div>

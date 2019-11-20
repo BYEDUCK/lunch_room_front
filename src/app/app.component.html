@@ -1,9 +1,19 @@
-<h1>{{title}}</h1>
-<a routerLink="/signIn" routerLinkActive="active">
-    Sign In
-</a>
-<br/>
-<a routerLink="/signUp" routerLinkActive="active">
-    Sign Up
-</a>
-<router-outlet></router-outlet>
+<div class="justify-content-center">
+    <div class="page-header text-center">
+        <h1 class="jumbotron">{{title}}</h1>
+    </div>
+    <br />
+    <router-outlet></router-outlet>
+    <br />
+    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+        <div *ngIf="!router.url.includes('signUp')">
+            <a routerLink="/signUp" routerLinkActive="active" class="btn-info btn-lg">Sign Up</a>
+        </div>
+        <div *ngIf="!router.url.includes('signIn')">
+            <a routerLink="/signIn" routerLinkActive="active" class="btn-info btn-lg">Sign In</a>
+        </div>
+    </div>
+    <footer>
+        <h4>@BYEDUCK</h4>
+    </footer>
+</div>
