@@ -5,7 +5,8 @@
                 required autofocus />
         </div>
         <div class="form-group">
-            <input #pass type="password" class="form-control" placeholder="password" id="passwordInput" required />
+            <input #pass type="password" (keyup.enter)="logIn(nick.value, pass.value)" class="form-control"
+                placeholder="password" id="passwordInput" required />
         </div>
         <button (click)="logIn(nick.value, pass.value)" class="btn btn-lg btn-primary">Log in</button>
     </div>

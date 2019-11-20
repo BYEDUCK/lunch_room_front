@@ -9,7 +9,8 @@
                 placeholder="password" (input)="passChange()" />
         </div>
         <div class="form-group">
-            <input [(ngModel)]="confirmPass" #confirm_passwordInput="ngModel" class="form-control" type="password"
+            <input [(ngModel)]="confirmPass" #confirm_passwordInput="ngModel"
+                (keyup.enter)="signUp(nickInput.value, passwordInput.value)" class="form-control" type="password"
                 placeholder="confirm password" (input)="passChange()" />
         </div>
         <div *ngIf="isEverythingOk else error">
