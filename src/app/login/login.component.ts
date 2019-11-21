@@ -3,6 +3,7 @@ import { LoginService } from './service/login.service';
 import { User } from '../model/User';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,9 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   userNick = '';
   routeSubscription: Subscription;
 
-  constructor(private loginService: LoginService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private loginService: LoginService, private route: ActivatedRoute, private router: Router, private cookieService: CookieService
+  ) { }
 
   ngOnInit() {
   }
@@ -24,8 +27,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   ngAfterContentInit(): void {
     if (!this.routeSubscription) {
       this.routeSubscription = this.route.queryParamMap.subscribe(params => {
-        console.log("reading from params: ", params.get("user"));
-        this.userNick = params.get("user");
+        this.userNick = params.get('user');
       });
     }
   }
@@ -38,7 +40,10 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
     this.loginService.signIn(nick, pass).subscribe({
       next: response => {
         this.loginService.setCurrentUser(new User(response.userId, nick, response.token));
-        this.router.navigateByUrl("rooms");
+        this.cookieService.set('user', nick);
+        this.cookieService.set('token', response.token);
+        this.cookieService.set('id', response.userId);
+        this.router.navigateByUrl('rooms');
       },
       error: err => {
         console.log(err);

@@ -16,7 +16,7 @@ export class RoomsComponent implements OnInit {
   private rooms: Room[];
 
   constructor(private loginService: LoginService, private router: Router, private roomService: RoomService) {
-    this.currentUser = loginService.currentUser;
+    this.currentUser = loginService.getCurrentUser();
   }
 
   ngOnInit() {
@@ -28,7 +28,10 @@ export class RoomsComponent implements OnInit {
           console.log(response);
           this.rooms = response;
         },
-        error: (err) => { console.log(err); },
+        error: (err) => {
+          console.log(err);
+          this.router.navigateByUrl('signIn');
+        },
         complete: () => { console.log('complete'); }
       });
     }
