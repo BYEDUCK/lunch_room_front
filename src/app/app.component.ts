@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
 
   title = 'LUNCHROOM';
 
-  constructor(private router: Router) {
+  constructor(public router: Router) {
   }
 
   ngOnInit() {

@@ -12,8 +12,8 @@ import { Room } from '../model/Room';
 })
 export class RoomsComponent implements OnInit {
 
-  private currentUser: User;
-  private rooms: Room[];
+  public currentUser: User;
+  public rooms: Room[];
 
   constructor(private loginService: LoginService, private router: Router, private roomService: RoomService) {
     this.currentUser = loginService.getCurrentUser();

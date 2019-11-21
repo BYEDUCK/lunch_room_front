@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginService {
 
-  private serverUrl = '/users';
+  private serverUrl = 'https://lunchroom-byeduck.herokuapp.com/users';
   private currentUser: User;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
