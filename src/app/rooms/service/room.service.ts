@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Room } from 'src/app/model/Room';
 import { LoginService } from 'src/app/login/service/login.service';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
-  private serverUrl = 'http://localhost:48080/rooms';
+  private serverUrl = `${environment.serverUrl}/rooms`;
 
   constructor(private http: HttpClient, private loginService: LoginService, private cookieService: CookieService) { }
 
@@ -23,7 +24,7 @@ export class RoomService {
       headers: {
         'User-Nick': currentUser.nick,
         'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
   }

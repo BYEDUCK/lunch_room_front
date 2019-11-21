@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/model/User';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private serverUrl = 'http://localhost:48080/users';
+  private serverUrl = `${environment.serverUrl}/users`;
   private currentUser: User;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
@@ -21,7 +22,7 @@ export class LoginService {
     }, {
       headers: {
         'Content-Type': ['application/json'],
-        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
   }
@@ -33,7 +34,7 @@ export class LoginService {
     }, {
       headers: {
         'Content-Type': ['application/json'],
-        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
   }
@@ -44,7 +45,7 @@ export class LoginService {
         nick: userNick
       },
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
   }
