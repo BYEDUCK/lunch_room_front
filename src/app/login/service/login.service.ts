@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginService {
 
-  private serverUrl = '/users';
+  private serverUrl = 'http://localhost:48080/users';
   private currentUser: User;
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
@@ -20,7 +20,8 @@ export class LoginService {
       password: userPassword
     }, {
       headers: {
-        'Content-Type': ['application/json']
+        'Content-Type': ['application/json'],
+        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
       }
     });
   }
@@ -31,7 +32,8 @@ export class LoginService {
       password: userPassword
     }, {
       headers: {
-        'Content-Type': ['application/json']
+        'Content-Type': ['application/json'],
+        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
       }
     });
   }
@@ -40,6 +42,9 @@ export class LoginService {
     return this.http.get<object>(this.serverUrl + '/checkNick', {
       params: {
         nick: userNick
+      },
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
       }
     });
   }

@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class RoomService {
 
-  private serverUrl = '/rooms';
+  private serverUrl = 'http://localhost:48080/rooms';
 
   constructor(private http: HttpClient, private loginService: LoginService, private cookieService: CookieService) { }
 
@@ -22,7 +22,8 @@ export class RoomService {
       },
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': 'http://localhost:48080/**'
       }
     });
   }
