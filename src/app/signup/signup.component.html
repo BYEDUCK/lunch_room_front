@@ -20,13 +20,13 @@
     </div>
     <div class="errorMsgs" class="panel-warning">
         <ng-template #error>
-            <h4 class="alert-warning">Please fill all fields with correct values!</h4>
+            <h6 class="alert-warning">Please fill all fields with correct values!</h6>
         </ng-template>
         <div *ngIf="!isNickAvailable">
-            <h4 class="alert-warning">Given nick is already registered</h4>
+            <h6 class="alert-warning">Given nick is already registered</h6>
         </div>
         <div *ngIf="tryAgain">
-            <h4 class="alert-warning">Please try again</h4>
+            <h6 class="alert-warning">Please try again</h6>
         </div>
     </div>
     <div *ngIf="isCompleted" class="panel-sucess">

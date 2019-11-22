@@ -10,13 +10,15 @@ import { SignupComponent } from './signup/signup.component';
 import { FormsModule } from '@angular/forms';
 import { RoomsComponent } from './rooms/rooms.component';
 import { CookieService } from 'ngx-cookie-service';
+import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    RoomsComponent
+    RoomsComponent,
+    RoomsCreateComponent
   ],
   imports: [
     BrowserModule,

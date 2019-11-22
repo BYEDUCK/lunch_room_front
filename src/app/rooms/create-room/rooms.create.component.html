@@ -1,0 +1,26 @@
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+    <div class="justify-content-center">
+        <div class="form-group">
+            <input #nameInput class="form-control" type="text" placeholder="name" />
+        </div>
+        <div class="form-group">
+            <input [(ngModel)]="signDead" #signDeadlineInput="ngModel" class="form-control" type="time"
+                placeholder="sign deadline" />
+        </div>
+        <div class="form-group">
+            <input [(ngModel)]="postDead" #postDeadlineInput="ngModel" class="form-control" type="time"
+                placeholder="post deadline" />
+        </div>
+        <div class="form-group">
+            <input [(ngModel)]="voteDead" #voteDeadlineInput="ngModel" class="form-control" type="time"
+                placeholder="vote deadline" />
+        </div>
+        <div id="msgs">
+            <h6 class="alert-info">*Consecutive deadlines should be after one another</h6>
+            <div *ngIf="!isEverythingOk">
+                <h6 class="alert-warning">Please fill all fields with correct values!</h6>
+            </div>
+        </div>
+        <button (click)="createRoom(nameInput.value)" class="btn btn-lg btn-primary">Create room</button>
+    </div>
+</div>

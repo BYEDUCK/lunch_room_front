@@ -28,4 +28,23 @@ export class RoomService {
       }
     });
   }
+
+  public addRoom(name: string, signDead: number, postDead: number, voteDead: number): Observable<Room> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.post<Room>(this.serverUrl, {
+      'name': name,
+      'ownerId': currentUser.id,
+      'deadlines': {
+        'signDeadline': signDead,
+        'postDeadline': postDead,
+        'priorityDeadline': voteDead
+      }
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
 }
