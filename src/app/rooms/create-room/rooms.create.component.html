@@ -1,19 +1,23 @@
-<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4" style="border:1px solid black;">
     <div class="justify-content-center">
         <div class="form-group">
-            <input #nameInput class="form-control" type="text" placeholder="name" />
+            <label for="rName">Name of the room</label>
+            <input #nameInput class="form-control" type="text" placeholder="name" id="rName"/>
         </div>
         <div class="form-group">
+            <label for="sDead">Deadline for signing to room</label>
             <input [(ngModel)]="signDead" #signDeadlineInput="ngModel" class="form-control" type="time"
-                placeholder="sign deadline" />
+                placeholder="sign deadline" id="sDead"/>
         </div>
         <div class="form-group">
+            <label for="pDead">Deadline for posting new propositions</label>
             <input [(ngModel)]="postDead" #postDeadlineInput="ngModel" class="form-control" type="time"
-                placeholder="post deadline" />
+                placeholder="post deadline" id="pDead"/>
         </div>
         <div class="form-group">
+            <label for="vDead">Deadline for voting for propositions</label>
             <input [(ngModel)]="voteDead" #voteDeadlineInput="ngModel" class="form-control" type="time"
-                placeholder="vote deadline" />
+                placeholder="vote deadline" id="vDead" />
         </div>
         <div id="msgs">
             <h6 class="alert-info">*Consecutive deadlines should be after one another</h6>

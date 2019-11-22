@@ -1,9 +1,13 @@
-<p>Hello {{currentUser?.nick}}</p>
-<p>You have {{rooms?.length}} room(s)</p>
-<div id="roomList">
-    <div *ngFor="let room of rooms">
-        <p>Room id : {{room.id}}</p>
-        <p>Room name : {{room.name}}</p>
-    </div>
+<h1>Hello {{currentUser?.nick}}</h1>
+<h2>You have {{rooms?.length}} room(s) available:</h2>
+<div class="grid">
+    <article *ngFor="let room of rooms" style="border: 5px solid skyblue;">
+        <header class="card__header">
+            <h1 class="room__name">{{room.name}}</h1>
+        </header>
+        <div class="card__actions">
+            <button class="btn-success">JOIN</button>
+        </div>
+    </article>
 </div>
 <app-rooms-create></app-rooms-create>
