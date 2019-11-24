@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomService } from '../service/room.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-rooms-create',
@@ -18,7 +19,7 @@ export class RoomsCreateComponent implements OnInit {
 
     private millisInDay = 24 * 60 * 60 * 1000;
 
-    constructor(private roomService: RoomService) { }
+    constructor(private roomService: RoomService, public activeModal: NgbActiveModal) { }
 
     ngOnInit() {
         this.signDead = this.addMinutesToNow(this.signDefault);

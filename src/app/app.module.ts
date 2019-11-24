@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { RoomsComponent } from './rooms/rooms.component';
 import { CookieService } from 'ngx-cookie-service';
 import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component';
+import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,11 @@ import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component
     AppRoutingModule,
     HttpClientModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgbModalModule
   ],
   providers: [CookieService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RoomsCreateComponent]
 })
 export class AppModule { }

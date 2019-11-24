@@ -4,6 +4,8 @@ import { LoginService } from '../login/service/login.service';
 import { Router } from '@angular/router';
 import { RoomService } from './service/room.service';
 import { Room } from '../model/Room';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RoomsCreateComponent } from './create-room/rooms.create.component';
 
 @Component({
   selector: 'app-rooms',
@@ -15,7 +17,10 @@ export class RoomsComponent implements OnInit {
   public currentUser: User;
   public rooms: Room[] = [];
 
-  constructor(private loginService: LoginService, private router: Router, private roomService: RoomService) {
+  constructor(
+    private loginService: LoginService, private router: Router,
+    private roomService: RoomService, private modalService: NgbModal
+  ) {
     this.currentUser = loginService.getCurrentUser();
   }
 
@@ -35,6 +40,12 @@ export class RoomsComponent implements OnInit {
         complete: () => { console.log('complete'); }
       });
     }
+  }
+
+  public openModal() {
+      this.modalService.open(RoomsCreateComponent, {
+        centered: true
+      });
   }
 
 }
