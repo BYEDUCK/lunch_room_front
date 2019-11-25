@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/model/User';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class LoginService {
   private serverUrl = `${environment.serverUrl}/users`;
   private currentUser: User;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
 
   public signUp(userNick: string, userPassword: string): Observable<any> {
     return this.http.post<any>(this.serverUrl + '/signUp', {
@@ -60,7 +61,20 @@ export class LoginService {
         this.cookieService.get('id'), this.cookieService.get('user'), this.cookieService.get('token')
       );
     }
-    return this.currentUser;
+    if (
+      this.currentUser !== undefined && this.currentUser !== null
+      && this.isStringValid(this.currentUser.id) 
+      && this.isStringValid(this.currentUser.nick) 
+      && this.isStringValid(this.currentUser.token)
+    ) {
+      return this.currentUser;
+    } else {
+      this.router.navigateByUrl('signIn');
+    }
+  }
+
+  private isStringValid(s: string): boolean {
+    return s !== undefined || s !== null || s.length > 0;
   }
 }
 

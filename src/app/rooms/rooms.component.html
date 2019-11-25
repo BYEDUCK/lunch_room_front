@@ -6,7 +6,7 @@
             <h1 class="room__name">{{room.roomName}}</h1>
         </header>
         <div class="card__actions">
-            <button class="btn-success">JOIN</button>
+            <button class="btn-success" (click)="joinRoom(room.roomName)">JOIN</button>
         </div>
     </article>
 </div>
