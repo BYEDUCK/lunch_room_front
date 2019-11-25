@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   isError = false;
   isCompleted = false;
   userNick = '';
-  routeSubscription: Subscription;
+  subscritpions: Subscription[] = [];
 
   constructor(
     private loginService: LoginService, private route: ActivatedRoute, private router: Router, private cookieService: CookieService
@@ -25,19 +25,17 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
-    if (!this.routeSubscription) {
-      this.routeSubscription = this.route.queryParamMap.subscribe(params => {
-        this.userNick = params.get('user');
-      });
-    }
+    this.subscritpions.push(this.route.queryParamMap.subscribe(params => {
+      this.userNick = params.get('user');
+    }));
   }
 
   ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
+    this.subscritpions.forEach(sub => sub.unsubscribe());
   }
 
   logIn(nick: string, pass: string) {
-    this.loginService.signIn(nick, pass).subscribe({
+    this.subscritpions.push(this.loginService.signIn(nick, pass).subscribe({
       next: response => {
         this.loginService.setCurrentUser(new User(response.userId, nick, response.token));
         this.cookieService.set('user', nick);
@@ -54,7 +52,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
         this.isCompleted = true;
         this.isError = false;
       }
-    });
+    }));
   }
 
 }

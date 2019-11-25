@@ -14,6 +14,8 @@ export class RoomService {
 
   private serverUrl = `${environment.serverUrl}/rooms`;
 
+  private roomDetail: RoomDetail;
+
   constructor(private http: HttpClient, private loginService: LoginService, private cookieService: CookieService) { }
 
   public findRoomsByUserId(userId: string): Observable<RoomSimple[]> {
@@ -61,5 +63,13 @@ export class RoomService {
         'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
+  }
+
+  public cacheRoomDetail(detail: RoomDetail) {
+    this.roomDetail = detail;
+  }
+
+  public getCachedRoomDetail(): RoomDetail {
+    return this.roomDetail;
   }
 }

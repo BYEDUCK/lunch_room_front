@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component';
 import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { RoomsMainComponent } from './rooms-main/rooms-main.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     SignupComponent,
     RoomsComponent,
-    RoomsCreateComponent
+    RoomsCreateComponent,
+    RoomsMainComponent
   ],
   imports: [
     BrowserModule,

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RoomService } from '../service/room.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-rooms-create',
     templateUrl: './rooms.create.component.html'
 })
-export class RoomsCreateComponent implements OnInit {
+export class RoomsCreateComponent implements OnInit, OnDestroy {
 
     public signDead: string;
     public postDead: string;
@@ -19,6 +20,8 @@ export class RoomsCreateComponent implements OnInit {
 
     private millisInDay = 24 * 60 * 60 * 1000;
 
+    subscriptions: Subscription[] = [];
+
     constructor(private roomService: RoomService, public activeModal: NgbActiveModal) { }
 
     ngOnInit() {
@@ -27,21 +30,25 @@ export class RoomsCreateComponent implements OnInit {
         this.voteDead = this.addMinutesToNow(this.voteDefault);
     }
 
+    ngOnDestroy(): void {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+
     public createRoom(name: string) {
-        this.roomService.addRoom(name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead))
-        .subscribe({
-            next: response => {
-                console.log(response);
-                this.isEverythingOk = true;
-            },
-            error: err => {
-                this.isEverythingOk = false;
-                console.log(err);
-            },
-            complete: () => {
-                this.isEverythingOk = true;
-             }
-        });
+        this.subscriptions.push(this.roomService.addRoom(name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead))
+            .subscribe({
+                next: response => {
+                    console.log(response);
+                    this.isEverythingOk = true;
+                },
+                error: err => {
+                    this.isEverythingOk = false;
+                    console.log(err);
+                },
+                complete: () => {
+                    this.isEverythingOk = true;
+                }
+            }));
     }
 
     private addMinutesToNow(min: number): string {
