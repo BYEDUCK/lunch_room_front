@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   logIn(nick: string, pass: string) {
     this.subscritpions.push(this.loginService.signIn(nick, pass).subscribe({
       next: response => {
-        this.loginService.setCurrentUser(new User(response.userId, nick, response.token));
         this.cookieService.set('user', nick);
         this.cookieService.set('token', response.token);
         this.cookieService.set('id', response.userId);

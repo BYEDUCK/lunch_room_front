@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class LoginService {
 
   private serverUrl = `${environment.serverUrl}/users`;
-  private currentUser: User;
 
   constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
 
@@ -51,23 +50,15 @@ export class LoginService {
     });
   }
 
-  public setCurrentUser(user: User) {
-    this.currentUser = user;
-  }
-
   public getCurrentUser(): User {
-    if (!this.currentUser || this.currentUser === null) {
-      this.currentUser = new User(
-        this.cookieService.get('id'), this.cookieService.get('user'), this.cookieService.get('token')
-      );
-    }
-    if (
-      this.currentUser !== undefined && this.currentUser !== null
-      && this.isStringValid(this.currentUser.id) 
-      && this.isStringValid(this.currentUser.nick) 
-      && this.isStringValid(this.currentUser.token)
+    const currentUser = new User(
+      this.cookieService.get('id'), this.cookieService.get('user'), this.cookieService.get('token')
+    );
+    if (this.isStringValid(currentUser.id)
+      && this.isStringValid(currentUser.nick)
+      && this.isStringValid(currentUser.token)
     ) {
-      return this.currentUser;
+      return currentUser;
     } else {
       this.router.navigateByUrl('signIn');
     }
