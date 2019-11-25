@@ -3,7 +3,7 @@
 <div class="grid">
     <article *ngFor="let room of rooms" style="border: 5px solid skyblue;">
         <header class="card__header">
-            <h1 class="room__name">{{room.name}}</h1>
+            <h1 class="room__name">{{room.roomName}}</h1>
         </header>
         <div class="card__actions">
             <button class="btn-success">JOIN</button>
@@ -11,4 +11,3 @@
     </article>
 </div>
 <button class="btn-primary"  (click)="openModal()">Create room</button>
-<!-- <app-rooms-create></app-rooms-create> -->
