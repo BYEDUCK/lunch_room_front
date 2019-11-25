@@ -51,6 +51,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
     });
   }
 
+  public toDate(millis: number): string {
+    const date = new Date(millis);
+    const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+    return `${date.getHours()}:${minutes}`;
+  }
+
   public joinRoom(roomName: string) {
     this.cookieService.set('room', roomName);
     this.router.navigateByUrl('room');

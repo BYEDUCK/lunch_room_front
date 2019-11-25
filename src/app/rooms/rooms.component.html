@@ -5,6 +5,11 @@
         <header class="card__header">
             <h1 class="room__name">{{room.roomName}}</h1>
         </header>
+        <div class="card__content">
+            <h5>Join until: <b>{{toDate(room.signDeadline)}}</b></h5>
+            <h5>Post propositions until: <b>{{toDate(room.postDeadline)}}</b></h5>
+            <h5>Vote until: <b>{{toDate(room.voteDeadline)}}</b></h5>
+        </div>
         <div class="card__actions">
             <button class="btn-success" (click)="joinRoom(room.roomName)">JOIN</button>
         </div>
