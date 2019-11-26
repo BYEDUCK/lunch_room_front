@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { RoomService } from '../service/room.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { RoomSimple } from 'src/app/model/RoomSimple';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-rooms-create',
@@ -22,8 +23,14 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     @Output()
     addedRoom: EventEmitter<RoomSimple> = new EventEmitter();
+    @Input()
+    update = false;
+    @Output()
+    updatedRoom: EventEmitter<RoomSimple> = new EventEmitter();
+    @Input()
+    roomName: string;
 
-    constructor(private roomService: RoomService, public activeModal: NgbActiveModal) { }
+    constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private cookieService: CookieService) { }
 
     ngOnInit() {
         this.signDead = this.addMinutesToNow(this.signDefault);
@@ -50,6 +57,26 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
                 },
                 complete: () => {
                     this.isEverythingOk = true;
+                }
+            }));
+    }
+
+    public updateRoom() {
+        this.subscriptions.push(
+            this.roomService.updateRoom(
+                this.roomName, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
+            ).subscribe({
+                next: response => {
+                    console.log(response);
+                    this.isEverythingOk = true;
+                    this.updatedRoom.emit(response);
+                    this.activeModal.close('Successfully ended');
+                },
+                error: err => {
+                    console.log(err);
+                },
+                complete: () => {
+                    console.log('completed');
                 }
             }));
     }

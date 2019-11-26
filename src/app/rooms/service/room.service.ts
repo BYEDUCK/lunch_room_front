@@ -76,6 +76,24 @@ export class RoomService {
     });
   }
 
+  public updateRoom(name: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.put<RoomSimple>(this.serverUrl, {
+      'roomName': name,
+      'deadlines': {
+        'signDeadline': signDead,
+        'postDeadline': postDead,
+        'voteDeadline': voteDead
+      }
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
   public cacheRoomDetail(detail: RoomDetail) {
     this.roomDetail = detail;
   }
