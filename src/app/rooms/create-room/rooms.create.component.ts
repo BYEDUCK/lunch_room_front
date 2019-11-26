@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { RoomService } from '../service/room.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import { RoomSimple } from 'src/app/model/RoomSimple';
 
 @Component({
     selector: 'app-rooms-create',
@@ -19,6 +20,8 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     private voteDefault = 5 + this.postDefault;
 
     subscriptions: Subscription[] = [];
+    @Output()
+    addedRoom: EventEmitter<RoomSimple> = new EventEmitter();
 
     constructor(private roomService: RoomService, public activeModal: NgbActiveModal) { }
 
@@ -38,6 +41,8 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
                 next: response => {
                     console.log(response);
                     this.isEverythingOk = true;
+                    this.addedRoom.emit(response);
+                    this.activeModal.close('Successfully ended');
                 },
                 error: err => {
                     this.isEverythingOk = false;

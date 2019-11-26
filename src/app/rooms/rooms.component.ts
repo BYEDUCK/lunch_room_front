@@ -46,9 +46,14 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public openModal() {
-    this.modalService.open(RoomsCreateComponent, {
+    const modalRef = this.modalService.open(RoomsCreateComponent, {
       centered: true
     });
+    this.subscriptions.push(modalRef.componentInstance.addedRoom.subscribe(
+      room => this.rooms.push(room),
+      err => console.log(err),
+      () => console.log('completed')
+    ));
   }
 
   public toDate(millis: number): string {
