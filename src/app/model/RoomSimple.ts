@@ -1,6 +1,6 @@
 export class RoomSimple {
     constructor(
-        public roomId: string, public roomName: string, 
+        public roomId: string, public roomName: string, public ownerId: string,
         public signDeadline: number, public postDeadline: number, public voteDeadline: number
         ) { }
 }

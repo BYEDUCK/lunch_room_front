@@ -67,4 +67,21 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('room');
   }
 
+  public deleteRoom(id: string) {
+    this.subscriptions.push(this.roomService.deleteRoom(id).subscribe({
+      next: resp => {
+        console.log(resp);
+        var newRooms = []
+        this.rooms.forEach(r => {
+          if (r.roomId != id) {
+            newRooms.push(r);
+          }
+        });
+        this.rooms = newRooms;
+      },
+      error: err => console.log(err),
+      complete: () => console.log('completed')
+    }));
+  }
+
 }

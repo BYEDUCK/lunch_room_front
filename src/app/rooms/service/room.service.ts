@@ -65,6 +65,17 @@ export class RoomService {
     });
   }
 
+  public deleteRoom(id: string): Observable<any> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.delete<any>(this.serverUrl + `/del/${id}`, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
   public cacheRoomDetail(detail: RoomDetail) {
     this.roomDetail = detail;
   }
