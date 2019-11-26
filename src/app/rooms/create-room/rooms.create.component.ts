@@ -28,14 +28,14 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     @Output()
     updatedRoom: EventEmitter<RoomSimple> = new EventEmitter();
     @Input()
-    roomName: string;
+    room: RoomSimple;
 
     constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private cookieService: CookieService) { }
 
     ngOnInit() {
-        this.signDead = this.addMinutesToNow(this.signDefault);
-        this.postDead = this.addMinutesToNow(this.postDefault);
-        this.voteDead = this.addMinutesToNow(this.voteDefault);
+        this.signDead = this.room ?  this.toDate(this.room.signDeadline) : this.addMinutesToNow(this.signDefault);
+        this.postDead = this.room ?  this.toDate(this.room.postDeadline) : this.addMinutesToNow(this.postDefault);
+        this.voteDead = this.room ?  this.toDate(this.room.voteDeadline) : this.addMinutesToNow(this.voteDefault);
     }
 
     ngOnDestroy(): void {
@@ -64,7 +64,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public updateRoom() {
         this.subscriptions.push(
             this.roomService.updateRoom(
-                this.roomName, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
+                this.room.roomName, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
             ).subscribe({
                 next: response => {
                     console.log(response);
@@ -99,5 +99,12 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
             now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
             Math.floor(minutes / 60), minutes % 60, 0, 0
         );
+    }
+
+    private toDate(millis: number): string {
+        const date = new Date(millis);
+        var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : '' + date.getMinutes();
+        var hours = date.getHours() < 10 ? '0' + date.getHours() : '' + date.getHours();
+        return hours + ':' + minutes; 
     }
 }

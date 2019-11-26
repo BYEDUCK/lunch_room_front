@@ -82,15 +82,15 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public updateRoom(name: string) {
+  public updateRoom(room: RoomSimple) {
     const modalRef = this.modalService.open(RoomsCreateComponent, {
       centered: true
     });
     modalRef.componentInstance.update = true;
-    modalRef.componentInstance.roomName = name;
+    modalRef.componentInstance.room = room;
     this.subscriptions.push(modalRef.componentInstance.updatedRoom.subscribe(
       room => {
-        var newRooms = this.rooms.filter(r => r.roomName != name);
+        var newRooms = this.rooms.filter(r => r.roomName != room.roomName);
         newRooms.push(room);
         this.rooms = newRooms;
       },

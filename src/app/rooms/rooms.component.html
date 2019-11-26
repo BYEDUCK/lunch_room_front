@@ -13,7 +13,7 @@
         <div class="card__actions">
             <button class="btn-success" (click)="joinRoom(room.roomName)">JOIN</button>
             <button *ngIf="currentUser?.id === room.ownerId" class="btn-danger" (click)="deleteRoom(room.roomId)">DELETE</button>
-            <button *ngIf="currentUser?.id === room.ownerId" class="btn-warning" (click)="updateRoom(room.roomName)">DEADLINES</button>
+            <button *ngIf="currentUser?.id === room.ownerId" class="btn-warning" (click)="updateRoom(room)">DEADLINES</button>
         </div>
     </article>
 </div>
