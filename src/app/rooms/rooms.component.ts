@@ -68,16 +68,18 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public deleteRoom(id: string) {
-    this.subscriptions.push(this.roomService.deleteRoom(id).subscribe({
-      next: resp => {
-        console.log(resp);
-        var newRooms = []
-        newRooms = this.rooms.filter(r => r.roomId != id);
-        this.rooms = newRooms;
-      },
-      error: err => console.log(err),
-      complete: () => console.log('completed')
-    }));
+    if (confirm('You sure want to delete this room?')) {
+      this.subscriptions.push(this.roomService.deleteRoom(id).subscribe({
+        next: resp => {
+          console.log(resp);
+          var newRooms = []
+          newRooms = this.rooms.filter(r => r.roomId != id);
+          this.rooms = newRooms;
+        },
+        error: err => console.log(err),
+        complete: () => console.log('completed')
+      }));
+    }
   }
 
   public updateRoom(name: string) {
