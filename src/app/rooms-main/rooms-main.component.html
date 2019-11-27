@@ -1,3 +1,5 @@
-<p>rooms-main works!</p>
+<h1 *ngIf="phase===0">SIGN PHASE</h1>
+<h1 *ngIf="phase===1">POST PHASE</h1>
+<h1 *ngIf="phase===2">VOTE PHASE</h1>
 <h2>Room {{roomDetail?.roomName}}</h2>
 <h3>{{roomDetail?.users.length}} user(s).</h3>

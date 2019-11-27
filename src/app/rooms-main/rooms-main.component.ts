@@ -16,7 +16,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   public roomDetail: RoomDetail;
   public currentUser: User;
+  public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase
   subscriptions: Subscription[] = [];
+  phaseCheckerIntervalId;
 
   constructor(
     private roomService: RoomService, private loginService: LoginService, private cookieService: CookieService,
@@ -34,6 +36,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         next: response => {
           console.log(response);
           this.roomDetail = response;
+          this.phaseCheckerIntervalId = window.setInterval(() => this.phaseChecker(), 1000);
         },
         error: err => {
           console.log(err);
@@ -48,6 +51,20 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    window.clearInterval(this.phaseCheckerIntervalId);
+  }
+
+  phaseChecker() {
+    console.log('tic');
+    var now = new Date().getTime();
+    if (now > this.roomDetail.signDeadline) {
+      if (now <= this.roomDetail.postDeadline) {
+        this.phase = 1;
+      } else {
+        this.phase = 2;
+        window.clearInterval(this.phaseCheckerIntervalId);
+      }
+    }
   }
 
 }
