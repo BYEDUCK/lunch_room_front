@@ -67,7 +67,7 @@ export class RoomService {
 
   public deleteRoom(id: string): Observable<any> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.delete<any>(this.serverUrl + `/del/${id}`, {
+    return this.http.delete<any>(this.serverUrl + `/${id}`, {
       headers: {
         'User-Nick': currentUser.nick,
         'User-Token': currentUser.token,
