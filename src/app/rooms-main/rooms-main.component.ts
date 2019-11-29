@@ -6,6 +6,7 @@ import { User } from '../model/User';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Proposal } from '../model/lunch/Proposal';
 
 @Component({
   selector: 'app-rooms-main',
@@ -19,6 +20,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase
   subscriptions: Subscription[] = [];
   phaseCheckerIntervalId;
+  proposals: Proposal[] = []
 
   constructor(
     private roomService: RoomService, private loginService: LoginService, private cookieService: CookieService,
@@ -65,6 +67,10 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         window.clearInterval(this.phaseCheckerIntervalId);
       }
     }
+  }
+
+  proposalEventHandler($event) {
+    this.proposals.push($event);
   }
 
 }

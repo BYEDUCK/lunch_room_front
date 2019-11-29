@@ -7,13 +7,14 @@ import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomsComponent } from './rooms/rooms.component';
 import { CookieService } from 'ngx-cookie-service';
 import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component';
 import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsMainComponent } from './rooms-main/rooms-main.component';
+import { CreateProposalComponent } from './rooms-main/create-proposal/create-proposal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RoomsMainComponent } from './rooms-main/rooms-main.component';
     SignupComponent,
     RoomsComponent,
     RoomsCreateComponent,
-    RoomsMainComponent
+    RoomsMainComponent,
+    CreateProposalComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { RoomsMainComponent } from './rooms-main/rooms-main.component';
     HttpClientModule,
     CommonModule,
     FormsModule,
-    NgbModalModule
+    NgbModalModule,
+    ReactiveFormsModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],

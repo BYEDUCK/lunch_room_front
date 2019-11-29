@@ -1,5 +1,19 @@
 <h1 *ngIf="phase===0">SIGN PHASE</h1>
 <h1 *ngIf="phase===1">POST PHASE</h1>
 <h1 *ngIf="phase===2">VOTE PHASE</h1>
-<h2>Room {{roomDetail?.roomName}}</h2>
-<h3>{{roomDetail?.users.length}} user(s).</h3>
+<h2>Room: {{roomDetail?.roomName}}</h2>
+<div class="grid">
+    <article *ngFor="let proposal of proposals" style="border: 5px solid sienna;">
+        <header class="card__header">
+            <h1 class="room__name">{{proposal?.title}}</h1>
+        </header>
+        <div *ngFor="let item of proposal?.menuItems" class="card__content">
+            <p>{{item?.description}}</p>
+            <p>{{item?.price}}</p>
+        </div>
+        <h5>Total rating: {{proposal?.ratingSum}}</h5>
+        <h5>Total votes: {{proposal?.votesCount}}</h5>
+    </article>
+</div>
+<app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail" (proposalEvent)="proposalEventHandler($event)">
+</app-create-proposal>
