@@ -64,7 +64,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public updateRoom() {
         this.subscriptions.push(
             this.roomService.updateRoom(
-                this.room.roomName, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
+                this.room.roomId, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
             ).subscribe({
                 next: response => {
                     console.log(response);
@@ -87,8 +87,9 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
         var minutes = now.getMinutes();
         var newMinutes = (minutes + min) % 60;
         var newHours = hours + Math.floor((minutes + min) / 60);
+        var hoursStringPart = newHours < 10 ? "0" + newHours : "" + newHours;
         var minuteStringPart = newMinutes < 10 ? "0" + newMinutes : "" + newMinutes;
-        return "" + newHours + ":" + minuteStringPart;
+        return hoursStringPart + ":" + minuteStringPart;
     }
 
     private toMillis(time: string): number {

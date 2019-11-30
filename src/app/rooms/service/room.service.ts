@@ -51,11 +51,11 @@ export class RoomService {
     });
   }
 
-  public joinRoom(name: string): Observable<RoomDetail> {
+  public joinRoom(roomId: string): Observable<RoomDetail> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<RoomDetail>(this.serverUrl + '/join', {
       'userId': currentUser.id,
-      'roomName': name
+      'roomId': roomId
     }, {
       headers: {
         'User-Nick': currentUser.nick,
@@ -76,10 +76,10 @@ export class RoomService {
     });
   }
 
-  public updateRoom(name: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
+  public updateRoom(roomId: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.put<RoomSimple>(this.serverUrl, {
-      'roomName': name,
+      'roomId': roomId,
       'deadlines': {
         'signDeadline': signDead,
         'postDeadline': postDead,
