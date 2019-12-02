@@ -51,11 +51,25 @@ export class RoomService {
     });
   }
 
-  public joinRoom(roomId: string): Observable<RoomDetail> {
+  public joinRoomById(roomId: string): Observable<RoomDetail> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<RoomDetail>(this.serverUrl + '/join', {
       'userId': currentUser.id,
       'roomId': roomId
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
+  public joinRoomByName(roomName: string): Observable<RoomDetail> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.post<RoomDetail>(this.serverUrl + '/joinByName', {
+      'userId': currentUser.id,
+      'roomName': roomName
     }, {
       headers: {
         'User-Nick': currentUser.nick,
