@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Proposal } from '../model/lunch/Proposal';
+import { LunchService } from './service/lunch.service';
 
 @Component({
   selector: 'app-rooms-main',
@@ -24,7 +25,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   constructor(
     private roomService: RoomService, private loginService: LoginService, private cookieService: CookieService,
-    private router: Router
+    private router: Router, private lunchService: LunchService
   ) {
   }
 
@@ -72,6 +73,20 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     window.clearInterval(this.phaseCheckerIntervalId);
+  }
+
+  vote(proposal: Proposal) {
+    this.subscriptions.push(this.lunchService.voteForProposal(this.roomDetail.roomId, proposal.proposalId, 4).subscribe({
+      next: resp => {
+        console.log(resp);
+      },
+      error: err => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('completed');
+      }
+    }));
   }
 
   phaseChecker() {
