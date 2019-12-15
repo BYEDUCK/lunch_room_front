@@ -1,39 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Subject, Observable, Observer } from 'rxjs';
+import { Injectable } from '@angular/core'
 import { environment } from 'src/environments/environment';
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+
+export class Message {
+  constructor(public msg: string) {
+  }
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
+  private stompClient: Stomp.Client;
 
-  private subject: Subject<MessageEvent>;
-
-  constructor() { }
-
-  public connect(roomId: string) {
-    if (!this.subject) {
-      this.subject = this.createSubject(roomId);
-      console.log('connected!!');
-    }
-    return this.subject;
+  public connect() {
+    let ws = new SockJS(`${environment.serverUrl}/propose`);
+    this.stompClient = Stomp.over(ws);
+    this.stompClient.connect({}, frame => {
+      console.log('connected', frame);
+      this.stompClient.subscribe('/room/proposals', message => {
+        console.log(message);
+      });
+    })
   }
 
-  private createSubject(roomId: string): Subject<MessageEvent> {
-    let ws = new WebSocket(`${environment.serverWsUrl}/propose`);
-    let observable = Observable.create((obs: Observer<MessageEvent>) => {
-      ws.onmessage = obs.next.bind(obs);
-      ws.onerror = obs.error.bind(obs);
-      ws.onclose = obs.complete.bind(obs);
-      return ws.close.bind(ws);
-    });
-    let observer = {
-      next: (data: any) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    };
-    return Subject.create(observer, observable);
-  } 
+  public sendMessage(message: string) {
+    this.stompClient.send('/app/propose', {}, JSON.stringify(new Message(message)));
+  }
 }
