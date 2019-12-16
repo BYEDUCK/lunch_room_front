@@ -22,7 +22,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   phaseCheckerIntervalId;
   proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
-  proposalIdToIndex: Map<String, number> = new Map();
+  private proposalIdToIndex: Map<string, number> = new Map();
 
   constructor(
     private roomService: RoomService,
@@ -66,7 +66,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     this.lunchWsService.findAllProposals();
     this.proposalUpdateCheckerIntervalId = setInterval(() => {
       this.checkForProposalsUpdate();
-    }, 1000);
+    }, 500);
   }
 
   ngOnDestroy(): void {
