@@ -106,4 +106,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   vote(proposalId: string) {
     this.lunchWsService.voteForProposal(proposalId, 4);
   }
+
+  leave() {
+    this.cookieService.delete('room');
+    this.router.navigateByUrl('rooms');
+  }
 }

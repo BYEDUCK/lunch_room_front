@@ -63,7 +63,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public joinRoomById(roomId: string) {
-    this.cookieService.delete('roomName');
     this.cookieService.set('room', roomId);
     this.router.navigateByUrl('room');
   }
