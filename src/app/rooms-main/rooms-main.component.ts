@@ -93,10 +93,10 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     if (updatedProposals && updatedProposals.length > 0) {
       updatedProposals.forEach(proposal => {
         if (!this.proposalIdToIndex.has(proposal.proposalId)) {
-          const idx = this.proposals.push(proposal);
-          this.proposalIdToIndex[proposal.proposalId] = idx;
+          const idx = this.proposals.push(proposal) - 1;
+          this.proposalIdToIndex.set(proposal.proposalId, idx);
         } else {
-          const idx = this.proposalIdToIndex[proposal.proposalId];
+          const idx = this.proposalIdToIndex.get(proposal.proposalId);
           this.proposals[idx] = proposal;
         }
       });

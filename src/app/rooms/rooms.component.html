@@ -21,7 +21,7 @@
 <div style="border: 2px solid skyblue; width: fit-content;">
     <label for="searchRoomInput" class="alert-info">Search for new room</label>
     <div>
-        <input id="searchRoomInput" #joinRoomName type="text" placeholder="room name" />
-        <button class="btn-primary" (click)="searchRoomByName(joinRoomName.value)">SEARCH</button>
+        <input id="searchRoomInput" #searchRoomName type="text" placeholder="room name" />
+        <button class="btn-primary" (click)="searchRoomByName(searchRoomName.value)">SEARCH</button>
     </div>
 </div>
