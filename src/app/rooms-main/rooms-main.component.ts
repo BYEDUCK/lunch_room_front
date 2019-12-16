@@ -35,31 +35,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.loginService.getCurrentUser();
     const roomId = this.cookieService.get("room");
-    const roomName = this.cookieService.get("roomName");
-    if (roomId.length < 1 && roomName.length < 1) {
+    if (roomId.length < 1) {
       this.router.navigateByUrl("rooms");
-    } else if (roomId.length < 1) {
-      this.subscriptions.push(
-        this.roomService.joinRoomByName(roomName).subscribe({
-          next: response => {
-            this.roomDetail = response;
-            this.cookieService.set("room", this.roomDetail.roomId);
-            this.cookieService.delete("roomName");
-            this.phaseCheckerIntervalId = window.setInterval(
-              () => this.phaseChecker(),
-              1000
-            );
-          },
-          error: err => {
-            console.log(err);
-            this.router.navigateByUrl("rooms");
-          },
-          complete: () => {
-            this.connectWs();
-            console.log("completed");
-          }
-        })
-      );
     } else {
       this.subscriptions.push(
         this.roomService.joinRoomById(roomId).subscribe({

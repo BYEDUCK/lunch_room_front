@@ -31,14 +31,16 @@ export class WebsocketService {
   }
 
   public sendMessage(message: any) {
-    var sent = false;
     if (this.isConnected) {
       this.stompClient.send('/app/propose', {}, JSON.stringify(message));
     } else {
       this.sendingRetryIntervalId = setInterval(() => {
-        if (this.stompClient && !sent) {
+        var sent = false;
+        if (this.stompClient && !sent && this.stompClient.connected) {
           this.stompClient.send('/app/propose', {}, JSON.stringify(message));
           sent = true;
+        }
+        if (sent) {
           window.clearInterval(this.sendingRetryIntervalId);
         }
       }, 500);

@@ -32,6 +32,20 @@ export class RoomService {
     });
   }
 
+  public findRoomByName(roomName: string): Observable<RoomSimple> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.get<RoomSimple>(`${this.serverUrl}/search`, {
+      params: {
+        'name': roomName
+      },
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
   public addRoom(name: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<RoomSimple>(this.serverUrl, {

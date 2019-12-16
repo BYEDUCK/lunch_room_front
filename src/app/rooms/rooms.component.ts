@@ -63,13 +63,23 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public joinRoomById(roomId: string) {
+    this.cookieService.delete('roomName');
     this.cookieService.set('room', roomId);
     this.router.navigateByUrl('room');
   }
 
-  public joinRoomByName(roomName: string) {
-    this.cookieService.set('roomName', roomName);
-    this.router.navigateByUrl('room');
+  public searchRoomByName(roomName: string) {
+    this.subscriptions.push(this.roomService.findRoomByName(roomName).subscribe({
+      next: resp => {
+          this.rooms.push(resp);
+      },
+      error: err => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('completed');
+      }
+    }))
   }
 
   public deleteRoom(id: string) {

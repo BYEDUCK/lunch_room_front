@@ -19,9 +19,9 @@
 </div>
 <button class="btn-primary"  (click)="openModal()">Create room</button>
 <div style="border: 2px solid skyblue; width: fit-content;">
-    <label for="joinRoomInput" class="alert-info">Join new room</label>
+    <label for="searchRoomInput" class="alert-info">Search for new room</label>
     <div>
-        <input id="joinRoomInput" #joinRoomName type="text" placeholder="room name" />
-        <button class="btn-primary" (click)="joinRoomByName(joinRoomName.value)">JOIN</button>
+        <input id="searchRoomInput" #joinRoomName type="text" placeholder="room name" />
+        <button class="btn-primary" (click)="searchRoomByName(joinRoomName.value)">SEARCH</button>
     </div>
 </div>
