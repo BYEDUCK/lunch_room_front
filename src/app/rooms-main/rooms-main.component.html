@@ -13,7 +13,8 @@
         </div>
         <h5>Total rating: {{proposal?.ratingSum}}</h5>
         <h5>Total votes: {{proposal?.votesCount}}</h5>
+        <button *ngIf="phase===2" class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId)">VOTE</button>
     </article>
 </div>
-<app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail" (proposalEvent)="proposalEventHandler($event)">
+<app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>

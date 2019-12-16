@@ -20,6 +20,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase
   subscriptions: Subscription[] = [];
   phaseCheckerIntervalId;
+  proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
 
   constructor(
@@ -79,11 +80,17 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         })
       );
     }
+    this.lunchWsService.findAllProposals();
+    this.proposalUpdateCheckerIntervalId = setInterval(() => {
+      this.checkForProposalsUpdate();
+    }, 1000);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.lunchWsService.disconnect();
     window.clearInterval(this.phaseCheckerIntervalId);
+    window.clearInterval(this.proposalUpdateCheckerIntervalId);
   }
 
   phaseChecker() {
@@ -99,7 +106,16 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  proposalEventHandler($event) {
-    this.proposals.push($event);
+  checkForProposalsUpdate() {
+    const updatedProposals = this.lunchWsService.getLatestMessage();
+    if (updatedProposals && updatedProposals.length > 0) {
+      // HANDLE
+      console.log('Got some new proposals: ', updatedProposals);
+      this.proposals.push(...updatedProposals);
+    }
+  }
+
+  vote(proposalId: string) {
+    this.lunchWsService.voteForProposal(proposalId, 4);
   }
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { LunchService } from '../service/lunch.service';
 import { FormBuilder } from '@angular/forms';
 import { RoomDetail } from 'src/app/model/RoomDetail';
 import { MenuItem } from 'src/app/model/lunch/MenuItem';
 import { Subscription } from 'rxjs';
-import { Proposal } from 'src/app/model/lunch/Proposal';
+import { LunchWsService } from '../service/lunch-ws.service';
 
 @Component({
   selector: 'app-create-proposal',
@@ -16,9 +16,8 @@ export class CreateProposalComponent implements OnInit, OnDestroy {
   checkoutForm;
   @Input() roomDetail: RoomDetail;
   subscriptions: Subscription[] = [];
-  @Output() proposalEvent: EventEmitter<Proposal> = new EventEmitter()
 
-  constructor(private lunchService: LunchService, private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private lunchServiceWs: LunchWsService) {
     this.checkoutForm = this.formBuilder.group({
       'title': '',
       'description': '',
@@ -34,20 +33,7 @@ export class CreateProposalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(menuItem) {
-    this.subscriptions.push(this.lunchService.addProposal(
-      this.roomDetail.roomId, menuItem.title, [new MenuItem(menuItem.description, menuItem.price)]
-    ).subscribe({
-      next: resp => {
-        console.log(resp);
-        this.proposalEvent.emit(resp);
-      },
-      error: err => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('completed');
-      }
-    }));
+    this.lunchServiceWs.addProposal(menuItem.title, [new MenuItem(menuItem.description, menuItem.price)]);
   }
 
 }

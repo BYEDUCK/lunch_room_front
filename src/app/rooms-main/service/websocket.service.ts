@@ -13,19 +13,39 @@ export class Message {
 })
 export class WebsocketService {
   private stompClient: Stomp.Client;
+  private isConnected = false;
+  private sendingRetryIntervalId;
 
-  public connect() {
-    let ws = new SockJS(`${environment.serverUrl}/propose`);
-    this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({}, frame => {
-      console.log('connected', frame);
-      this.stompClient.subscribe('/room/proposals', message => {
-        console.log(message);
+  public connect(retrieveMsg) {
+    if (!this.stompClient) {
+      let ws = new SockJS(`${environment.serverUrl}/propose`);
+      this.stompClient = Stomp.over(ws);
+      this.stompClient.connect({}, frame => {
+        console.log('connected', frame);
+        this.isConnected = true;
+        this.stompClient.subscribe('/room/proposals', message => {
+          retrieveMsg(message);
+        });
       });
-    })
+    }
   }
 
-  public sendMessage(message: string) {
-    this.stompClient.send('/app/propose', {}, JSON.stringify(new Message(message)));
+  public sendMessage(message: any) {
+    var sent = false;
+    if (this.isConnected) {
+      this.stompClient.send('/app/propose', {}, JSON.stringify(message));
+    } else {
+      this.sendingRetryIntervalId = setInterval(() => {
+        if (this.stompClient && !sent) {
+          this.stompClient.send('/app/propose', {}, JSON.stringify(message));
+          sent = true;
+          window.clearInterval(this.sendingRetryIntervalId);
+        }
+      }, 500);
+    }
+  }
+
+  public disconnect() {
+    this.stompClient.disconnect(() => console.log('disconnected'));
   }
 }
