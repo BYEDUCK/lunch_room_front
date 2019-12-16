@@ -36,7 +36,6 @@ export class LunchWsService {
   }
 
   retrieveMsg(message: any) {
-    console.log(message);
     this.messages.push(message.body);
   }
 

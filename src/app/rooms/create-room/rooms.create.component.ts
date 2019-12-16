@@ -46,7 +46,6 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.roomService.addRoom(name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead))
             .subscribe({
                 next: response => {
-                    console.log(response);
                     this.isEverythingOk = true;
                     this.addedRoom.emit(response);
                     this.activeModal.close('Successfully ended');
@@ -67,7 +66,6 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
                 this.room.roomId, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
             ).subscribe({
                 next: response => {
-                    console.log(response);
                     this.isEverythingOk = true;
                     this.updatedRoom.emit(response);
                     this.activeModal.close('Successfully ended');

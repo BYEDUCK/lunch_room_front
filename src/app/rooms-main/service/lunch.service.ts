@@ -18,12 +18,6 @@ export class LunchService {
 
   public addProposal(roomId: string, title: string, menuItems: MenuItem[]): Observable<Proposal> {
     const currentUser = this.loginService.getCurrentUser();
-    console.log({
-      'userId': currentUser.id,
-      'roomId': roomId,
-      'title': title,
-      'menuItems': menuItems
-    });
     return this.http.post<Proposal>(this.serverUrl, {
       'userId': currentUser.id,
       'roomId': roomId,

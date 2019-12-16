@@ -30,7 +30,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(this.roomService.findRoomsByUserId(this.currentUser.id).subscribe({
       next: (response) => {
-        console.log(response);
         this.rooms = response;
       },
       error: (err) => {
@@ -77,7 +76,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     if (confirm('You sure want to delete this room?')) {
       this.subscriptions.push(this.roomService.deleteRoom(id).subscribe({
         next: resp => {
-          console.log(resp);
           var newRooms = []
           newRooms = this.rooms.filter(r => r.roomId != id);
           this.rooms = newRooms;

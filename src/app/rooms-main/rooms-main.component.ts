@@ -30,7 +30,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private router: Router,
     private lunchWsService: LunchWsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.currentUser = this.loginService.getCurrentUser();
@@ -42,7 +42,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
       this.subscriptions.push(
         this.roomService.joinRoomByName(roomName).subscribe({
           next: response => {
-            console.log(response);
             this.roomDetail = response;
             this.cookieService.set("room", this.roomDetail.roomId);
             this.cookieService.delete("roomName");
@@ -56,6 +55,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl("rooms");
           },
           complete: () => {
+            this.connectWs();
             console.log("completed");
           }
         })
@@ -64,7 +64,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
       this.subscriptions.push(
         this.roomService.joinRoomById(roomId).subscribe({
           next: response => {
-            console.log(response);
             this.roomDetail = response;
             this.phaseCheckerIntervalId = window.setInterval(
               () => this.phaseChecker(),
@@ -76,11 +75,16 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl("rooms");
           },
           complete: () => {
+            this.connectWs();
             console.log("completed");
           }
         })
       );
     };
+
+  }
+
+  private connectWs() {
     this.lunchWsService.connect();
     this.lunchWsService.findAllProposals();
     this.proposalUpdateCheckerIntervalId = setInterval(() => {
@@ -96,7 +100,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   phaseChecker() {
-    console.log("tic");
     var now = new Date().getTime();
     if (now > this.roomDetail.signDeadline) {
       if (now <= this.roomDetail.postDeadline) {
@@ -111,8 +114,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   checkForProposalsUpdate() {
     const updatedProposals = this.lunchWsService.getLatestMessage();
     if (updatedProposals && updatedProposals.length > 0) {
-      // HANDLE
-      console.log('Got some new proposals: ', updatedProposals);
       updatedProposals.forEach(proposal => {
         if (!this.proposalIdToIndex.has(proposal.proposalId)) {
           const idx = this.proposals.push(proposal);
