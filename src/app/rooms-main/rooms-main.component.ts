@@ -22,6 +22,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   phaseCheckerIntervalId;
   proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
+  proposalIdToIndex: Map<String, number> = new Map();
 
   constructor(
     private roomService: RoomService,
@@ -79,7 +80,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
           }
         })
       );
-    }
+    };
+    this.lunchWsService.connect();
     this.lunchWsService.findAllProposals();
     this.proposalUpdateCheckerIntervalId = setInterval(() => {
       this.checkForProposalsUpdate();
@@ -111,7 +113,15 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     if (updatedProposals && updatedProposals.length > 0) {
       // HANDLE
       console.log('Got some new proposals: ', updatedProposals);
-      this.proposals.push(...updatedProposals);
+      updatedProposals.forEach(proposal => {
+        if (!this.proposalIdToIndex.has(proposal.proposalId)) {
+          const idx = this.proposals.push(proposal);
+          this.proposalIdToIndex[proposal.proposalId] = idx;
+        } else {
+          const idx = this.proposalIdToIndex[proposal.proposalId];
+          this.proposals[idx] = proposal;
+        }
+      });
     }
   }
 

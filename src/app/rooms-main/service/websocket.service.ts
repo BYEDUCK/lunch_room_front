@@ -46,6 +46,13 @@ export class WebsocketService {
   }
 
   public disconnect() {
-    this.stompClient.disconnect(() => console.log('disconnected'));
+    if (this.stompClient) {
+      this.stompClient.disconnect(() => {
+        console.log('disconnected');
+        setTimeout(() => {}, 400);
+        this.isConnected = false;
+        this.stompClient = undefined;
+      });
+    }
   }
 }

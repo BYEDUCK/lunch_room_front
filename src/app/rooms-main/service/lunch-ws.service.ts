@@ -15,7 +15,7 @@ import { Proposal } from 'src/app/model/lunch/Proposal';
 export class LunchWsService {
   private currentUser: User;
   private roomId: string;
-  public messages: Proposal[][] = []
+  public messages: string[] = []
 
   constructor(
     private webSocketService: WebsocketService,
@@ -23,6 +23,10 @@ export class LunchWsService {
     private loginService: LoginService,
     private router: Router
   ) {
+    this.connect();
+  }
+
+  public connect() {
     this.currentUser = this.loginService.getCurrentUser();
     this.roomId = this.cookieService.get('room');
     if (this.roomId.length < 1) {
@@ -33,12 +37,12 @@ export class LunchWsService {
 
   retrieveMsg(message: any) {
     console.log(message);
-    this.messages.push(message);
+    this.messages.push(message.body);
   }
 
   public getLatestMessage(): Proposal[] {
     if (this.messages.length > 0) {
-      return this.messages.shift();
+      return JSON.parse(this.messages.shift());
     }
   }
 
