@@ -16,7 +16,7 @@ export class WebsocketService {
   private isConnected = false;
   private sendingRetryIntervalId;
 
-  public connect(retrieveMsg) {
+  public connect(retrieveMsg, handleError) {
     if (!this.stompClient) {
       let ws = new SockJS(`${environment.serverUrl}/propose`);
       this.stompClient = Stomp.over(ws);
@@ -25,6 +25,9 @@ export class WebsocketService {
         this.isConnected = true;
         this.stompClient.subscribe('/room/proposals', message => {
           retrieveMsg(message);
+        });
+        this.stompClient.subscribe('/room/errors', error => {
+          handleError(error);
         });
       });
     }

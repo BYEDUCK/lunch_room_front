@@ -22,3 +22,4 @@
 <div *ngIf="phase===3 && currentUser?.id === roomDetail?.ownerId">
     <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE!</button>
 </div>
+<h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>

@@ -17,6 +17,7 @@ export class LunchWsService {
   private roomId: string;
   public messages: string[] = []
   public newMessageEvent: EventEmitter<Proposal[]> = new EventEmitter();
+  public errorMessageEvent: EventEmitter<string> = new EventEmitter();
 
   constructor(
     private webSocketService: WebsocketService,
@@ -33,11 +34,15 @@ export class LunchWsService {
     if (this.roomId.length < 1) {
       this.router.navigateByUrl('rooms');
     }
-    this.webSocketService.connect(msg => this.retrieveMsg(msg));
+    this.webSocketService.connect(msg => this.retrieveMsg(msg), err => this.handlerError(err));
   }
 
   retrieveMsg(message: any) {
     this.newMessageEvent.emit(JSON.parse(message.body));
+  }
+
+  handlerError(error: any) {
+    this.errorMessageEvent.emit(error.body);
   }
 
   public disconnect() {

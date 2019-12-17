@@ -23,6 +23,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
   private proposalIdToIndex: Map<string, number> = new Map();
+  errorMsg = '';
 
   constructor(
     private roomService: RoomService,
@@ -49,6 +50,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.subscriptions.push(this.lunchWsService.newMessageEvent.subscribe({
               next: (updatedProposals: Proposal[]) => {
                 if (updatedProposals && updatedProposals.length > 0) {
+                  this.errorMsg = '';
                   updatedProposals.forEach(proposal => {
                     if (!this.proposalIdToIndex.has(proposal.proposalId)) {
                       const idx = this.proposals.push(proposal) - 1;
@@ -65,6 +67,11 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
               },
               complete: () => {
                 console.log('completed');
+              }
+            }));
+            this.subscriptions.push(this.lunchWsService.errorMessageEvent.subscribe({
+              next: (err: string) => {
+                this.errorMsg = err;
               }
             }));
           },
