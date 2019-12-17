@@ -46,6 +46,27 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
               () => this.phaseChecker(),
               1000
             );
+            this.subscriptions.push(this.lunchWsService.newMessageEvent.subscribe({
+              next: (updatedProposals: Proposal[]) => {
+                if (updatedProposals && updatedProposals.length > 0) {
+                  updatedProposals.forEach(proposal => {
+                    if (!this.proposalIdToIndex.has(proposal.proposalId)) {
+                      const idx = this.proposals.push(proposal) - 1;
+                      this.proposalIdToIndex.set(proposal.proposalId, idx);
+                    } else {
+                      const idx = this.proposalIdToIndex.get(proposal.proposalId);
+                      this.proposals[idx] = proposal;
+                    }
+                  });
+                }
+              },
+              error: err => {
+                console.log(err);
+              },
+              complete: () => {
+                console.log('completed');
+              }
+            }));
           },
           error: err => {
             console.log(err);
@@ -64,9 +85,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   private connectWs() {
     this.lunchWsService.connect();
     this.lunchWsService.findAllProposals();
-    this.proposalUpdateCheckerIntervalId = setInterval(() => {
-      this.checkForProposalsUpdate();
-    }, 500);
   }
 
   ngOnDestroy(): void {
@@ -85,21 +103,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         this.phase = 2;
         window.clearInterval(this.phaseCheckerIntervalId);
       }
-    }
-  }
-
-  checkForProposalsUpdate() {
-    const updatedProposals = this.lunchWsService.getLatestMessage();
-    if (updatedProposals && updatedProposals.length > 0) {
-      updatedProposals.forEach(proposal => {
-        if (!this.proposalIdToIndex.has(proposal.proposalId)) {
-          const idx = this.proposals.push(proposal) - 1;
-          this.proposalIdToIndex.set(proposal.proposalId, idx);
-        } else {
-          const idx = this.proposalIdToIndex.get(proposal.proposalId);
-          this.proposals[idx] = proposal;
-        }
-      });
     }
   }
 

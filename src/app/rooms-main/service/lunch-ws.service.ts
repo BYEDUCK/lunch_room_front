@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { WebsocketService } from "./websocket.service";
 import { CookieService } from "ngx-cookie-service";
 import { MenuItem } from 'src/app/model/lunch/MenuItem';
@@ -16,6 +16,7 @@ export class LunchWsService {
   private currentUser: User;
   private roomId: string;
   public messages: string[] = []
+  public newMessageEvent: EventEmitter<Proposal[]> = new EventEmitter();
 
   constructor(
     private webSocketService: WebsocketService,
@@ -36,13 +37,7 @@ export class LunchWsService {
   }
 
   retrieveMsg(message: any) {
-    this.messages.push(message.body);
-  }
-
-  public getLatestMessage(): Proposal[] {
-    if (this.messages.length > 0) {
-      return JSON.parse(this.messages.shift());
-    }
+    this.newMessageEvent.emit(JSON.parse(message.body));
   }
 
   public disconnect() {
