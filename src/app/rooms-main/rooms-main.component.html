@@ -19,3 +19,6 @@
 <button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
 <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>
+<div *ngIf="phase===3 && currentUser?.id === roomDetail?.ownerId">
+    <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE!</button>
+</div>
