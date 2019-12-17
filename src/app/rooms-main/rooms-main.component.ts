@@ -17,7 +17,7 @@ import { LunchWsService } from './service/lunch-ws.service';
 export class RoomsMainComponent implements OnInit, OnDestroy {
   public roomDetail: RoomDetail;
   public currentUser: User;
-  public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase
+  public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase; 3 - end
   subscriptions: Subscription[] = [];
   phaseCheckerIntervalId;
   proposalUpdateCheckerIntervalId;
@@ -99,8 +99,10 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     if (now > this.roomDetail.signDeadline) {
       if (now <= this.roomDetail.postDeadline) {
         this.phase = 1;
-      } else {
+      } else if (now <= this.roomDetail.voteDeadline) {
         this.phase = 2;
+      } else {
+        this.phase = 3;
         window.clearInterval(this.phaseCheckerIntervalId);
       }
     }
@@ -113,5 +115,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   leave() {
     this.cookieService.delete('room');
     this.router.navigateByUrl('rooms');
+  }
+
+  randomize() {
+    console.log('randomize!!!!!!!!!');
   }
 }
