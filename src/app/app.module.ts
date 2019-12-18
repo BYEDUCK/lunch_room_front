@@ -15,6 +15,7 @@ import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdro
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsMainComponent } from './rooms-main/rooms-main.component';
 import { CreateProposalComponent } from './rooms-main/create-proposal/create-proposal.component';
+import { SummaryComponent } from './rooms-main/summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CreateProposalComponent } from './rooms-main/create-proposal/create-pro
     RoomsComponent,
     RoomsCreateComponent,
     RoomsMainComponent,
-    CreateProposalComponent
+    CreateProposalComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
