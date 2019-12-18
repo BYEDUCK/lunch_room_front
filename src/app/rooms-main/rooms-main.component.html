@@ -20,7 +20,7 @@
 <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>
 <div *ngIf="phase===3 && currentUser?.id === roomDetail?.ownerId">
-    <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE!</button>
+    <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE</button>
 </div>
 <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 <h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>
