@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { Proposal } from "../model/lunch/Proposal";
 import { LunchWsService } from './service/lunch-ws.service';
+import { LotteryResults } from '../model/LotteryResults';
 
 @Component({
   selector: "app-rooms-main",
@@ -74,6 +75,11 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.errorMsg = err;
               }
             }));
+            this.subscriptions.push(this.lunchWsService.lotteryResultsEvent.subscribe({
+              next: (results: LotteryResults) => {
+                console.log(results);
+              }
+            }));
           },
           error: err => {
             console.log(err);
@@ -126,5 +132,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   randomize() {
     console.log('randomize!!!!!!!!!');
+    this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
+      error: err => console.log(err)
+    }));
   }
 }

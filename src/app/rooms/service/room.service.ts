@@ -122,6 +122,20 @@ export class RoomService {
     });
   }
 
+  public doTheLottery(roomId: string): Observable<any> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.post<any>(`${this.serverUrl}/random`, {
+      'userId': currentUser.id,
+      'roomId': roomId
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
   public cacheRoomDetail(detail: RoomDetail) {
     this.roomDetail = detail;
   }
