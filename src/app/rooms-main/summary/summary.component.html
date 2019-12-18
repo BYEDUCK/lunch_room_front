@@ -1,0 +1,9 @@
+<h2 class="alert alert-success text-center">The honor of ordering lunch goes to... {{userNick}}</h2>
+<h6 class="alert alert-info tex-center">And the winning proposal is:</h6>
+<div class="justify-content-center">
+    <h5 class="alert alert-info tex-center">Title: {{proposal?.title}}</h5>
+    <div *ngFor="let item of proposal?.menuItems" class="justify-content-center">
+        <h5 class="alert alert-info tex-center">Description: {{item?.description}}</h5>
+        <h5 class="alert alert-info tex-center">Price: {{item?.price}} PLN</h5>
+    </div>
+</div>

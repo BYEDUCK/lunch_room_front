@@ -9,7 +9,7 @@
         </header>
         <div *ngFor="let item of proposal?.menuItems" class="card__content">
             <p>{{item?.description}}</p>
-            <p>{{item?.price}}</p>
+            <p>{{item?.price}} PLN</p>
         </div>
         <h5>Total rating: {{proposal?.ratingSum}}</h5>
         <h5>Total votes: {{proposal?.votesCount}}</h5>
@@ -22,4 +22,5 @@
 <div *ngIf="phase===3 && currentUser?.id === roomDetail?.ownerId">
     <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE!</button>
 </div>
+<app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 <h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>

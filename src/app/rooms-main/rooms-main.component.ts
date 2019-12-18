@@ -25,6 +25,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   proposals: Proposal[] = [];
   private proposalIdToIndex: Map<string, number> = new Map();
   errorMsg = '';
+  summary = false;
+  winner: string;
+  proposalWin: Proposal;
 
   constructor(
     private roomService: RoomService,
@@ -77,7 +80,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             }));
             this.subscriptions.push(this.lunchWsService.lotteryResultsEvent.subscribe({
               next: (results: LotteryResults) => {
-                console.log(results);
+                this.winner = results.userNick;
+                this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
+                this.summary = true;
               }
             }));
           },
