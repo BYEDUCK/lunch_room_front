@@ -120,10 +120,14 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
       } else if (now <= this.roomDetail.voteDeadline) {
         this.phase = 2;
       } else {
-        this.phase = 3;
-        window.clearInterval(this.phaseCheckerIntervalId);
+        this.end();
       }
     }
+  }
+
+  private end() {
+    this.phase = 3;
+    window.clearInterval(this.phaseCheckerIntervalId);
   }
 
   vote(proposalId: string) {
@@ -136,9 +140,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   randomize() {
-    console.log('randomize!!!!!!!!!');
     this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
-      error: err => console.log(err)
+      error: err => console.log(err),
+      complete: () => this.end()
     }));
   }
 }
