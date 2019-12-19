@@ -18,6 +18,10 @@
         <input [(ngModel)]="voteDead" #voteDeadlineInput="ngModel" class="form-control" type="time"
             placeholder="vote deadline" id="vDead" />
     </div>
+    <div class="form-group">
+        <label for="defs">Use default lunch proposals</label>
+        <input [(ngModel)]="useDefaults" #defaults="ngModel" class="form-control" type="checkbox" id="defs" />
+    </div>
     <div id="msgs">
         <h6 class="alert-info">*Consecutive deadlines should be after one another</h6>
         <div *ngIf="!isEverythingOk">

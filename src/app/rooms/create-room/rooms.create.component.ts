@@ -15,6 +15,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public postDead: string;
     public voteDead: string;
     public isEverythingOk = true;
+    public useDefaults: boolean;
 
     private signDefault = 15;
     private postDefault = 10 + this.signDefault;
@@ -33,9 +34,9 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private cookieService: CookieService) { }
 
     ngOnInit() {
-        this.signDead = this.room ?  this.toDate(this.room.signDeadline) : this.addMinutesToNow(this.signDefault);
-        this.postDead = this.room ?  this.toDate(this.room.postDeadline) : this.addMinutesToNow(this.postDefault);
-        this.voteDead = this.room ?  this.toDate(this.room.voteDeadline) : this.addMinutesToNow(this.voteDefault);
+        this.signDead = this.room ? this.toDate(this.room.signDeadline) : this.addMinutesToNow(this.signDefault);
+        this.postDead = this.room ? this.toDate(this.room.postDeadline) : this.addMinutesToNow(this.postDefault);
+        this.voteDead = this.room ? this.toDate(this.room.voteDeadline) : this.addMinutesToNow(this.voteDefault);
     }
 
     ngOnDestroy(): void {
@@ -43,21 +44,22 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     }
 
     public createRoom(name: string) {
-        this.subscriptions.push(this.roomService.addRoom(name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead))
-            .subscribe({
-                next: response => {
-                    this.isEverythingOk = true;
-                    this.addedRoom.emit(response);
-                    this.activeModal.close('Successfully ended');
-                },
-                error: err => {
-                    this.isEverythingOk = false;
-                    console.log(err);
-                },
-                complete: () => {
-                    this.isEverythingOk = true;
-                }
-            }));
+        this.subscriptions.push(this.roomService.addRoom(
+            name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead), this.useDefaults
+        ).subscribe({
+            next: response => {
+                this.isEverythingOk = true;
+                this.addedRoom.emit(response);
+                this.activeModal.close('Successfully ended');
+            },
+            error: err => {
+                this.isEverythingOk = false;
+                console.log(err);
+            },
+            complete: () => {
+                this.isEverythingOk = true;
+            }
+        }));
     }
 
     public updateRoom() {
@@ -104,6 +106,6 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
         const date = new Date(millis);
         var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : '' + date.getMinutes();
         var hours = date.getHours() < 10 ? '0' + date.getHours() : '' + date.getHours();
-        return hours + ':' + minutes; 
+        return hours + ':' + minutes;
     }
 }

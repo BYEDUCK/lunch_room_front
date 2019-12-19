@@ -46,7 +46,7 @@ export class RoomService {
     });
   }
 
-  public addRoom(name: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
+  public addRoom(name: string, signDead: number, postDead: number, voteDead: number, useDefaults: boolean): Observable<RoomSimple> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<RoomSimple>(this.serverUrl, {
       'name': name,
@@ -61,6 +61,9 @@ export class RoomService {
         'User-Nick': currentUser.nick,
         'User-Token': currentUser.token,
         'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      },
+      params: {
+        'defaults': '' + (useDefaults ? useDefaults : 'false')
       }
     });
   }
