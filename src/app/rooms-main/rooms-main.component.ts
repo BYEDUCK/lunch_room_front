@@ -83,6 +83,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.winner = results.userNick;
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
+                this.end();
               }
             }));
           },
@@ -141,8 +142,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   randomize() {
     this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
-      error: err => console.log(err),
-      complete: () => this.end()
+      error: err => console.log(err)
     }));
   }
 }
