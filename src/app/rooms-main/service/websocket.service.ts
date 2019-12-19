@@ -51,8 +51,8 @@ export class WebsocketService {
     if (this.isConnected) {
       this.stompClient.send('/app/propose', {}, JSON.stringify(message));
     } else {
+      var sent = false;
       this.sendingRetryIntervalId = setInterval(() => {
-        var sent = false;
         if (this.stompClient && !sent && this.stompClient.connected) {
           this.stompClient.send('/app/propose', {}, JSON.stringify(message));
           sent = true;

@@ -17,8 +17,8 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public isEverythingOk = true;
     public useDefaults: boolean;
 
-    private signDefault = 5;
-    private postDefault = 5 + this.signDefault;
+    private signDefault = 2;
+    private postDefault = 2 + this.signDefault;
     private voteDefault = 5 + this.postDefault;
 
     subscriptions: Subscription[] = [];

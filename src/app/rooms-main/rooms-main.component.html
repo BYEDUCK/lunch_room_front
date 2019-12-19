@@ -2,25 +2,29 @@
 <h1 *ngIf="phase===1">POST PHASE</h1>
 <h1 *ngIf="phase===2">VOTE PHASE</h1>
 <h2>Room: {{roomDetail?.roomName}}</h2>
+<button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
 <div class="grid">
     <article *ngFor="let proposal of proposals" style="border: 5px solid sienna;">
         <header class="card__header">
-            <h1 class="room__name">{{proposal?.title}}</h1>
+            <h1 class="room__name"><b>{{proposal?.title}}</b></h1>
         </header>
-        <div *ngFor="let item of proposal?.menuItems" class="card__content">
-            <p>{{item?.description}}</p>
-            <p>{{item?.price}} PLN</p>
+        <div *ngFor="let item of proposal?.menuItems" class="card__content" style="border: 3px solid burlywood;">
+            <h6 class="alert alert-dark">{{item?.description}}</h6>
+            <h6 class="alert alert-dark">{{item?.price}} PLN</h6>
         </div>
-        <h5>Total rating: {{proposal?.ratingSum}}</h5>
-        <h5>Total votes: {{proposal?.votesCount}}</h5>
-        <button *ngIf="phase===2" class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId)">VOTE</button>
+        <div class="card__content">
+            <h6 class="alert alert-info">Total rating: <b>{{proposal?.ratingSum}}</b></h6>
+            <h6 class="alert alert-info">Total votes: <b>{{proposal?.votesCount}}</b></h6>
+        </div>
+        <div *ngIf="phase===2" class="card__actions">
+            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId)">VOTE</button>
+        </div>
     </article>
 </div>
-<button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
 <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>
 <div *ngIf="phase===2 && currentUser?.id === roomDetail?.ownerId">
-    <button class="btn btn-lg btn-success" (click)="randomize()">RANDOMIZE</button>
+    <button class="btn btn-lg btn-success" (click)="end()">RANDOMIZE</button>
 </div>
 <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 <h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>

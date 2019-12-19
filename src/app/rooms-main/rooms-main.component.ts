@@ -28,6 +28,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   summary = false;
   winner: string;
   proposalWin: Proposal;
+  ended = false;
 
   constructor(
     private roomService: RoomService,
@@ -83,7 +84,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.winner = results.userNick;
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
-                this.end();
               }
             }));
           },
@@ -126,9 +126,14 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  private end() {
-    this.phase = 3;
-    window.clearInterval(this.phaseCheckerIntervalId);
+  end() {
+    if (!this.ended) {
+      this.phase = 3;
+      window.clearInterval(this.phaseCheckerIntervalId);
+      this.randomize();
+      this.errorMsg = '';
+      this.ended = true;
+    }
   }
 
   vote(proposalId: string) {
@@ -140,9 +145,18 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('rooms');
   }
 
-  randomize() {
-    this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
-      error: err => console.log(err)
-    }));
+  private randomize() {
+    var now = new Date().getTime();
+    if (now < this.roomDetail.voteDeadline) {
+      if (confirm("You sure want to randomize before voting end?")) {
+        this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
+          error: err => console.log(err)
+        }));
+      }
+    } else {
+      this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
+        error: err => console.log(err)
+      }));
+    }
   }
 }
