@@ -141,6 +141,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   end() {
     if (!this.ended) {
       this.phase = 3;
+      this.voteProgress = 100;
       window.clearInterval(this.phaseCheckerIntervalId);
       this.randomize();
       this.errorMsg = '';
