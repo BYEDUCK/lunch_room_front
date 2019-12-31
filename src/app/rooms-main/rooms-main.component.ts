@@ -147,13 +147,11 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   private randomize() {
     var now = new Date().getTime();
+    let confirmed = true;
     if (now < this.roomDetail.voteDeadline) {
-      if (confirm("You sure want to randomize before voting end?")) {
-        this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
-          error: err => console.log(err)
-        }));
-      }
-    } else {
+      confirmed = confirm("You sure want to randomize before voting end?");
+    }
+    if (confirmed) {
       this.subscriptions.push(this.roomService.doTheLottery(this.roomDetail.roomId).subscribe({
         error: err => console.log(err)
       }));

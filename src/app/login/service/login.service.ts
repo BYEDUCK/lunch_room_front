@@ -39,8 +39,8 @@ export class LoginService {
     });
   }
 
-  public isNickAvailable(userNick: string): Observable<object> {
-    return this.http.get<object>(this.serverUrl + '/checkNick', {
+  public isNickAvailable(userNick: string): Observable<any> {
+    return this.http.get<any>(this.serverUrl + '/checkNick', {
       params: {
         nick: userNick
       },

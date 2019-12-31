@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RoomSimple } from 'src/app/model/RoomSimple';
 import { LoginService } from 'src/app/login/service/login.service';
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { RoomDetail } from 'src/app/model/RoomDetail';
 
@@ -14,9 +13,7 @@ export class RoomService {
 
   private serverUrl = `${environment.serverUrl}/rooms`;
 
-  private roomDetail: RoomDetail;
-
-  constructor(private http: HttpClient, private loginService: LoginService, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private loginService: LoginService) { }
 
   public findRoomsByUserId(userId: string): Observable<RoomSimple[]> {
     const currentUser = this.loginService.getCurrentUser();
@@ -137,13 +134,5 @@ export class RoomService {
         'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
-  }
-
-  public cacheRoomDetail(detail: RoomDetail) {
-    this.roomDetail = detail;
-  }
-
-  public getCachedRoomDetail(): RoomDetail {
-    return this.roomDetail;
   }
 }

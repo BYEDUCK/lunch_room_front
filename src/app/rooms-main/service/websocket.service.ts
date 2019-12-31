@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Subscription } from 'rxjs';
 
 export class Message {
   constructor(public msg: string) {
@@ -17,6 +18,7 @@ export class WebsocketService {
   private isConnected = false;
   private sendingRetryIntervalId;
   private sessionId;
+  private subscriptions: Subscription[] = [];
 
   constructor(private cookieService: CookieService) {
   }
@@ -28,21 +30,21 @@ export class WebsocketService {
       this.stompClient = Stomp.over(ws);
       this.stompClient.connect({}, frame => {
         var url = this.stompClient.ws._transport.url;
-        url = url.replace(
-          `${environment.serverWsUrl}/propose/`,  '');
-        url = url.replace('/websocket', '');
-        url = url.replace(/^[0-9]+\//, '');
+        url = url
+          .replace(`${environment.serverWsUrl}/propose/`, '')
+          .replace('/websocket', '')
+          .replace(/^[0-9]+\//, '');
         this.sessionId = url;
         this.isConnected = true;
-        this.stompClient.subscribe(`/room/proposals/${roomId}`, message => {
+        this.subscriptions.push(this.stompClient.subscribe(`/room/proposals/${roomId}`, message => {
           retrieveMsg(message);
-        });
-        this.stompClient.subscribe(`/room/errors/${this.sessionId}/gimme`, error => {
+        }));
+        this.subscriptions.push(this.stompClient.subscribe(`/room/errors/${this.sessionId}/gimme`, error => {
           handleError(error);
-        });
-        this.stompClient.subscribe(`/room/lottery/${roomId}`, results => {
+        }));
+        this.subscriptions.push(this.stompClient.subscribe(`/room/lottery/${roomId}`, results => {
           handleLotteryResults(results);
-        });
+        }));
       });
     }
   }
@@ -67,10 +69,12 @@ export class WebsocketService {
   public disconnect() {
     if (this.stompClient) {
       this.stompClient.disconnect(() => {
-        console.log('disconnected');
-        setTimeout(() => { }, 400);
         this.isConnected = false;
         this.stompClient = undefined;
+        console.log('disconnected');
+        setTimeout(() => {
+          this.subscriptions.forEach(s => s.unsubscribe())
+        }, 100);
       });
     }
   }
