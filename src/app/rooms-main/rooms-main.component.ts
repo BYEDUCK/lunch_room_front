@@ -29,6 +29,11 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   winner: string;
   proposalWin: Proposal;
   ended = false;
+  public currentTime = new Date().getTime();
+  public startTime = new Date().getTime();
+  public signProgress = 0;
+  public postProgress = 0;
+  public voteProgress = 0;
 
   constructor(
     private roomService: RoomService,
@@ -114,15 +119,22 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   phaseChecker() {
-    var now = new Date().getTime();
-    if (now > this.roomDetail.signDeadline) {
-      if (now <= this.roomDetail.postDeadline) {
+    this.currentTime = new Date().getTime();
+    if (this.currentTime > this.roomDetail.signDeadline) {
+      if (this.currentTime <= this.roomDetail.postDeadline) {
         this.phase = 1;
-      } else if (now <= this.roomDetail.voteDeadline) {
+        this.signProgress = 100;
+        this.postProgress = ((this.currentTime - this.roomDetail.signDeadline) / (this.roomDetail.postDeadline - this.roomDetail.signDeadline)) * 100;
+      } else if (this.currentTime <= this.roomDetail.voteDeadline) {
+        this.postProgress = 100;
+        this.voteProgress = ((this.currentTime - this.roomDetail.postDeadline) / (this.roomDetail.voteDeadline - this.roomDetail.postDeadline)) * 100;
         this.phase = 2;
       } else {
+        this.voteProgress = 100;
         this.end();
       }
+    } else {
+      this.signProgress = ((this.currentTime - this.startTime) / (this.roomDetail.signDeadline - this.startTime)) * 100;
     }
   }
 

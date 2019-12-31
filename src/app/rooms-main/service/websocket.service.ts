@@ -67,7 +67,7 @@ export class WebsocketService {
   }
 
   public disconnect() {
-    if (this.stompClient) {
+    if (this.stompClient && this.isConnected && this.stompClient.connected) {
       this.stompClient.disconnect(() => {
         this.isConnected = false;
         this.stompClient = undefined;

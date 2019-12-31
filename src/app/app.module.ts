@@ -11,8 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomsComponent } from './rooms/rooms.component';
 import { CookieService } from 'ngx-cookie-service';
 import { RoomsCreateComponent } from './rooms/create-room/rooms.create.component';
-import { NgbModalBackdrop } from '@ng-bootstrap/ng-bootstrap/modal/modal-backdrop';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbProgressbarModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsMainComponent } from './rooms-main/rooms-main.component';
 import { CreateProposalComponent } from './rooms-main/create-proposal/create-proposal.component';
 import { SummaryComponent } from './rooms-main/summary/summary.component';
@@ -35,7 +34,9 @@ import { SummaryComponent } from './rooms-main/summary/summary.component';
     CommonModule,
     FormsModule,
     NgbModalModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbProgressbarModule,
+    NgbModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
