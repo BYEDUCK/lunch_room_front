@@ -73,6 +73,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
           this.rooms.push(resp);
       },
       error: err => {
+        alert('Room not found!');
         console.log(err);
       },
       complete: () => {

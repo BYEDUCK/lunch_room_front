@@ -89,6 +89,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.winner = results.userNick;
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
+                this.errorMsg = '';
               }
             }));
           },
