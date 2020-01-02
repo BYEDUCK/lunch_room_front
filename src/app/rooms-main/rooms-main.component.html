@@ -9,7 +9,7 @@
 </div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
-        <h6 class="alert alert-info" style="width: fit-content;">User {{user?.nick}} has {{user?.points}} points
+        <h6 class="alert alert-info" style="width: fit-content;">User <b>{{user?.nick}}</b> has <b>{{user?.points}}</b> points
             remaining</h6>
     </article>
 </div>
