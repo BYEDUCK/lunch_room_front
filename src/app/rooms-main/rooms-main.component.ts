@@ -168,8 +168,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  vote(proposalId: string) {
-    this.lunchWsService.voteForProposal(proposalId, 4);
+  vote(proposalId: string, rate: number) {
+    this.lunchWsService.voteForProposal(proposalId, rate);
   }
 
   leave() {

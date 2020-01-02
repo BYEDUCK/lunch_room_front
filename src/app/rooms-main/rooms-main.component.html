@@ -1,10 +1,16 @@
-<h1 *ngIf="phase===0">SIGN PHASE</h1>
-<h1 *ngIf="phase===1">POST PHASE</h1>
-<h1 *ngIf="phase===2">VOTE PHASE</h1>
-<h2>Room: {{roomDetail?.roomName}}</h2>
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+    <h1 *ngIf="phase===0">SIGN PHASE</h1>
+    <h1 *ngIf="phase===1">POST PHASE</h1>
+    <h1 *ngIf="phase===2">VOTE PHASE</h1>
+    <h2>Room: {{roomDetail?.roomName}}</h2>
+    <button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
+    <button *ngIf="phase===2 && currentUser?.id === roomDetail?.ownerId" class="btn btn-lg btn-success"
+        (click)="end()">RANDOMIZE</button>
+</div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
-        <h6 class="alert alert-info" style="width: fit-content;">User {{user?.nick}} has {{user?.points}} points remaining</h6>
+        <h6 class="alert alert-info" style="width: fit-content;">User {{user?.nick}} has {{user?.points}} points
+            remaining</h6>
     </article>
 </div>
 <p>
@@ -19,7 +25,6 @@
     <ngb-progressbar type="danger" [value]="voteProgress" [striped]="true" [animated]="true"><b>VOTE</b>
     </ngb-progressbar>
 </p>
-<button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
 <div class="grid">
     <article *ngFor="let proposal of proposals" style="border: 5px solid sienna;">
         <header class="card__header">
@@ -33,15 +38,15 @@
             <h6 class="alert alert-info">Total rating: <b>{{proposal?.ratingSum}}</b></h6>
             <h6 class="alert alert-info">Total votes: <b>{{proposal?.votesCount}}</b></h6>
         </div>
-        <div *ngIf="phase===2" class="card__actions">
-            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId)">VOTE</button>
+        <div *ngIf="phase===2" class="card__actions my-4">
+            <form class="range-field">
+                <input type="range" class="custom-range" min="1" max="6" #voteRate>
+            </form>
+            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId, voteRate.value)">VOTE</button>
         </div>
     </article>
 </div>
 <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>
-<div *ngIf="phase===2 && currentUser?.id === roomDetail?.ownerId">
-    <button class="btn btn-lg btn-success" (click)="end()">RANDOMIZE</button>
-</div>
 <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 <h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>
