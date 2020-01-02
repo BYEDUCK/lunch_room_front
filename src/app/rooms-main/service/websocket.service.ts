@@ -77,7 +77,7 @@ export class WebsocketService {
         console.log('disconnected');
         setTimeout(() => {
           this.subscriptions.forEach(s => s.unsubscribe())
-        }, 100);
+        }, 200);
       });
     }
   }

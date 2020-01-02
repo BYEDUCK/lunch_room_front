@@ -94,6 +94,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.errorMsg = '';
                 this.clearIntervals();
                 this.voteProgress = 100;
+                this.signProgress = 100;
+                this.postProgress = 100;
               }
             }));
             this.subscriptions.push(this.lunchWsService.usersEvent.subscribe({
@@ -141,10 +143,13 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         this.postProgress = ((this.currentTime - this.roomDetail.signDeadline) / (this.roomDetail.postDeadline - this.roomDetail.signDeadline)) * 100;
       } else if (this.currentTime <= this.roomDetail.voteDeadline) {
         this.postProgress = 100;
+        this.signProgress = 100;
         this.voteProgress = ((this.currentTime - this.roomDetail.postDeadline) / (this.roomDetail.voteDeadline - this.roomDetail.postDeadline)) * 100;
         this.phase = 2;
       } else {
         this.voteProgress = 100;
+        this.signProgress = 100;
+        this.postProgress = 100;
         this.end();
       }
     } else {
