@@ -7,6 +7,7 @@ import { LoginService } from 'src/app/login/service/login.service';
 import { Router } from '@angular/router';
 import { Proposal } from 'src/app/model/lunch/Proposal';
 import { LotteryResults } from 'src/app/model/LotteryResults';
+import { RoomUser } from 'src/app/model/RoomUser';
 
 
 
@@ -20,6 +21,7 @@ export class LunchWsService {
   public newMessageEvent: EventEmitter<Proposal[]> = new EventEmitter();
   public errorMessageEvent: EventEmitter<string> = new EventEmitter();
   public lotteryResultsEvent: EventEmitter<LotteryResults> = new EventEmitter();
+  public usersEvent: EventEmitter<RoomUser[]> = new EventEmitter();
 
   constructor(
     private webSocketService: WebsocketService,
@@ -39,7 +41,8 @@ export class LunchWsService {
     this.webSocketService.connect(
       msg => this.retrieveMsg(msg),
       err => this.handlerError(err),
-      results => this.handleLotteryResults(results)
+      results => this.handleLotteryResults(results),
+      users => this.handleUsers(users)
     );
   }
 
@@ -53,6 +56,10 @@ export class LunchWsService {
 
   handlerError(error: any) {
     this.errorMessageEvent.emit(error.body);
+  }
+
+  handleUsers(users: any) {
+    this.usersEvent.emit(JSON.parse(users.body));
   }
 
   public disconnect() {

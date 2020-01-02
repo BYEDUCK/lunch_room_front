@@ -3,7 +3,7 @@ import { User } from '../model/User';
 import { LoginService } from '../login/service/login.service';
 import { Router } from '@angular/router';
 import { RoomService } from './service/room.service';
-import { RoomSimple } from '../model/RoomSimple';
+import { Room } from '../model/Room';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsCreateComponent } from './create-room/rooms.create.component';
 import { CookieService } from 'ngx-cookie-service';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 export class RoomsComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
-  public rooms: RoomSimple[] = [];
+  public rooms: Room[] = [];
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -96,7 +96,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public updateRoom(room: RoomSimple) {
+  public updateRoom(room: Room) {
     const modalRef = this.modalService.open(RoomsCreateComponent, {
       centered: true
     });

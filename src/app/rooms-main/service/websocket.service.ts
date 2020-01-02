@@ -23,7 +23,7 @@ export class WebsocketService {
   constructor(private cookieService: CookieService) {
   }
 
-  public connect(retrieveMsg, handleError, handleLotteryResults) {
+  public connect(retrieveMsg, handleError, handleLotteryResults, handleUsers) {
     if (!this.stompClient) {
       let roomId = this.cookieService.get('room');
       let ws = new SockJS(`${environment.serverUrl}/propose`);
@@ -44,6 +44,9 @@ export class WebsocketService {
         }));
         this.subscriptions.push(this.stompClient.subscribe(`/room/lottery/${roomId}`, results => {
           handleLotteryResults(results);
+        }));
+        this.subscriptions.push(this.stompClient.subscribe(`/room/users/${roomId}`, users => {
+          handleUsers(users);
         }));
       });
     }

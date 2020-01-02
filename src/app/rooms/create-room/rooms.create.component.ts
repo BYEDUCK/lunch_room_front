@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angu
 import { RoomService } from '../service/room.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { RoomSimple } from 'src/app/model/RoomSimple';
+import { Room } from 'src/app/model/Room';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -23,13 +23,13 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription[] = [];
     @Output()
-    addedRoom: EventEmitter<RoomSimple> = new EventEmitter();
+    addedRoom: EventEmitter<Room> = new EventEmitter();
     @Input()
     update = false;
     @Output()
-    updatedRoom: EventEmitter<RoomSimple> = new EventEmitter();
+    updatedRoom: EventEmitter<Room> = new EventEmitter();
     @Input()
-    room: RoomSimple;
+    room: Room;
 
     constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private cookieService: CookieService) { }
 

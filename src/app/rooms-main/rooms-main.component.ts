@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { RoomDetail } from "../model/RoomDetail";
 import { RoomService } from "../rooms/service/room.service";
 import { LoginService } from "../login/service/login.service";
 import { User } from "../model/User";
@@ -9,6 +8,8 @@ import { Subscription } from "rxjs";
 import { Proposal } from "../model/lunch/Proposal";
 import { LunchWsService } from './service/lunch-ws.service';
 import { LotteryResults } from '../model/LotteryResults';
+import { Room } from '../model/Room';
+import { RoomUser } from '../model/RoomUser';
 
 @Component({
   selector: "app-rooms-main",
@@ -16,9 +17,10 @@ import { LotteryResults } from '../model/LotteryResults';
   styleUrls: ["./rooms-main.component.css"]
 })
 export class RoomsMainComponent implements OnInit, OnDestroy {
-  public roomDetail: RoomDetail;
+  public roomDetail: Room;
   public currentUser: User;
   public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase; 3 - end
+  roomUsers: RoomUser[] = [];
   subscriptions: Subscription[] = [];
   phaseCheckerIntervalId;
   proposalUpdateCheckerIntervalId;
@@ -90,6 +92,13 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
                 this.errorMsg = '';
+                this.clearIntervals();
+                this.voteProgress = 100;
+              }
+            }));
+            this.subscriptions.push(this.lunchWsService.usersEvent.subscribe({
+              next: (rUsers: RoomUser[]) => {
+                this.roomUsers = rUsers;
               }
             }));
           },
@@ -115,6 +124,10 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.lunchWsService.disconnect();
+    this.clearIntervals();
+  }
+
+  private clearIntervals() {
     window.clearInterval(this.phaseCheckerIntervalId);
     window.clearInterval(this.proposalUpdateCheckerIntervalId);
   }

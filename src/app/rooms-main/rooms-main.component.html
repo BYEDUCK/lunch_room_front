@@ -2,6 +2,11 @@
 <h1 *ngIf="phase===1">POST PHASE</h1>
 <h1 *ngIf="phase===2">VOTE PHASE</h1>
 <h2>Room: {{roomDetail?.roomName}}</h2>
+<div class="grid">
+    <article *ngFor="let user of roomUsers">
+        <h6 class="alert alert-info" style="width: fit-content;">User {{user?.nick}} has {{user?.points}} points remaining</h6>
+    </article>
+</div>
 <p>
     <ngb-progressbar type="primary" [value]="signProgress" [striped]="true" [animated]="true"><b>SIGN</b>
     </ngb-progressbar>

@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { LunchService } from '../service/lunch.service';
 import { FormBuilder } from '@angular/forms';
-import { RoomDetail } from 'src/app/model/RoomDetail';
 import { MenuItem } from 'src/app/model/lunch/MenuItem';
 import { Subscription } from 'rxjs';
 import { LunchWsService } from '../service/lunch-ws.service';
+import { Room } from 'src/app/model/Room';
 
 @Component({
   selector: 'app-create-proposal',
@@ -14,7 +13,7 @@ import { LunchWsService } from '../service/lunch-ws.service';
 export class CreateProposalComponent implements OnInit, OnDestroy {
   
   checkoutForm;
-  @Input() roomDetail: RoomDetail;
+  @Input() roomDetail: Room;
   subscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder, private lunchServiceWs: LunchWsService) {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RoomSimple } from 'src/app/model/RoomSimple';
+import { Room } from 'src/app/model/Room';
 import { LoginService } from 'src/app/login/service/login.service';
 import { environment } from 'src/environments/environment';
-import { RoomDetail } from 'src/app/model/RoomDetail';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +14,9 @@ export class RoomService {
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-  public findRoomsByUserId(userId: string): Observable<RoomSimple[]> {
+  public findRoomsByUserId(userId: string): Observable<Room[]> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.get<RoomSimple[]>(this.serverUrl, {
+    return this.http.get<Room[]>(this.serverUrl, {
       params: {
         'userId': userId
       },
@@ -29,9 +28,9 @@ export class RoomService {
     });
   }
 
-  public findRoomByName(roomName: string): Observable<RoomSimple> {
+  public findRoomByName(roomName: string): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.get<RoomSimple>(`${this.serverUrl}/search`, {
+    return this.http.get<Room>(`${this.serverUrl}/search`, {
       params: {
         'name': roomName
       },
@@ -43,9 +42,9 @@ export class RoomService {
     });
   }
 
-  public addRoom(name: string, signDead: number, postDead: number, voteDead: number, useDefaults: boolean): Observable<RoomSimple> {
+  public addRoom(name: string, signDead: number, postDead: number, voteDead: number, useDefaults: boolean): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.post<RoomSimple>(this.serverUrl, {
+    return this.http.post<Room>(this.serverUrl, {
       'name': name,
       'ownerId': currentUser.id,
       'deadlines': {
@@ -65,9 +64,9 @@ export class RoomService {
     });
   }
 
-  public joinRoomById(roomId: string): Observable<RoomDetail> {
+  public joinRoomById(roomId: string): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.post<RoomDetail>(this.serverUrl + '/join', {
+    return this.http.post<Room>(this.serverUrl + '/join', {
       'userId': currentUser.id,
       'roomId': roomId
     }, {
@@ -79,9 +78,9 @@ export class RoomService {
     });
   }
 
-  public joinRoomByName(roomName: string): Observable<RoomDetail> {
+  public joinRoomByName(roomName: string): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.post<RoomDetail>(this.serverUrl + '/joinByName', {
+    return this.http.post<Room>(this.serverUrl + '/joinByName', {
       'userId': currentUser.id,
       'roomName': roomName
     }, {
@@ -104,9 +103,9 @@ export class RoomService {
     });
   }
 
-  public updateRoom(roomId: string, signDead: number, postDead: number, voteDead: number): Observable<RoomSimple> {
+  public updateRoom(roomId: string, signDead: number, postDead: number, voteDead: number): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.put<RoomSimple>(this.serverUrl, {
+    return this.http.put<Room>(this.serverUrl, {
       'roomId': roomId,
       'deadlines': {
         'signDeadline': signDead,
