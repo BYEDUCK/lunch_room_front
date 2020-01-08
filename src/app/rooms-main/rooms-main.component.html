@@ -29,6 +29,7 @@
     <article *ngFor="let proposal of proposals" style="border: 5px solid sienna;">
         <header class="card__header">
             <h1 class="room__name"><b>{{proposal?.title}}</b></h1>
+            <h1 class="room__name"><a href="{{proposal?.menuUrl}}" target="_blank">Menu</a></h1>
         </header>
         <div *ngFor="let item of proposal?.menuItems" class="card__content" style="border: 3px solid burlywood;">
             <h6 class="alert alert-dark">{{item?.description}}</h6>

@@ -66,13 +66,14 @@ export class LunchWsService {
     this.webSocketService.disconnect();
   }
 
-  public addProposal(title: string, menuItems: MenuItem[]) {
+  public addProposal(title: string, menuUrl: string, menuItems: MenuItem[]) {
     this.webSocketService.sendMessage(
       {
         'lunchRequestType': 'ADD',
         'roomId': this.roomId,
         'userId': this.currentUser.id,
         'title': title,
+        'menuUrl': menuUrl,
         'menuItems': menuItems
       }
     );

@@ -20,6 +20,7 @@ export class CreateProposalComponent implements OnInit, OnDestroy {
     this.checkoutForm = this.formBuilder.group({
       'title': '',
       'description': '',
+      'url': '',
       'price': 0.00
     });
   }
@@ -31,8 +32,8 @@ export class CreateProposalComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  onSubmit(menuItem) {
-    this.lunchServiceWs.addProposal(menuItem.title, [new MenuItem(menuItem.description, menuItem.price)]);
+  onSubmit(proposal) {
+    this.lunchServiceWs.addProposal(proposal.title, proposal.url, [new MenuItem(proposal.description, proposal.price)]);
   }
 
 }
