@@ -1,0 +1,19 @@
+<div class="text-center" style="margin: 10px;">
+    <table class="table">
+        <thead class="thead-dark">
+            <th>Date</th>
+            <th>Winner</th>
+            <th>Proposal title</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let summary of summaries">
+                <td>{{summary.date}}</td>
+                <td>{{summary.winnerNick}}</td>
+                <td>{{summary.winnerProposalTitle}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+</div>

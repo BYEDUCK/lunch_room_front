@@ -11,13 +11,23 @@
             <h5>Vote until: <b>{{toDate(room.voteDeadline)}}</b></h5>
         </div>
         <div class="card__actions">
-            <button class="btn-success" (click)="joinRoomById(room.roomId)">JOIN</button>
-            <button *ngIf="currentUser?.id === room.ownerId" class="btn-danger" (click)="deleteRoom(room.roomId)">DELETE</button>
-            <button *ngIf="currentUser?.id === room.ownerId" class="btn-warning" (click)="updateRoom(room)">DEADLINES</button>
+            <div>
+                <button *ngIf="now &lt; room?.voteDeadline && room?.open else closed" class="btn-success"
+                    (click)="joinRoomById(room.roomId)">JOIN</button>
+                <button *ngIf="currentUser?.id === room.ownerId" class="btn-danger"
+                    (click)="deleteRoom(room.roomId)">DELETE</button>
+            </div>
+            <ng-template #closed>
+                <div>
+                    <button *ngIf="currentUser?.id === room.ownerId" class="btn-warning"
+                        (click)="updateRoom(room)">DEADLINES</button>
+                    <button class="btn-success" (click)="summary(room.roomId)">SUMMARY</button>
+                </div>
+            </ng-template>
         </div>
     </article>
 </div>
-<button class="btn-primary"  (click)="openModal()">Create room</button>
+<button class="btn-primary" (click)="openModal()">Create room</button>
 <div style="border: 2px solid skyblue; width: fit-content;">
     <label for="searchRoomInput" class="alert-info">Search for new room</label>
     <div>

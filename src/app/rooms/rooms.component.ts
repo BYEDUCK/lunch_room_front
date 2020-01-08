@@ -8,6 +8,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsCreateComponent } from './create-room/rooms.create.component';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
+import { TimeService } from '../time.service';
+import { SummariesResponse } from '../model/SummariesResponse';
+import { SummaryPopupComponent, Summary } from '../summary-popup/summary-popup.component';
 
 @Component({
   selector: 'app-rooms',
@@ -19,12 +22,18 @@ export class RoomsComponent implements OnInit, OnDestroy {
   public currentUser: User;
   public rooms: Room[] = [];
   subscriptions: Subscription[] = [];
+  now: number = new Date().getTime();
 
   constructor(
-    private loginService: LoginService, private router: Router,
+    loginService: LoginService, private router: Router, private timerService: TimeService,
     private roomService: RoomService, private modalService: NgbModal, private cookieService: CookieService
   ) {
     this.currentUser = loginService.getCurrentUser();
+    this.subscriptions.push(this.timerService.timeEvent.subscribe({
+      next: (time: Date) => {
+        this.now = time.getTime();
+      }
+    }));
   }
 
   ngOnInit() {
@@ -70,7 +79,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   public searchRoomByName(roomName: string) {
     this.subscriptions.push(this.roomService.findRoomByName(roomName).subscribe({
       next: resp => {
-          this.rooms.push(resp);
+        this.rooms.push(resp);
       },
       error: err => {
         alert('Room not found!');
@@ -111,6 +120,20 @@ export class RoomsComponent implements OnInit, OnDestroy {
       err => console.log(err),
       () => console.log('completed')
     ));
+  }
+
+  public summary(roomId: string) {
+    this.subscriptions.push(this.roomService.getSummary(roomId).subscribe({
+      next: (response: SummariesResponse) => {
+        const modalRef = this.modalService.open(SummaryPopupComponent, {
+          centered: true
+        });
+        const summeries = response.summaries.map(sum => new Summary(this.timerService.toDateFull(sum.timestamp), sum.winnerNick, sum.winnerProposalTitle));
+        modalRef.componentInstance.summaries = summeries;
+      },
+      error: err => console.log(err),
+      complete: () => console.log('completed')
+    }));
   }
 
 }

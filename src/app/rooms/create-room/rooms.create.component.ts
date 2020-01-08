@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Input } from '@angular/core';
 import { RoomService } from '../service/room.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Room } from 'src/app/model/Room';
-import { CookieService } from 'ngx-cookie-service';
+import { TimeService } from 'src/app/time.service';
 
 @Component({
     selector: 'app-rooms-create',
@@ -22,21 +22,19 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     private voteDefault = 5 + this.postDefault;
 
     subscriptions: Subscription[] = [];
-    @Output()
     addedRoom: EventEmitter<Room> = new EventEmitter();
+    updatedRoom: EventEmitter<Room> = new EventEmitter();
     @Input()
     update = false;
-    @Output()
-    updatedRoom: EventEmitter<Room> = new EventEmitter();
     @Input()
     room: Room;
 
-    constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private cookieService: CookieService) { }
+    constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private timeService: TimeService) { }
 
     ngOnInit() {
-        this.signDead = this.room ? this.toDate(this.room.signDeadline) : this.addMinutesToNow(this.signDefault);
-        this.postDead = this.room ? this.toDate(this.room.postDeadline) : this.addMinutesToNow(this.postDefault);
-        this.voteDead = this.room ? this.toDate(this.room.voteDeadline) : this.addMinutesToNow(this.voteDefault);
+        this.signDead = this.room ? this.timeService.toDateShort(this.room.signDeadline) : this.timeService.addMinutesToNow(this.signDefault);
+        this.postDead = this.room ? this.timeService.toDateShort(this.room.postDeadline) : this.timeService.addMinutesToNow(this.postDefault);
+        this.voteDead = this.room ? this.timeService.toDateShort(this.room.voteDeadline) : this.timeService.addMinutesToNow(this.voteDefault);
     }
 
     ngOnDestroy(): void {
@@ -45,7 +43,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
 
     public createRoom(name: string) {
         this.subscriptions.push(this.roomService.addRoom(
-            name, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead), this.useDefaults
+            name, this.timeService.toMillis(this.signDead), this.timeService.toMillis(this.postDead), this.timeService.toMillis(this.voteDead), this.useDefaults
         ).subscribe({
             next: response => {
                 this.isEverythingOk = true;
@@ -65,7 +63,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public updateRoom() {
         this.subscriptions.push(
             this.roomService.updateRoom(
-                this.room.roomId, this.toMillis(this.signDead), this.toMillis(this.postDead), this.toMillis(this.voteDead)
+                this.room.roomId, this.timeService.toMillis(this.signDead), this.timeService.toMillis(this.postDead), this.timeService.toMillis(this.voteDead)
             ).subscribe({
                 next: response => {
                     this.isEverythingOk = true;
@@ -79,33 +77,5 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
                     console.log('completed');
                 }
             }));
-    }
-
-    private addMinutesToNow(min: number): string {
-        var now = new Date();
-        var hours = now.getHours();
-        var minutes = now.getMinutes();
-        var newMinutes = (minutes + min) % 60;
-        var newHours = hours + Math.floor((minutes + min) / 60);
-        var hoursStringPart = newHours < 10 ? "0" + newHours : "" + newHours;
-        var minuteStringPart = newMinutes < 10 ? "0" + newMinutes : "" + newMinutes;
-        return hoursStringPart + ":" + minuteStringPart;
-    }
-
-    private toMillis(time: string): number {
-        var now = new Date();
-        var parts = time.split(":");
-        var minutes = (+parts[0]) * 60 + (+parts[1]) + now.getTimezoneOffset();
-        return Date.UTC(
-            now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
-            Math.floor(minutes / 60), minutes % 60, 0, 0
-        );
-    }
-
-    private toDate(millis: number): string {
-        const date = new Date(millis);
-        var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : '' + date.getMinutes();
-        var hours = date.getHours() < 10 ? '0' + date.getHours() : '' + date.getHours();
-        return hours + ':' + minutes;
     }
 }

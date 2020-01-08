@@ -15,6 +15,7 @@ import { NgbModalModule, NgbProgressbarModule, NgbModule } from '@ng-bootstrap/n
 import { RoomsMainComponent } from './rooms-main/rooms-main.component';
 import { CreateProposalComponent } from './rooms-main/create-proposal/create-proposal.component';
 import { SummaryComponent } from './rooms-main/summary/summary.component';
+import { SummaryPopupComponent } from './summary-popup/summary-popup.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SummaryComponent } from './rooms-main/summary/summary.component';
     RoomsCreateComponent,
     RoomsMainComponent,
     CreateProposalComponent,
-    SummaryComponent
+    SummaryComponent,
+    SummaryPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,9 @@ import { SummaryComponent } from './rooms-main/summary/summary.component';
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
-  entryComponents: [RoomsCreateComponent]
+  entryComponents: [
+    RoomsCreateComponent,
+    SummaryPopupComponent
+  ]
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Room } from 'src/app/model/Room';
 import { LoginService } from 'src/app/login/service/login.service';
 import { environment } from 'src/environments/environment';
+import { SummariesResponse } from 'src/app/model/SummariesResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,20 @@ export class RoomService {
   public doTheLottery(roomId: string): Observable<any> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<any>(`${this.serverUrl}/random`, {
+      'userId': currentUser.id,
+      'roomId': roomId
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token,
+        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+      }
+    });
+  }
+
+  public getSummary(roomId: string): Observable<SummariesResponse> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.post<SummariesResponse>(`${this.serverUrl}/summary`, {
       'userId': currentUser.id,
       'roomId': roomId
     }, {
