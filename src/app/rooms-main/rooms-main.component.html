@@ -50,4 +50,3 @@
 <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
 </app-create-proposal>
 <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
-<h6 *ngIf="errorMsg?.length > 0" class="alert alert-danger text-center">{{errorMsg}}</h6>

@@ -26,7 +26,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
   private proposalIdToIndex: Map<string, number> = new Map();
-  errorMsg = '';
   summary = false;
   winner: string;
   proposalWin: Proposal;
@@ -62,7 +61,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.subscriptions.push(this.lunchWsService.newMessageEvent.subscribe({
               next: (updatedProposals: Proposal[]) => {
                 if (updatedProposals && updatedProposals.length > 0) {
-                  this.errorMsg = '';
                   updatedProposals.forEach(proposal => {
                     if (!this.proposalIdToIndex.has(proposal.proposalId)) {
                       const idx = this.proposals.push(proposal) - 1;
@@ -83,7 +81,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             }));
             this.subscriptions.push(this.lunchWsService.errorMessageEvent.subscribe({
               next: (err: string) => {
-                this.errorMsg = err;
+                alert(err);
               }
             }));
             this.subscriptions.push(this.lunchWsService.lotteryResultsEvent.subscribe({
@@ -91,7 +89,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.winner = results.userNick;
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
-                this.errorMsg = '';
                 this.clearIntervals();
                 this.voteProgress = 100;
                 this.signProgress = 100;
@@ -163,7 +160,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
       this.voteProgress = 100;
       window.clearInterval(this.phaseCheckerIntervalId);
       this.randomize();
-      this.errorMsg = '';
       this.ended = true;
     }
   }
