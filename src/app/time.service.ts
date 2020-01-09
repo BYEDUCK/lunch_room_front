@@ -56,7 +56,7 @@ export class TimeService {
   }
 
   public twoDigits(n: number) {
-    return n < 10 ? '0' + n : n;
+    return n < 10 ? '0' + n : '' + n;
   }
 
   public getNow(): Date {

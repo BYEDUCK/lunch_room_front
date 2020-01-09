@@ -19,13 +19,15 @@ export class AppComponent implements OnInit, OnDestroy {
   timeSubscription: Subscription;
 
   constructor(public router: Router, private cookieService: CookieService, private timeService: TimeService) {
-    this.timeSubscription = this.timeService.timeEvent.subscribe({
-      next: (time: Date) => {
-        this.hours = time.getHours() < 10 ? '0' + time.getHours() : '' + time.getHours();
-        this.minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : '' + time.getMinutes();
-        this.seconds = time.getSeconds() < 10 ? '0' + time.getSeconds() : '' + time.getSeconds();
-      }
-    });
+    if (!this.timeSubscription) {
+      this.timeSubscription = this.timeService.timeEvent.subscribe({
+        next: (time: Date) => {
+          this.hours = this.timeService.twoDigits(time.getHours());
+          this.minutes = this.timeService.twoDigits(time.getMinutes());
+          this.seconds = this.timeService.twoDigits(time.getSeconds());
+        }
+      });
+    }
   }
 
   ngOnInit() {
