@@ -10,6 +10,7 @@ import { LunchWsService } from './service/lunch-ws.service';
 import { LotteryResults } from '../model/LotteryResults';
 import { Room } from '../model/Room';
 import { RoomUser } from '../model/RoomUser';
+import { TimeService } from '../time.service';
 
 @Component({
   selector: "app-rooms-main",
@@ -22,7 +23,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase; 3 - end
   roomUsers: RoomUser[] = [];
   subscriptions: Subscription[] = [];
-  phaseCheckerIntervalId;
+  timeCheckingSubscription: Subscription;
   proposalUpdateCheckerIntervalId;
   proposals: Proposal[] = [];
   private proposalIdToIndex: Map<string, number> = new Map();
@@ -41,7 +42,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     private loginService: LoginService,
     private cookieService: CookieService,
     private router: Router,
-    private lunchWsService: LunchWsService
+    private lunchWsService: LunchWsService,
+    private timeService: TimeService
   ) { }
 
   ngOnInit() {
@@ -54,10 +56,13 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         this.roomService.joinRoomById(roomId).subscribe({
           next: response => {
             this.roomDetail = response;
-            this.phaseCheckerIntervalId = window.setInterval(
-              () => this.phaseChecker(),
-              1000
-            );
+            if (!this.timeCheckingSubscription) {
+              this.timeCheckingSubscription = this.timeService.timeEvent.subscribe({
+                next: (time: Date) => {
+                  this.phaseChecker(time);
+                }
+              });
+            }
             this.subscriptions.push(this.lunchWsService.newMessageEvent.subscribe({
               next: (updatedProposals: Proposal[]) => {
                 if (updatedProposals && updatedProposals.length > 0) {
@@ -89,7 +94,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.winner = results.userNick;
                 this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
                 this.summary = true;
-                this.clearIntervals();
+                this.clearCheckers();
                 this.voteProgress = 100;
                 this.signProgress = 100;
                 this.postProgress = 100;
@@ -123,16 +128,18 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.lunchWsService.disconnect();
-    this.clearIntervals();
+    this.clearCheckers();
   }
 
-  private clearIntervals() {
-    window.clearInterval(this.phaseCheckerIntervalId);
+  private clearCheckers() {
     window.clearInterval(this.proposalUpdateCheckerIntervalId);
+    if (this.timeCheckingSubscription) {
+      this.timeCheckingSubscription.unsubscribe();
+    }
   }
 
-  phaseChecker() {
-    this.currentTime = new Date().getTime();
+  phaseChecker(time: Date) {
+    this.currentTime = time.getTime();
     if (this.currentTime > this.roomDetail.signDeadline) {
       if (this.currentTime <= this.roomDetail.postDeadline) {
         this.phase = 1;
@@ -158,7 +165,6 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     if (!this.ended) {
       this.phase = 3;
       this.voteProgress = 100;
-      window.clearInterval(this.phaseCheckerIntervalId);
       this.randomize();
       this.ended = true;
     }

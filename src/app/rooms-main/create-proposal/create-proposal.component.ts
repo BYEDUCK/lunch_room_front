@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MenuItem } from 'src/app/model/lunch/MenuItem';
 import { Subscription } from 'rxjs';
 import { LunchWsService } from '../service/lunch-ws.service';
@@ -12,7 +12,7 @@ import { Room } from 'src/app/model/Room';
 })
 export class CreateProposalComponent implements OnInit, OnDestroy {
   
-  checkoutForm;
+  checkoutForm: FormGroup;
   @Input() roomDetail: Room;
   subscriptions: Subscription[] = [];
 
