@@ -8,7 +8,7 @@
             <input #pass type="password" (keyup.enter)="logIn(nick.value, pass.value)" class="form-control"
                 placeholder="password" id="passwordInput" required />
         </div>
-        <button (click)="logIn(nick.value, pass.value)" class="btn btn-lg btn-primary">Log in</button>
+        <button (click)="logIn(nick.value, pass.value)" class="btn btn-lg btn-primary">LOG IN</button>
     </div>
     <div class="errorMsgs">
         <div *ngIf="isError" class="panel-danger">

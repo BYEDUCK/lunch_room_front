@@ -28,9 +28,9 @@
             <h6 class="alert-warning">Please fill all fields with correct values!</h6>
         </div>
     </div>
-    <button *ngIf="!update" (click)="createRoom(nameInput.value)" class="btn btn-lg btn-primary">Create room</button>
-    <button *ngIf="update" (click)="updateRoom()" class="btn btn-lg btn-primary">Update room</button>
+    <button *ngIf="!update" (click)="createRoom(nameInput.value)" class="btn btn-lg btn-primary">CREATE</button>
+    <button *ngIf="update" (click)="updateRoom()" class="btn btn-lg btn-primary">UPDATE</button>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">CLOSE</button>
 </div>

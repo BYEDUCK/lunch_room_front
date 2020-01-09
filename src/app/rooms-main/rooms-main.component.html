@@ -9,7 +9,8 @@
 </div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
-        <h6 class="alert alert-info" style="width: fit-content;">User <b>{{user?.nick}}</b> has <b>{{user?.points}}</b> points
+        <h6 class="alert alert-info" style="width: fit-content;">User <b>{{user?.nick}}</b> has <b>{{user?.points}}</b>
+            points
             remaining</h6>
     </article>
 </div>
@@ -25,6 +26,11 @@
     <ngb-progressbar type="danger" [value]="voteProgress" [striped]="true" [animated]="true"><b>VOTE</b>
     </ngb-progressbar>
 </p>
+<div style="margin-top: 2rem;">
+    <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
+    </app-create-proposal>
+    <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
+</div>
 <div class="grid">
     <article *ngFor="let proposal of proposals" style="border: 5px solid sienna;">
         <header class="card__header">
@@ -47,6 +53,3 @@
         </div>
     </article>
 </div>
-<app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
-</app-create-proposal>
-<app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
