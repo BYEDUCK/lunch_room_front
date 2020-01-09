@@ -100,4 +100,15 @@ export class LunchWsService {
       }
     );
   }
+
+  public deleteProposal(proposalId: string) {
+    this.webSocketService.sendMessage(
+      {
+        'lunchRequestType': 'DELETE',
+        'proposalId': proposalId,
+        'roomId': this.roomId,
+        'userId': this.currentUser.id
+      }
+    );
+  }
 }
