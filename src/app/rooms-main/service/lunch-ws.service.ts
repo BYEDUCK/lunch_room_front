@@ -80,6 +80,20 @@ export class LunchWsService {
     );
   }
 
+  public editProposal(proposalId: string, title: string, menuUrl: string, menuItems: MenuItem[]) {
+    this.webSocketService.sendMessage(
+      {
+        'lunchRequestType': 'EDIT',
+        'proposalId': proposalId,
+        'roomId': this.roomId,
+        'userId': this.currentUser.id,
+        'title': title,
+        'menuUrl': menuUrl,
+        'menuItems': menuItems
+      }
+    )
+  }
+
   public voteForProposal(proposalId: string, rating: number) {
     this.webSocketService.sendMessage(
       {
