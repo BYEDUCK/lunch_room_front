@@ -32,24 +32,28 @@
     <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 </div>
 <div class="grid">
-    <article *ngFor="let proposal of proposals" style="border: 5px solid sienna; border-radius: 1rem;">
+    <article *ngFor="let proposal of proposals | keyvalue" style="border: 5px solid sienna; border-radius: 1rem;">
         <header class="card__header">
-            <h1 class="room__name"><b>{{proposal?.title}}</b></h1>
-            <h1 class="room__name"><a href="{{proposal?.menuUrl}}" target="_blank">Menu</a></h1>
+            <h1 class="room__name"><b>{{proposal?.value.title}}</b></h1>
+            <h1 class="room__name"><a href="{{proposal?.value.menuUrl}}" target="_blank">Menu</a></h1>
         </header>
-        <div *ngFor="let item of proposal?.menuItems" class="card__content" style="border: 3px solid burlywood;">
+        <div *ngFor="let item of proposal?.value.menuItems" class="card__content" style="border: 3px solid burlywood;">
             <h6 class="alert alert-dark">{{item?.description}}</h6>
             <h6 class="alert alert-dark">{{item?.price}} PLN</h6>
         </div>
         <div class="card__content">
-            <h6 class="alert alert-info">Total rating: <b>{{proposal?.ratingSum}}</b></h6>
-            <h6 class="alert alert-info">Total votes: <b>{{proposal?.votesCount}}</b></h6>
+            <h6 class="alert alert-info">Total rating: <b>{{proposal?.value.ratingSum}}</b></h6>
+            <h6 class="alert alert-info">Total votes: <b>{{proposal?.value.votesCount}}</b></h6>
         </div>
         <div *ngIf="phase===2" class="card__actions my-4">
             <form class="range-field">
                 <input type="range" class="custom-range" min="1" max="6" #voteRate>
             </form>
-            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.proposalId, voteRate.value)">VOTE</button>
+            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.value.proposalId, voteRate.value)">VOTE</button>
+        </div>
+        <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 1 && currentUser?.id === proposal?.value.proposalOwnerId)"
+            class="card__actions my-4">
+            <button class="btn btn-lg btn-danger" (click)="delete(proposal?.value.proposalId)">DELETE</button>
         </div>
     </article>
 </div>

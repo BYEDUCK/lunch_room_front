@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Proposal } from 'src/app/model/lunch/Proposal';
 import { LotteryResults } from 'src/app/model/LotteryResults';
 import { RoomUser } from 'src/app/model/RoomUser';
+import { ProposalResponse } from 'src/app/model/lunch/ProposalResponse';
 
 
 
@@ -18,7 +19,7 @@ export class LunchWsService {
   private currentUser: User;
   private roomId: string;
   public messages: string[] = []
-  public newMessageEvent: EventEmitter<Proposal[]> = new EventEmitter();
+  public newMessageEvent: EventEmitter<ProposalResponse> = new EventEmitter();
   public errorMessageEvent: EventEmitter<string> = new EventEmitter();
   public lotteryResultsEvent: EventEmitter<LotteryResults> = new EventEmitter();
   public usersEvent: EventEmitter<RoomUser[]> = new EventEmitter();

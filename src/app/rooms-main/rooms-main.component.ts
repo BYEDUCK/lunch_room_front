@@ -11,6 +11,7 @@ import { LotteryResults } from '../model/LotteryResults';
 import { Room } from '../model/Room';
 import { RoomUser } from '../model/RoomUser';
 import { TimeService } from '../time.service';
+import { ProposalResponse } from '../model/lunch/ProposalResponse';
 
 @Component({
   selector: "app-rooms-main",
@@ -25,8 +26,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   timeCheckingSubscription: Subscription;
   proposalUpdateCheckerIntervalId;
-  proposals: Proposal[] = [];
-  private proposalIdToIndex: Map<string, number> = new Map();
+  proposals: Map<string, Proposal> = new Map();
   summary = false;
   winner: string;
   proposalWin: Proposal;
@@ -64,17 +64,18 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
               });
             }
             this.subscriptions.push(this.lunchWsService.newMessageEvent.subscribe({
-              next: (updatedProposals: Proposal[]) => {
-                if (updatedProposals && updatedProposals.length > 0) {
-                  updatedProposals.forEach(proposal => {
-                    if (!this.proposalIdToIndex.has(proposal.proposalId)) {
-                      const idx = this.proposals.push(proposal) - 1;
-                      this.proposalIdToIndex.set(proposal.proposalId, idx);
-                    } else {
-                      const idx = this.proposalIdToIndex.get(proposal.proposalId);
-                      this.proposals[idx] = proposal;
-                    }
+              next: (updatedProposals: ProposalResponse) => {
+                if (updatedProposals) {
+                  updatedProposals.proposals.forEach(proposal => {
+                    this.proposals.set(proposal.proposalId, proposal);
                   });
+                  if (updatedProposals.total < this.proposals.size) {
+                    this.proposals.forEach(proposal => {
+                      if (!updatedProposals.proposals.includes(proposal)) {
+                        this.proposals.delete(proposal.proposalId);
+                      }
+                    });
+                  }
                 }
               },
               error: err => {
@@ -92,7 +93,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.subscriptions.push(this.lunchWsService.lotteryResultsEvent.subscribe({
               next: (results: LotteryResults) => {
                 this.winner = results.userNick;
-                this.proposalWin = this.proposals[this.proposalIdToIndex.get(results.winnerProposalId)];
+                this.proposalWin = this.proposals.get(results.winnerProposalId);
                 this.summary = true;
                 this.clearCheckers();
                 this.voteProgress = 100;
@@ -172,6 +173,10 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   vote(proposalId: string, rate: number) {
     this.lunchWsService.voteForProposal(proposalId, rate);
+  }
+
+  delete(proposalId: string) {
+    this.lunchWsService.deleteProposal(proposalId);
   }
 
   leave() {
