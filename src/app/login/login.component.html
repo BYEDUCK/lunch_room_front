@@ -10,7 +10,7 @@
         </div>
         <button (click)="logIn(nick.value, pass.value)" class="btn btn-lg btn-primary">LOG IN</button>
     </div>
-    <div class="errorMsgs">
+    <div class="errorMsgs" style="margin-top: 2rem;">
         <div *ngIf="isError" class="panel-danger">
             <h5 class="alert-danger">Invalid credentials</h5>
         </div>
