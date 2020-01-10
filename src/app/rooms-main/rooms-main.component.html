@@ -45,15 +45,18 @@
             <h6 class="alert alert-info">Total rating: <b>{{proposal?.value.ratingSum}}</b></h6>
             <h6 class="alert alert-info">Total votes: <b>{{proposal?.value.votesCount}}</b></h6>
         </div>
-        <div *ngIf="phase===2" class="card__actions my-4">
-            <form class="range-field">
-                <input type="range" class="custom-range" min="1" max="6" #voteRate>
-            </form>
-            <button class="btn btn-lg btn-primary" (click)="vote(proposal?.value.proposalId, voteRate.value)">VOTE</button>
-        </div>
-        <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 1 && currentUser?.id === proposal?.value.proposalOwnerId)"
-            class="card__actions my-4">
-            <button class="btn btn-lg btn-danger" (click)="delete(proposal?.value.proposalId)">DELETE</button>
+        <div *ngIf="!ended">
+            <div *ngIf="phase===2" class="card__actions my-4">
+                <form class="range-field">
+                    <input type="range" class="custom-range" min="1" max="6" #voteRate>
+                </form>
+                <button class="btn btn-lg btn-primary"
+                    (click)="vote(proposal?.value.proposalId, voteRate.value)">VOTE</button>
+            </div>
+            <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 1 && currentUser?.id === proposal?.value.proposalOwnerId)"
+                class="card__actions my-4">
+                <button class="btn btn-lg btn-danger" (click)="delete(proposal?.value.proposalId)">DELETE</button>
+            </div>
         </div>
     </article>
 </div>

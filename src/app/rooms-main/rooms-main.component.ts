@@ -99,6 +99,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.voteProgress = 100;
                 this.signProgress = 100;
                 this.postProgress = 100;
+                this.ended = true;
               }
             }));
             this.subscriptions.push(this.lunchWsService.usersEvent.subscribe({
