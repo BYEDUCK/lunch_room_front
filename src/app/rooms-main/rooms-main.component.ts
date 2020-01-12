@@ -14,6 +14,7 @@ import { TimeService } from '../time.service';
 import { ProposalResponse } from '../model/lunch/ProposalResponse';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateProposalComponent } from './create-proposal/create-proposal.component';
+import { MenuItem } from '../model/lunch/MenuItem';
 
 @Component({
   selector: "app-rooms-main",
@@ -189,8 +190,18 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   createProposal() {
-    console.log('ssssssss')
     this.modalService.open(CreateProposalComponent, { centered: true });
+  }
+
+  editProposal(proposalId: string) {
+    let modalRef = this.modalService.open(CreateProposalComponent, { centered: true });
+    let proposal = this.proposals.get(proposalId);
+    modalRef.componentInstance.proposalId = proposalId;
+    modalRef.componentInstance.proposalTitle = proposal.title;
+    modalRef.componentInstance.proposalMenuUrl = proposal.menuUrl;
+    let menuItemsCopy: MenuItem[] = []
+    proposal.menuItems.forEach(item => menuItemsCopy.push(new MenuItem(item.description, item.price)));
+    modalRef.componentInstance.menuItems = menuItemsCopy;
   }
 
   private randomize() {

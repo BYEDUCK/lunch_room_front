@@ -53,9 +53,9 @@ export class CreateProposalComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeItem() {
+  removeItem(index: number) {
     if (this.menuItems.length > 0) {
-      this.menuItems.splice(-1, 1);
+      this.menuItems.splice(index, 1);
     }
   }
 

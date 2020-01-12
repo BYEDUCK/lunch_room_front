@@ -55,6 +55,7 @@
             <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 1 && currentUser?.id === proposal?.value.proposalOwnerId)"
                 class="card__actions my-4">
                 <button class="btn btn-lg btn-danger" (click)="delete(proposal?.value.proposalId)">DELETE</button>
+                <button class="btn btn-lg btn-warning" (click)="editProposal(proposal?.value.proposalId)">EDIT</button>
             </div>
         </div>
     </article>

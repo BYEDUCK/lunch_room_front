@@ -17,13 +17,13 @@
                 <input type="text" class="form-control" [(ngModel)]="menuItem.description" #desc>
                 <label for="prc">Price:</label>
                 <input type="number" class="form-control" step="0.01" [(ngModel)]="menuItem.price" #prc>
+                <button class="btn btn-lg btn-danger" (click)="removeItem(i)">DELETE MENU ITEM</button>
             </div>
         </div>
     </div>
     <div class="form-group">
         <span>
-            <button class="btn btn-lg btn-success" (click)="addItem()">+</button>
-            <button class="btn btn-lg btn-danger" (click)="removeItem()">-</button>
+            <button class="btn btn-lg btn-success" (click)="addItem()">ADD MENU ITEM</button>
             <button *ngIf="!proposalId" class="btn btn-lg btn-primary" (click)="addProposal()">CREATE</button>
             <button *ngIf="proposalId" class="btn btn-lg btn-warning" (click)="editProposal()">UPDATE</button>
         </span>
