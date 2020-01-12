@@ -10,7 +10,7 @@
     <div class="form-group">
         <div *ngFor="let menuItem of menuItems; let i=index" style="margin-top: 1rem;">
             <div>
-                <h6 class="aler-info">Menu item {{i+1}}: </h6>
+                <h6 class="alert-info">Menu item {{i+1}}: </h6>
             </div>
             <div>
                 <label for="desc">Description:</label>
@@ -21,12 +21,10 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <span>
-            <button class="btn btn-lg btn-success" (click)="addItem()">ADD MENU ITEM</button>
-            <button *ngIf="!proposalId" class="btn btn-lg btn-primary" (click)="addProposal()">CREATE</button>
-            <button *ngIf="proposalId" class="btn btn-lg btn-warning" (click)="editProposal()">UPDATE</button>
-        </span>
+    <div>
+        <button class="btn btn-lg btn-success" (click)="addItem()">ADD MENU ITEM</button>
+        <button *ngIf="!proposalId" class="btn btn-lg btn-primary" (click)="addProposal()">CREATE</button>
+        <button *ngIf="proposalId" class="btn btn-lg btn-warning" (click)="editProposal()">UPDATE</button>
     </div>
 </div>
 <div class="modal-footer">
