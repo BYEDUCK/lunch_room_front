@@ -12,6 +12,8 @@ import { Room } from '../model/Room';
 import { RoomUser } from '../model/RoomUser';
 import { TimeService } from '../time.service';
 import { ProposalResponse } from '../model/lunch/ProposalResponse';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateProposalComponent } from './create-proposal/create-proposal.component';
 
 @Component({
   selector: "app-rooms-main",
@@ -43,7 +45,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private router: Router,
     private lunchWsService: LunchWsService,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -183,6 +186,11 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   leave() {
     this.cookieService.delete('room');
     this.router.navigateByUrl('rooms');
+  }
+
+  createProposal() {
+    console.log('ssssssss')
+    this.modalService.open(CreateProposalComponent, { centered: true });
   }
 
   private randomize() {

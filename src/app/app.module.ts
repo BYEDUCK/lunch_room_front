@@ -44,7 +44,8 @@ import { SummaryPopupComponent } from './summary-popup/summary-popup.component';
   bootstrap: [AppComponent],
   entryComponents: [
     RoomsCreateComponent,
-    SummaryPopupComponent
+    SummaryPopupComponent,
+    CreateProposalComponent
   ]
 })
 export class AppModule { }

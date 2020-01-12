@@ -6,6 +6,7 @@
     <button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
     <button *ngIf="phase===2 && currentUser?.id === roomDetail?.ownerId && !ended" class="btn btn-lg btn-success"
         (click)="end()">RANDOMIZE</button>
+    <button *ngIf="phase===1" class="btn-lg btn btn-success" (click)="createProposal()">CREATE PROPOSAL</button>
 </div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
@@ -27,8 +28,6 @@
     </ngb-progressbar>
 </p>
 <div style="margin-top: 2rem;">
-    <app-create-proposal *ngIf="phase===1" [roomDetail]="roomDetail">
-    </app-create-proposal>
     <app-summary *ngIf="summary" [userNick]="winner" [proposal]="proposalWin"></app-summary>
 </div>
 <div class="grid">

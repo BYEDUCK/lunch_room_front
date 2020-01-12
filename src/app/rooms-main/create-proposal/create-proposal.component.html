@@ -1,21 +1,34 @@
-<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input id="title" type="text" formControlName="title" class="form-control">
+<div class="text-center" style="margin: 10px;">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input id="title" type="text" class="form-control" [(ngModel)]="proposalTitle">
+    </div>
+    <div class="form-group">
+        <label for="url">Menu url</label>
+        <input id="url" type="url" class="form-control" [(ngModel)]="proposalMenuUrl">
+    </div>
+    <div class="form-group">
+        <div *ngFor="let menuItem of menuItems; let i=index" style="margin-top: 1rem;">
+            <div>
+                <h6 class="aler-info">Menu item {{i+1}}: </h6>
+            </div>
+            <div>
+                <label for="desc">Description:</label>
+                <input type="text" class="form-control" [(ngModel)]="menuItem.description" #desc>
+                <label for="prc">Price:</label>
+                <input type="number" class="form-control" step="0.01" [(ngModel)]="menuItem.price" #prc>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <input id="description" type="text" formControlName="description" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="url">Menu url</label>
-            <input id="url" type="url" formControlName="url" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input id="price" type="number" step="0.01" formControlName="price" class="form-control">
-        </div>
-        <button class="btn btn-lg btn-primary" type="submit">CREATE</button>
-    </form>
+    </div>
+    <div class="form-group">
+        <span>
+            <button class="btn btn-lg btn-success" (click)="addItem()">+</button>
+            <button class="btn btn-lg btn-danger" (click)="removeItem()">-</button>
+            <button *ngIf="!proposalId" class="btn btn-lg btn-primary" (click)="addProposal()">CREATE</button>
+            <button *ngIf="proposalId" class="btn btn-lg btn-warning" (click)="editProposal()">UPDATE</button>
+        </span>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">CLOSE</button>
 </div>

@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MenuItem } from 'src/app/model/lunch/MenuItem';
-import { Subscription } from 'rxjs';
 import { LunchWsService } from '../service/lunch-ws.service';
-import { Room } from 'src/app/model/Room';
+import { Proposal } from 'src/app/model/lunch/Proposal';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MenuItem } from 'src/app/model/lunch/MenuItem';
 
 @Component({
   selector: 'app-create-proposal',
@@ -11,29 +10,53 @@ import { Room } from 'src/app/model/Room';
   styleUrls: ['./create-proposal.component.css']
 })
 export class CreateProposalComponent implements OnInit, OnDestroy {
-  
-  checkoutForm: FormGroup;
-  @Input() roomDetail: Room;
-  subscriptions: Subscription[] = [];
 
-  constructor(private formBuilder: FormBuilder, private lunchServiceWs: LunchWsService) {
-    this.checkoutForm = this.formBuilder.group({
-      'title': '',
-      'description': '',
-      'url': '',
-      'price': 0.00
-    });
+  public proposalId: string;
+  public proposalTitle = '';
+  public proposalMenuUrl = '';
+  public menuItems: MenuItem[] = [];
+
+  constructor(private lunchServiceWs: LunchWsService, public activeModal: NgbActiveModal) {
+
   }
 
   ngOnInit() {
+    if (!this.proposalId) {
+      this.menuItems.push(this.emptyMenuItem());
+    }
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  onSubmit(proposal) {
-    this.lunchServiceWs.addProposal(proposal.title, proposal.url, [new MenuItem(proposal.description, proposal.price)]);
+  addProposal() {
+    if (!this.proposalId) {
+      this.lunchServiceWs.addProposal(this.proposalTitle, this.proposalMenuUrl, this.menuItems);
+      this.activeModal.close();
+    }
+  }
+
+  editProposal() {
+    if (this.proposalId) {
+      this.lunchServiceWs.editProposal(this.proposalId, this.proposalTitle, this.proposalMenuUrl, this.menuItems);
+      this.activeModal.close();
+    }
+  }
+
+  emptyMenuItem(): MenuItem {
+    return new MenuItem('', 0.00);
+  }
+
+  addItem() {
+    if (this.menuItems.length < 4) {
+      this.menuItems.push(this.emptyMenuItem());
+    }
+  }
+
+  removeItem() {
+    if (this.menuItems.length > 0) {
+      this.menuItems.splice(-1, 1);
+    }
   }
 
 }
