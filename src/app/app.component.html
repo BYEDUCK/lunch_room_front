@@ -24,6 +24,7 @@
         </div>
         <div *ngIf="router.url.includes('signUp')">
             <a routerLink="/signIn" routerLinkActive="active" class="btn-info btn-lg">SIGN IN</a>
+            <button class="btn-info btn-lg" (click)="signWithGoogle()">SIGN IN WITH GOOGLE</button>
         </div>
     </div>
 </div>
