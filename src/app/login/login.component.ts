@@ -40,8 +40,11 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
 
   logInWithGoogleOAuth(authorizationCode: string) {
     this.subscritpions.push(this.loginService.signInWithGoogle(authorizationCode).subscribe({
-      next: resp => {
-        console.log(resp);
+      next: response => {
+        this.cookieService.set('user', response.userNick);
+        this.cookieService.set('token', response.token);
+        this.cookieService.set('id', response.userId);
+        this.router.navigateByUrl('rooms');
       },
       error: err => {
         console.log(err);
