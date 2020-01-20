@@ -12,25 +12,12 @@ export class GoogleOauthService {
   constructor(private httpClient: HttpClient, private modalService: NgbModal) { }
 
   public authenticateUser() {
-    this.httpClient.post<any>(encodeURI(environment.googleOAuthUrl), {}, {
-      params: {
-        'client_id': environment.googleOAuthClientId,
-        'nonce': '123',
-        'response_type': 'code',
-        'redirect_uri': environment.googleOAuthRedirectUri,
-        'scope': 'email'
-      }
-    }).subscribe({
-      next: resp => {
-        let modalRef = this.modalService.open(CustomModalComponent, { centered: true });
-        modalRef.componentInstance.template = resp;
-      },
-      error: err => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('completed');
-      }
-    })
+    let url = environment.googleOAuthUrl
+    + '?' + 'client_id=' + encodeURIComponent(environment.googleOAuthClientId)
+    + '&' + 'nonce=' + '123'
+    + '&' + 'response_type=' + 'code'
+    + '&' + 'redirect_uri=' + encodeURIComponent(environment.googleOAuthRedirectUri)
+    + '&' + 'scope=' + 'email';
+    window.location.href = url;
   }
 }

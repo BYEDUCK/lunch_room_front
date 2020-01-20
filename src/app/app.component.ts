@@ -19,7 +19,12 @@ export class AppComponent implements OnInit, OnDestroy {
   seconds: string = '--';
   timeSubscription: Subscription;
 
-  constructor(public router: Router, private cookieService: CookieService, private timeService: TimeService, private googleOAuthService: GoogleOauthService) {
+  constructor(
+    public router: Router,
+    private cookieService: CookieService,
+    private timeService: TimeService,
+    private googleOAuthService: GoogleOauthService
+  ) {
     if (!this.timeSubscription) {
       this.timeSubscription = this.timeService.timeEvent.subscribe({
         next: (time: Date) => {
