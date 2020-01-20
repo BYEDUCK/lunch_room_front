@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { TimeService } from './time.service';
 import { Subscription } from 'rxjs';
+import { GoogleOauthService } from './google-oauth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,12 @@ export class AppComponent implements OnInit, OnDestroy {
   seconds: string = '--';
   timeSubscription: Subscription;
 
-  constructor(public router: Router, private cookieService: CookieService, private timeService: TimeService) {
+  constructor(
+    public router: Router,
+    private cookieService: CookieService,
+    private timeService: TimeService,
+    private googleOAuthService: GoogleOauthService
+  ) {
     if (!this.timeSubscription) {
       this.timeSubscription = this.timeService.timeEvent.subscribe({
         next: (time: Date) => {
@@ -43,5 +49,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cookieService.delete('id');
     this.cookieService.delete('room');
     this.router.navigateByUrl('signIn');
+  }
+
+  signWithGoogle() {
+    this.googleOAuthService.authenticateUser();
   }
 }

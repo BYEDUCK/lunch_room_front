@@ -21,6 +21,7 @@
     <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
         <div *ngIf="router.url.includes('signIn')">
             <a routerLink="/signUp" routerLinkActive="active" class="btn-info btn-lg">SIGN UP</a>
+            <img src="assets/btn_google.png" class="btn" (click)="signWithGoogle()" />
         </div>
         <div *ngIf="router.url.includes('signUp')">
             <a routerLink="/signIn" routerLinkActive="active" class="btn-info btn-lg">SIGN IN</a>

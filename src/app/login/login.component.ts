@@ -27,11 +27,32 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   ngAfterContentInit(): void {
     this.subscritpions.push(this.route.queryParamMap.subscribe(params => {
       this.userNick = params.get('user');
+      let code = params.get('code');
+      if (code && code.length > 0) {
+        this.logInWithGoogleOAuth(code);
+      }
     }));
   }
 
   ngOnDestroy(): void {
     this.subscritpions.forEach(sub => sub.unsubscribe());
+  }
+
+  logInWithGoogleOAuth(authorizationCode: string) {
+    this.subscritpions.push(this.loginService.signInWithGoogle(authorizationCode).subscribe({
+      next: response => {
+        this.cookieService.set('user', response.userNick);
+        this.cookieService.set('token', response.token);
+        this.cookieService.set('id', response.userId);
+        this.router.navigateByUrl('rooms');
+      },
+      error: err => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('completed');
+      }
+    }));
   }
 
   logIn(nick: string, pass: string) {

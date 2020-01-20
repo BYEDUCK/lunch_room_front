@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
+  domain: 'http://localhost:4200',
   serverUrl: 'http://localhost:48080',
-  serverWsUrl: 'ws://localhost:48080'
+  serverWsUrl: 'ws://localhost:48080',
+  googleOAuthUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+  googleOAuthClientId: '32940535387-q270au7repg5hvof8irb2r7ennip9fej.apps.googleusercontent.com',
+  googleOAuthRedirectUri: 'http://localhost:4200/signIn'
 };
 
 /*

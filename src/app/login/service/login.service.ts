@@ -39,6 +39,14 @@ export class LoginService {
     });
   }
 
+  public signInWithGoogle(authorizationCode: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.serverUrl + '/signIn/oauth/google', {}, {
+      params: {
+        'code': authorizationCode
+      }
+    });
+  }
+
   public isNickAvailable(userNick: string): Observable<any> {
     return this.http.get<any>(this.serverUrl + '/checkNick', {
       params: {
@@ -70,5 +78,5 @@ export class LoginService {
 }
 
 export class LoginResponse {
-  constructor(public userId: string, public token: string) { }
+  constructor(public userId: string, public userNick: string, public token: string) { }
 }
