@@ -19,11 +19,6 @@ export class LoginService {
     return this.http.post<any>(this.serverUrl + '/signUp', {
       nick: userNick,
       password: userPassword
-    }, {
-      headers: {
-        'Content-Type': ['application/json'],
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
-      }
     });
   }
 
@@ -31,11 +26,6 @@ export class LoginService {
     return this.http.post<LoginResponse>(this.serverUrl + '/signIn', {
       nick: userNick,
       password: userPassword
-    }, {
-      headers: {
-        'Content-Type': ['application/json'],
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
-      }
     });
   }
 
@@ -51,9 +41,6 @@ export class LoginService {
     return this.http.get<any>(this.serverUrl + '/checkNick', {
       params: {
         nick: userNick
-      },
-      headers: {
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
       }
     });
   }

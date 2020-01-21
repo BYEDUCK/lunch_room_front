@@ -23,8 +23,7 @@ export class RoomService {
       },
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -37,8 +36,7 @@ export class RoomService {
       },
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -56,8 +54,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       },
       params: {
         'defaults': '' + (useDefaults ? useDefaults : 'false')
@@ -73,8 +70,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -87,8 +83,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -98,8 +93,7 @@ export class RoomService {
     return this.http.delete<any>(this.serverUrl + `/${id}`, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -116,8 +110,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -130,8 +123,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
@@ -144,8 +136,7 @@ export class RoomService {
     }, {
       headers: {
         'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token,
-        'Access-Control-Allow-Origin': `${environment.serverUrl}/**`
+        'User-Token': currentUser.token
       }
     });
   }
