@@ -1,9 +1,8 @@
 export const environment = {
   production: true,
-  domain: 'https://lunchroom-2f3dd.firebaseapp.com',
-  serverUrl: 'https://lunchroom-byeduck.herokuapp.com',
-  serverWsUrl: 'wss://lunchroom-byeduck.herokuapp.com',
+  serverUrl: 'http://vps778858.ovh.net:8080',
+  serverWsUrl: 'ws://vps778858.ovh.net:8080',
   googleOAuthUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
   googleOAuthClientId: '32940535387-q270au7repg5hvof8irb2r7ennip9fej.apps.googleusercontent.com',
-  googleOAuthRedirectUri: 'https://lunchroom-2f3dd.firebaseapp.com/signIn'
+  googleOAuthRedirectUri: 'http://vps778858.ovh.net/lunchroom/signIn'
 };
