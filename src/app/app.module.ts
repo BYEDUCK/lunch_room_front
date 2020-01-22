@@ -17,6 +17,7 @@ import { CreateProposalComponent } from './rooms-main/create-proposal/create-pro
 import { SummaryComponent } from './rooms-main/summary/summary.component';
 import { SummaryPopupComponent } from './summary-popup/summary-popup.component';
 import { CustomModalComponent } from './custom-modal/custom-modal.component';
+import { NotFoundComponent } from './error/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CustomModalComponent } from './custom-modal/custom-modal.component';
     CreateProposalComponent,
     SummaryComponent,
     SummaryPopupComponent,
-    CustomModalComponent
+    CustomModalComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

@@ -12,8 +12,8 @@
     </div>
     <div class="page-header text-center">
         <h1 class="jumbotron">{{title}}</h1>
-        <button *ngIf="!router.url.includes('signUp') && !router.url.includes('signIn')" class="btn-info btn-lg"
-            (click)="logout()">LOGOUT</button>
+        <button *ngIf="!router.url.includes('404') && !router.url.includes('signUp') && !router.url.includes('signIn')"
+            class="btn-info btn-lg" (click)="logout()">LOGOUT</button>
     </div>
     <br />
     <router-outlet></router-outlet>
