@@ -25,8 +25,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
   now: number = new Date().getTime();
 
   constructor(
-    loginService: LoginService, private router: Router, private timerService: TimeService,
-    private roomService: RoomService, private modalService: NgbModal, private cookieService: CookieService
+    loginService: LoginService,
+    private router: Router,
+    private timerService: TimeService,
+    private roomService: RoomService,
+    private modalService: NgbModal,
+    private cookieService: CookieService
   ) {
     this.currentUser = loginService.getCurrentUser();
     this.subscriptions.push(this.timerService.timeEvent.subscribe({

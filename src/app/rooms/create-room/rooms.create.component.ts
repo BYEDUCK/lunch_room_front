@@ -29,7 +29,11 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     @Input()
     room: Room;
 
-    constructor(private roomService: RoomService, public activeModal: NgbActiveModal, private timeService: TimeService) { }
+    constructor(
+        private roomService: RoomService,
+        public activeModal: NgbActiveModal,
+        private timeService: TimeService
+    ) { }
 
     ngOnInit() {
         this.signDead = this.room ? this.timeService.toDateShort(this.room.signDeadline) : this.timeService.addMinutesToNow(this.signDefault);

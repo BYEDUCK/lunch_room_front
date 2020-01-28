@@ -1,6 +1,5 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
 import { LoginService } from './service/login.service';
-import { User } from '../model/User';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -18,7 +17,10 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   subscritpions: Subscription[] = [];
 
   constructor(
-    private loginService: LoginService, private route: ActivatedRoute, private router: Router, private cookieService: CookieService
+    private loginService: LoginService, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private cookieService: CookieService
   ) { }
 
   ngOnInit() {

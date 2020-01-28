@@ -16,7 +16,6 @@ import { RoomsMainComponent } from './rooms-main/rooms-main.component';
 import { CreateProposalComponent } from './rooms-main/create-proposal/create-proposal.component';
 import { SummaryComponent } from './rooms-main/summary/summary.component';
 import { SummaryPopupComponent } from './summary-popup/summary-popup.component';
-import { CustomModalComponent } from './custom-modal/custom-modal.component';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { NotFoundComponent } from './error/not-found/not-found.component';
     CreateProposalComponent,
     SummaryComponent,
     SummaryPopupComponent,
-    CustomModalComponent,
     NotFoundComponent
   ],
   imports: [
@@ -49,8 +47,7 @@ import { NotFoundComponent } from './error/not-found/not-found.component';
   entryComponents: [
     RoomsCreateComponent,
     SummaryPopupComponent,
-    CreateProposalComponent,
-    CustomModalComponent
+    CreateProposalComponent
   ]
 })
 export class AppModule { }

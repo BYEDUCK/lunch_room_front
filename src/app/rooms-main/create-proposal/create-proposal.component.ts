@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LunchWsService } from '../service/lunch-ws.service';
-import { Proposal } from 'src/app/model/lunch/Proposal';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MenuItem } from 'src/app/model/lunch/MenuItem';
 

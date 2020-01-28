@@ -18,7 +18,11 @@ export class SummaryPopupComponent implements OnInit {
 }
 
 export class Summary {
-  constructor(public date: string, public winnerNick: string, public winnerProposalTitle: string) {
+  constructor(
+    public date: string,
+    public winnerNick: string,
+    public winnerProposalTitle: string
+  ) {
 
   }
 }

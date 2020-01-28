@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { TimeService } from './time.service';
 import { Subscription } from 'rxjs';
-import { GoogleOauthService } from './google-oauth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     private cookieService: CookieService,
-    private timeService: TimeService,
-    private googleOAuthService: GoogleOauthService
+    private timeService: TimeService
   ) {
     if (!this.timeSubscription) {
       this.timeSubscription = this.timeService.timeEvent.subscribe({
@@ -52,6 +51,16 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   signWithGoogle() {
-    this.googleOAuthService.authenticateUser();
+    this.authenticateUser();
+  }
+
+  private authenticateUser() {
+    let url = environment.googleOAuthUrl
+    + '?' + 'client_id=' + encodeURIComponent(environment.googleOAuthClientId)
+    + '&' + 'nonce=' + '123'
+    + '&' + 'response_type=' + 'code'
+    + '&' + 'redirect_uri=' + encodeURIComponent(environment.googleOAuthRedirectUri)
+    + '&' + 'scope=' + 'email';
+    window.location.href = url;
   }
 }

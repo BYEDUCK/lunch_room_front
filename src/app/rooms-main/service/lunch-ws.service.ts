@@ -5,7 +5,6 @@ import { MenuItem } from 'src/app/model/lunch/MenuItem';
 import { User } from 'src/app/model/User';
 import { LoginService } from 'src/app/login/service/login.service';
 import { Router } from '@angular/router';
-import { Proposal } from 'src/app/model/lunch/Proposal';
 import { LotteryResults } from 'src/app/model/LotteryResults';
 import { RoomUser } from 'src/app/model/RoomUser';
 import { ProposalResponse } from 'src/app/model/lunch/ProposalResponse';

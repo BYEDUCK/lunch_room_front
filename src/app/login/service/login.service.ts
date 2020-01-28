@@ -13,7 +13,11 @@ export class LoginService {
 
   private serverUrl = `${environment.serverUrl}/users`;
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private router: Router
+  ) { }
 
   public signUp(userNick: string, userPassword: string): Observable<any> {
     return this.http.post<any>(this.serverUrl + '/signUp', {
