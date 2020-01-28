@@ -37,7 +37,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/lunchroom",
+              "baseHref": "/lunchroom/",
               "deployUrl": "/lunchroom/",
               "optimization": true,
               "outputHashing": "all",
