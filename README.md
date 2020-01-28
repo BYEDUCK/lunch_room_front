@@ -13,3 +13,5 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `npm run build-prod` for a production build.
+
+[![CircleCI](https://circleci.com/gh/BYEDUCK/lunch_room_front.svg?style=svg)](https://circleci.com/gh/BYEDUCK/lunch_room_front)
