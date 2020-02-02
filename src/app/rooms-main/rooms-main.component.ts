@@ -204,6 +204,14 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.menuItems = menuItemsCopy;
   }
 
+  luckyShot() {
+    if (confirm("You sure want to end by lucky shot?")) {
+      this.subscriptions.push(this.roomService.doTheLuckyShot(this.roomDetail.roomId).subscribe({
+        error: err => console.log(err)
+      }));
+    }
+  }
+
   private randomize() {
     var now = new Date().getTime();
     let confirmed = true;
