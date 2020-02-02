@@ -128,6 +128,19 @@ export class RoomService {
     });
   }
 
+  public doTheLuckyShot(roomId: string): Observable<any> {
+    const currentUser = this.loginService.getCurrentUser();
+    return this.http.post<any>(`${this.serverUrl}/lucky_shot`, {
+      'userId': currentUser.id,
+      'roomId': roomId
+    }, {
+      headers: {
+        'User-Nick': currentUser.nick,
+        'User-Token': currentUser.token
+      }
+    });
+  }
+
   public getSummary(roomId: string): Observable<SummariesResponse> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<SummariesResponse>(`${this.serverUrl}/summary`, {
