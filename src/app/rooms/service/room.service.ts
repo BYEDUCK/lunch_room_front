@@ -41,14 +41,13 @@ export class RoomService {
     });
   }
 
-  public addRoom(name: string, signDead: number, postDead: number, voteDead: number, useDefaults: boolean): Observable<Room> {
+  public addRoom(name: string, initDead: number, voteDead: number, useDefaults: boolean): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.post<Room>(this.serverUrl, {
       'name': name,
       'ownerId': currentUser.id,
       'deadlines': {
-        'signDeadline': signDead,
-        'postDeadline': postDead,
+        'initialDeadline': initDead,
         'voteDeadline': voteDead
       }
     }, {
@@ -75,11 +74,11 @@ export class RoomService {
     });
   }
 
-  public joinRoomByName(roomName: string): Observable<Room> {
+  public leaveRoom(roomId: string): Observable<any> {
     const currentUser = this.loginService.getCurrentUser();
-    return this.http.post<Room>(this.serverUrl + '/joinByName', {
+    return this.http.post<any>(`${this.serverUrl}/leave`, {
       'userId': currentUser.id,
-      'roomName': roomName
+      'roomId': roomId
     }, {
       headers: {
         'User-Nick': currentUser.nick,
@@ -98,13 +97,12 @@ export class RoomService {
     });
   }
 
-  public updateRoom(roomId: string, signDead: number, postDead: number, voteDead: number): Observable<Room> {
+  public updateRoom(roomId: string, initDead: number, voteDead: number): Observable<Room> {
     const currentUser = this.loginService.getCurrentUser();
     return this.http.put<Room>(this.serverUrl, {
       'roomId': roomId,
       'deadlines': {
-        'signDeadline': signDead,
-        'postDeadline': postDead,
+        'initialDeadline': initDead,
         'voteDeadline': voteDead
       }
     }, {

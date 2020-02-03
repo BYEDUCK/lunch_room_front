@@ -3,8 +3,7 @@ export class Room {
         public roomId: string,
         public roomName: string,
         public ownerId: string,
-        public signDeadline: number,
-        public postDeadline: number,
+        public initialDeadline: number,
         public voteDeadline: number,
         open: boolean
     ) { }

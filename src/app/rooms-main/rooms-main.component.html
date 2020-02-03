@@ -1,14 +1,14 @@
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-    <h1 *ngIf="phase===0">SIGN PHASE</h1>
-    <h1 *ngIf="phase===1">POST PHASE</h1>
-    <h1 *ngIf="phase===2">VOTE PHASE</h1>
+    <h1 *ngIf="phase===0">INITIAL PHASE</h1>
+    <h1 *ngIf="phase===1">VOTE PHASE</h1>
+    <h1 *ngIf="phase===2">SUMMARY</h1>
     <h2>Room: {{roomDetail?.roomName}}</h2>
     <button class="btn btn-lg btn-warning" (click)="leave()">LEAVE</button>
-    <div *ngIf="phase===2 && currentUser?.id === roomDetail?.ownerId && !ended">
+    <div *ngIf="phase===1 && currentUser?.id === roomDetail?.ownerId && !ended">
         <button class="btn btn-lg btn-success" (click)="end()">RANDOMIZE</button>
         <button class="btn btn-lg btn-info" (click)="luckyShot()">LUCKY SHOT</button>
     </div>
-    <button *ngIf="phase===1" class="btn-lg btn btn-success" (click)="createProposal()">CREATE PROPOSAL</button>
+    <button *ngIf="phase===0" class="btn-lg btn btn-success" (click)="createProposal()">CREATE PROPOSAL</button>
 </div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
@@ -18,15 +18,11 @@
     </article>
 </div>
 <p>
-    <ngb-progressbar type="primary" [value]="signProgress" [striped]="true" [animated]="true"><b>SIGN</b>
+    <ngb-progressbar type="success" [value]="initProgress" [striped]="true" [animated]="true"><b>INIT</b>
     </ngb-progressbar>
 </p>
 <p>
-    <ngb-progressbar type="success" [value]="postProgress" [striped]="true" [animated]="true"><b>POST</b>
-    </ngb-progressbar>
-</p>
-<p>
-    <ngb-progressbar type="danger" [value]="voteProgress" [striped]="true" [animated]="true"><b>VOTE</b>
+    <ngb-progressbar type="primary" [value]="voteProgress" [striped]="true" [animated]="true"><b>VOTE</b>
     </ngb-progressbar>
 </p>
 <div style="margin-top: 2rem;">
@@ -47,14 +43,14 @@
             <h6 class="alert alert-info">Total votes: <b>{{proposal?.value.votesCount}}</b></h6>
         </div>
         <div *ngIf="!ended">
-            <div *ngIf="phase===2" class="card__actions my-4">
+            <div *ngIf="phase===1" class="card__actions my-4">
                 <form class="range-field">
                     <input type="range" class="custom-range" min="1" max="6" #voteRate>
                 </form>
                 <button class="btn btn-lg btn-primary"
                     (click)="vote(proposal?.value.proposalId, voteRate.value)">VOTE</button>
             </div>
-            <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 1 && currentUser?.id === proposal?.value.proposalOwnerId)"
+            <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 0 && currentUser?.id === proposal?.value.proposalOwnerId)"
                 class="card__actions my-4">
                 <button class="btn btn-lg btn-danger" (click)="delete(proposal?.value.proposalId)">DELETE</button>
                 <button class="btn btn-lg btn-warning" (click)="editProposal(proposal?.value.proposalId)">EDIT</button>

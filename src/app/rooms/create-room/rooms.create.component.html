@@ -4,14 +4,9 @@
         <input [readonly]="update" #nameInput class="form-control" type="text" placeholder="name" id="rName" value="{{room ? room.roomName : ''}}"/>
     </div>
     <div class="form-group">
-        <label for="sDead">Deadline for signing to room</label>
-        <input [(ngModel)]="signDead" #signDeadlineInput="ngModel" class="form-control" type="time"
-            placeholder="sign deadline" id="sDead" />
-    </div>
-    <div class="form-group">
-        <label for="pDead">Deadline for posting new propositions</label>
-        <input [(ngModel)]="postDead" #postDeadlineInput="ngModel" class="form-control" type="time"
-            placeholder="post deadline" id="pDead" />
+        <label for="iDead">Deadline for signing to room and posting lunch propositions</label>
+        <input [(ngModel)]="initDead" #signDeadlineInput="ngModel" class="form-control" type="time"
+            placeholder="initial deadline" id="iDead" />
     </div>
     <div class="form-group">
         <label for="vDead">Deadline for voting for propositions</label>

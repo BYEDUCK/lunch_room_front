@@ -24,7 +24,7 @@ import { MenuItem } from '../model/lunch/MenuItem';
 export class RoomsMainComponent implements OnInit, OnDestroy {
   public roomDetail: Room;
   public currentUser: User;
-  public phase = 0; // 0 - sign phase; 1 - post phase; 2 - vote phase; 3 - end
+  public phase = 0; // 0 - init phase; 1 - vote phase; 2 - end;
   roomUsers: RoomUser[] = [];
   subscriptions: Subscription[] = [];
   timeCheckingSubscription: Subscription;
@@ -36,8 +36,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   ended = false;
   public currentTime = new Date().getTime();
   public startTime = new Date().getTime();
-  public signProgress = 0;
-  public postProgress = 0;
+  public initProgress = 0;
   public voteProgress = 0;
 
   constructor(
@@ -101,8 +100,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 this.summary = true;
                 this.clearCheckers();
                 this.voteProgress = 100;
-                this.signProgress = 100;
-                this.postProgress = 100;
+                this.initProgress = 100;
                 this.ended = true;
               }
             }));
@@ -146,30 +144,24 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   phaseChecker(time: Date) {
     this.currentTime = time.getTime();
-    if (this.currentTime > this.roomDetail.signDeadline) {
-      if (this.currentTime <= this.roomDetail.postDeadline) {
+    if (this.currentTime > this.roomDetail.initialDeadline) {
+      if (this.currentTime <= this.roomDetail.voteDeadline) {
+        this.initProgress = 100;
+        this.voteProgress = ((this.currentTime - this.roomDetail.initialDeadline) / (this.roomDetail.voteDeadline - this.roomDetail.initialDeadline)) * 100;
         this.phase = 1;
-        this.signProgress = 100;
-        this.postProgress = ((this.currentTime - this.roomDetail.signDeadline) / (this.roomDetail.postDeadline - this.roomDetail.signDeadline)) * 100;
-      } else if (this.currentTime <= this.roomDetail.voteDeadline) {
-        this.postProgress = 100;
-        this.signProgress = 100;
-        this.voteProgress = ((this.currentTime - this.roomDetail.postDeadline) / (this.roomDetail.voteDeadline - this.roomDetail.postDeadline)) * 100;
-        this.phase = 2;
       } else {
         this.voteProgress = 100;
-        this.signProgress = 100;
-        this.postProgress = 100;
+        this.initProgress = 100;
         this.end();
       }
     } else {
-      this.signProgress = ((this.currentTime - this.startTime) / (this.roomDetail.signDeadline - this.startTime)) * 100;
+      this.initProgress = ((this.currentTime - this.startTime) / (this.roomDetail.initialDeadline - this.startTime)) * 100;
     }
   }
 
   end() {
     if (!this.ended) {
-      this.phase = 3;
+      this.phase = 2;
       this.voteProgress = 100;
       this.randomize();
       this.ended = true;
@@ -185,6 +177,9 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   leave() {
+    this.subscriptions.push(this.roomService.leaveRoom(this.roomDetail.roomId).subscribe({
+      error: err => console.log(err)
+    }));
     this.cookieService.delete('room');
     this.router.navigateByUrl('rooms');
   }
