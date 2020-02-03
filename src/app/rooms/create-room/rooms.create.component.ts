@@ -11,15 +11,13 @@ import { TimeService } from 'src/app/time.service';
 })
 export class RoomsCreateComponent implements OnInit, OnDestroy {
 
-    public signDead: string;
-    public postDead: string;
+    public initDead: string;
     public voteDead: string;
     public isEverythingOk = true;
     public useDefaults: boolean;
 
-    private signDefault = 2;
-    private postDefault = 2 + this.signDefault;
-    private voteDefault = 5 + this.postDefault;
+    private initDefault = 5;
+    private voteDefault = 5 + this.initDefault;
 
     subscriptions: Subscription[] = [];
     addedRoom: EventEmitter<Room> = new EventEmitter();
@@ -36,8 +34,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.signDead = this.room ? this.timeService.toDateShort(this.room.signDeadline) : this.timeService.addMinutesToNow(this.signDefault);
-        this.postDead = this.room ? this.timeService.toDateShort(this.room.postDeadline) : this.timeService.addMinutesToNow(this.postDefault);
+        this.initDead = this.room ? this.timeService.toDateShort(this.room.initialDeadline) : this.timeService.addMinutesToNow(this.initDefault);
         this.voteDead = this.room ? this.timeService.toDateShort(this.room.voteDeadline) : this.timeService.addMinutesToNow(this.voteDefault);
     }
 
@@ -47,7 +44,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
 
     public createRoom(name: string) {
         this.subscriptions.push(this.roomService.addRoom(
-            name, this.timeService.toMillis(this.signDead), this.timeService.toMillis(this.postDead), this.timeService.toMillis(this.voteDead), this.useDefaults
+            name, this.timeService.toMillis(this.initDead), this.timeService.toMillis(this.voteDead), this.useDefaults
         ).subscribe({
             next: response => {
                 this.isEverythingOk = true;
@@ -67,7 +64,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     public updateRoom() {
         this.subscriptions.push(
             this.roomService.updateRoom(
-                this.room.roomId, this.timeService.toMillis(this.signDead), this.timeService.toMillis(this.postDead), this.timeService.toMillis(this.voteDead)
+                this.room.roomId, this.timeService.toMillis(this.initDead), this.timeService.toMillis(this.voteDead)
             ).subscribe({
                 next: response => {
                     this.isEverythingOk = true;
