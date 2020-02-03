@@ -41,7 +41,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(this.roomService.findRoomsByUserId(this.currentUser.id).subscribe({
+    this.subscriptions.push(this.roomService.findRoomForUser(this.currentUser.id).subscribe({
       next: (response) => {
         this.rooms = response;
       },

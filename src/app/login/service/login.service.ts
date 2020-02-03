@@ -26,18 +26,21 @@ export class LoginService {
     });
   }
 
-  public signIn(userNick: string, userPassword: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.serverUrl + '/signIn', {
+  public signIn(userNick: string, userPassword: string): Observable<any> {
+    return this.http.post<any>(this.serverUrl + '/signIn', {
       nick: userNick,
       password: userPassword
+    }, {
+      withCredentials: true
     });
   }
 
-  public signInWithGoogle(authorizationCode: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.serverUrl + '/signIn/oauth/google', {}, {
+  public signInWithGoogle(authorizationCode: string): Observable<any> {
+    return this.http.post<any>(this.serverUrl + '/signIn/oauth/google', {}, {
       params: {
         'code': authorizationCode
-      }
+      },
+      withCredentials: true
     });
   }
 

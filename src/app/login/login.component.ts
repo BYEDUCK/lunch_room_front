@@ -19,8 +19,7 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor(
     private loginService: LoginService, 
     private route: ActivatedRoute, 
-    private router: Router, 
-    private cookieService: CookieService
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -42,16 +41,11 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
 
   logInWithGoogleOAuth(authorizationCode: string) {
     this.subscritpions.push(this.loginService.signInWithGoogle(authorizationCode).subscribe({
-      next: response => {
-        this.cookieService.set('user', response.userNick);
-        this.cookieService.set('token', response.token);
-        this.cookieService.set('id', response.userId);
-        this.router.navigateByUrl('rooms');
-      },
       error: err => {
         console.log(err);
       },
       complete: () => {
+        this.router.navigateByUrl('rooms');
         console.log('completed');
       }
     }));
@@ -59,18 +53,13 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
 
   logIn(nick: string, pass: string) {
     this.subscritpions.push(this.loginService.signIn(nick, pass).subscribe({
-      next: response => {
-        this.cookieService.set('user', nick);
-        this.cookieService.set('token', response.token);
-        this.cookieService.set('id', response.userId);
-        this.router.navigateByUrl('rooms');
-      },
       error: err => {
         console.log(err);
         this.isError = true;
         this.isCompleted = false;
       },
       complete: () => {
+        this.router.navigateByUrl('rooms');
         this.isCompleted = true;
         this.isError = false;
       }

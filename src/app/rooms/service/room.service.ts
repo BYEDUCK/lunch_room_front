@@ -15,90 +15,59 @@ export class RoomService {
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-  public findRoomsByUserId(userId: string): Observable<Room[]> {
-    const currentUser = this.loginService.getCurrentUser();
+  public findRoomForUser(userId: string): Observable<Room[]> {
     return this.http.get<Room[]>(this.serverUrl, {
-      params: {
-        'userId': userId
-      },
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public findRoomByName(roomName: string): Observable<Room> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.get<Room>(`${this.serverUrl}/search`, {
       params: {
         'name': roomName
       },
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public addRoom(name: string, initDead: number, voteDead: number, useDefaults: boolean): Observable<Room> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<Room>(this.serverUrl, {
       'name': name,
-      'ownerId': currentUser.id,
       'deadlines': {
         'initialDeadline': initDead,
         'voteDeadline': voteDead
       }
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      },
       params: {
         'defaults': '' + (useDefaults ? useDefaults : 'false')
-      }
+      },
+      withCredentials: true
     });
   }
 
   public joinRoomById(roomId: string): Observable<Room> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<Room>(this.serverUrl + '/join', {
-      'userId': currentUser.id,
       'roomId': roomId
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public leaveRoom(roomId: string): Observable<any> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<any>(`${this.serverUrl}/leave`, {
-      'userId': currentUser.id,
       'roomId': roomId
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public deleteRoom(id: string): Observable<any> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.delete<any>(this.serverUrl + `/${id}`, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public updateRoom(roomId: string, initDead: number, voteDead: number): Observable<Room> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.put<Room>(this.serverUrl, {
       'roomId': roomId,
       'deadlines': {
@@ -106,49 +75,31 @@ export class RoomService {
         'voteDeadline': voteDead
       }
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public doTheLottery(roomId: string): Observable<any> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<any>(`${this.serverUrl}/random`, {
-      'userId': currentUser.id,
       'roomId': roomId
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public doTheLuckyShot(roomId: string): Observable<any> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<any>(`${this.serverUrl}/lucky_shot`, {
-      'userId': currentUser.id,
       'roomId': roomId
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 
   public getSummary(roomId: string): Observable<SummariesResponse> {
-    const currentUser = this.loginService.getCurrentUser();
     return this.http.post<SummariesResponse>(`${this.serverUrl}/summary`, {
-      'userId': currentUser.id,
       'roomId': roomId
     }, {
-      headers: {
-        'User-Nick': currentUser.nick,
-        'User-Token': currentUser.token
-      }
+      withCredentials: true
     });
   }
 }
