@@ -25,14 +25,14 @@ export class RoomsComponent implements OnInit, OnDestroy {
   now: number = new Date().getTime();
 
   constructor(
-    loginService: LoginService,
+    private loginService: LoginService,
     private router: Router,
     private timerService: TimeService,
     private roomService: RoomService,
     private modalService: NgbModal,
     private cookieService: CookieService
   ) {
-    this.currentUser = loginService.getCurrentUser();
+    this.currentUser = this.loginService.getCurrentUser();
     this.subscriptions.push(this.timerService.timeEvent.subscribe({
       next: (time: Date) => {
         this.now = time.getTime();
@@ -41,12 +41,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(this.roomService.findRoomForUser(this.currentUser.id).subscribe({
+    this.subscriptions.push(this.roomService.findRoomForUser().subscribe({
       next: (response) => {
         this.rooms = response;
       },
       error: (err) => {
         console.log(err);
+        this.loginService.deleteAllAppCookies();
         this.router.navigateByUrl('signIn');
       },
       complete: () => { console.log('complete'); }

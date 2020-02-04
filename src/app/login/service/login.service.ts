@@ -66,6 +66,13 @@ export class LoginService {
     }
   }
 
+  public deleteAllAppCookies() {
+    this.cookieService.delete('user');
+    this.cookieService.delete('token');
+    this.cookieService.delete('id');
+    this.cookieService.delete('room');
+  }
+
   private isStringValid(s: string): boolean {
     return s !== undefined || s !== null || s.length > 0;
   }

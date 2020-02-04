@@ -19,13 +19,19 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   constructor(
     private loginService: LoginService, 
     private route: ActivatedRoute, 
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) { }
 
   ngOnInit() {
   }
 
   ngAfterContentInit(): void {
+    let userNick = this.cookieService.get('user');
+    let token = this.cookieService.get('token')
+    if (token && token.length > 0 && userNick && userNick.length > 0) {
+      this.router.navigateByUrl('rooms');
+    }
     this.subscritpions.push(this.route.queryParamMap.subscribe(params => {
       this.userNick = params.get('user');
       let code = params.get('code');
