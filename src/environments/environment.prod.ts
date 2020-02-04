@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  domain: 'byeduck.com',
   serverUrl: 'https://byeduck.com:8443',
   serverWsUrl: 'wss://byeduck.com:8443',
   googleOAuthUrl: 'https://accounts.google.com/o/oauth2/v2/auth',

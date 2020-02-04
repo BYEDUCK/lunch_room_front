@@ -69,10 +69,10 @@ export class LoginService {
   }
 
   public deleteAllAppCookies() {
-    this.cookieService.delete(environment.userNickCookieName);
-    this.cookieService.delete(environment.tokenCookieName);
-    this.cookieService.delete(environment.userIdCookieName);
-    this.cookieService.delete(environment.roomIdCookieName);
+    this.cookieService.delete(environment.userNickCookieName, '/', environment.domain);
+    this.cookieService.delete(environment.tokenCookieName, '/', environment.domain);
+    this.cookieService.delete(environment.userIdCookieName, '/', environment.domain);
+    this.cookieService.delete(environment.roomIdCookieName, '/', environment.domain);
   }
 
   private isStringValid(s: string): boolean {

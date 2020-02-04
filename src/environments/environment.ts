@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  domain: 'http://localhost:4200',
+  domain: 'localhost',
   serverUrl: 'http://localhost:48080',
   serverWsUrl: 'ws://localhost:48080',
   googleOAuthUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
