@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { TimeService } from '../time.service';
 import { SummariesResponse } from '../model/SummariesResponse';
 import { SummaryPopupComponent, Summary } from '../summary-popup/summary-popup.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-rooms',
@@ -25,14 +26,14 @@ export class RoomsComponent implements OnInit, OnDestroy {
   now: number = new Date().getTime();
 
   constructor(
-    loginService: LoginService,
+    private loginService: LoginService,
     private router: Router,
     private timerService: TimeService,
     private roomService: RoomService,
     private modalService: NgbModal,
     private cookieService: CookieService
   ) {
-    this.currentUser = loginService.getCurrentUser();
+    this.currentUser = this.loginService.getCurrentUser();
     this.subscriptions.push(this.timerService.timeEvent.subscribe({
       next: (time: Date) => {
         this.now = time.getTime();
@@ -41,12 +42,13 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(this.roomService.findRoomForUser(this.currentUser.id).subscribe({
+    this.subscriptions.push(this.roomService.findRoomForUser().subscribe({
       next: (response) => {
         this.rooms = response;
       },
       error: (err) => {
         console.log(err);
+        this.loginService.deleteAllAppCookies();
         this.router.navigateByUrl('signIn');
       },
       complete: () => { console.log('complete'); }
@@ -76,7 +78,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public joinRoomById(roomId: string) {
-    this.cookieService.set('room', roomId);
+    this.cookieService.set(environment.roomIdCookieName, roomId);
     this.router.navigateByUrl('room');
   }
 

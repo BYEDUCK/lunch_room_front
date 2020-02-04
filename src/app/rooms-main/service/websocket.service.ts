@@ -25,7 +25,7 @@ export class WebsocketService {
 
   public connect(retrieveMsg, handleError, handleLotteryResults, handleUsers) {
     if (!this.stompClient) {
-      let roomId = this.cookieService.get('room');
+      let roomId = this.cookieService.get(environment.roomIdCookieName);
       let ws = new SockJS(`${environment.serverUrl}/propose`);
       this.stompClient = Stomp.over(ws);
       this.stompClient.connect({}, frame => {

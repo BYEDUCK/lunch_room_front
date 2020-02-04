@@ -15,7 +15,7 @@ export class RoomService {
 
   constructor(private http: HttpClient, private loginService: LoginService) { }
 
-  public findRoomForUser(userId: string): Observable<Room[]> {
+  public findRoomForUser(): Observable<Room[]> {
     return this.http.get<Room[]>(this.serverUrl, {
       withCredentials: true
     });
