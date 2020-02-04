@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { LotteryResults } from 'src/app/model/LotteryResults';
 import { RoomUser } from 'src/app/model/RoomUser';
 import { ProposalResponse } from 'src/app/model/lunch/ProposalResponse';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -34,7 +35,7 @@ export class LunchWsService {
 
   public connect() {
     this.currentUser = this.loginService.getCurrentUser();
-    this.roomId = this.cookieService.get('room');
+    this.roomId = this.cookieService.get(environment.roomIdCookieName);
     if (this.roomId.length < 1) {
       this.router.navigateByUrl('rooms');
     }

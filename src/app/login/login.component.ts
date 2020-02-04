@@ -3,6 +3,7 @@ import { LoginService } from './service/login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -27,8 +28,8 @@ export class LoginComponent implements OnInit, AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
-    let userNick = this.cookieService.get('user');
-    let token = this.cookieService.get('token')
+    let userNick = this.cookieService.get(environment.userNickCookieName);
+    let token = this.cookieService.get(environment.tokenCookieName)
     if (token && token.length > 0 && userNick && userNick.length > 0) {
       this.router.navigateByUrl('rooms');
     }

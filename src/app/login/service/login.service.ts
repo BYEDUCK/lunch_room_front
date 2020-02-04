@@ -54,7 +54,9 @@ export class LoginService {
 
   public getCurrentUser(): User {
     const currentUser = new User(
-      this.cookieService.get('id'), this.cookieService.get('user'), this.cookieService.get('token')
+      this.cookieService.get(environment.userIdCookieName), 
+      this.cookieService.get(environment.userNickCookieName), 
+      this.cookieService.get(environment.tokenCookieName)
     );
     if (this.isStringValid(currentUser.id)
       && this.isStringValid(currentUser.nick)
@@ -67,10 +69,10 @@ export class LoginService {
   }
 
   public deleteAllAppCookies() {
-    this.cookieService.delete('user');
-    this.cookieService.delete('token');
-    this.cookieService.delete('id');
-    this.cookieService.delete('room');
+    this.cookieService.delete(environment.userNickCookieName);
+    this.cookieService.delete(environment.tokenCookieName);
+    this.cookieService.delete(environment.userIdCookieName);
+    this.cookieService.delete(environment.roomIdCookieName);
   }
 
   private isStringValid(s: string): boolean {

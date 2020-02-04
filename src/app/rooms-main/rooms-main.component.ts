@@ -15,6 +15,7 @@ import { ProposalResponse } from '../model/lunch/ProposalResponse';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateProposalComponent } from './create-proposal/create-proposal.component';
 import { MenuItem } from '../model/lunch/MenuItem';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-rooms-main",
@@ -51,7 +52,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.loginService.getCurrentUser();
-    const roomId = this.cookieService.get("room");
+    const roomId = this.cookieService.get(environment.roomIdCookieName);
     if (roomId.length < 1) {
       this.router.navigateByUrl("rooms");
     } else {
@@ -180,7 +181,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.roomService.leaveRoom(this.roomDetail.roomId).subscribe({
       error: err => console.log(err)
     }));
-    this.cookieService.delete('room');
+    this.cookieService.delete(environment.roomIdCookieName);
     this.router.navigateByUrl('rooms');
   }
 

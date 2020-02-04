@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { TimeService } from '../time.service';
 import { SummariesResponse } from '../model/SummariesResponse';
 import { SummaryPopupComponent, Summary } from '../summary-popup/summary-popup.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-rooms',
@@ -77,7 +78,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public joinRoomById(roomId: string) {
-    this.cookieService.set('room', roomId);
+    this.cookieService.set(environment.roomIdCookieName, roomId);
     this.router.navigateByUrl('room');
   }
 
