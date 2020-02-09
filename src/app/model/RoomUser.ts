@@ -1,3 +1,3 @@
 export class RoomUser {
-    constructor(public nick: string, public points: number) { }
+    constructor(public id: string, public nick: string, public points: number) { }
 }
