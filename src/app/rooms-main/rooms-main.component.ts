@@ -179,10 +179,12 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   leave() {
     this.subscriptions.push(this.roomService.leaveRoom(this.roomDetail.roomId).subscribe({
-      error: err => console.log(err)
+      error: err => console.log(err),
+      complete: () => {
+        this.cookieService.delete(environment.roomIdCookieName);
+        this.router.navigateByUrl('rooms');
+      }
     }));
-    this.cookieService.delete(environment.roomIdCookieName);
-    this.router.navigateByUrl('rooms');
   }
 
   createProposal() {
