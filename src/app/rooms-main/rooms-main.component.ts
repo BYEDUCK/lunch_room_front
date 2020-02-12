@@ -166,10 +166,12 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   end() {
     if (!this.ended) {
-      this.phase = 2;
-      this.voteProgress = 100;
-      this.randomize();
-      this.ended = true;
+      let agreed = this.randomize();
+      if (agreed) {
+        this.phase = 2;
+        this.voteProgress = 100;
+        this.ended = true;
+      }
     }
   }
 
@@ -214,7 +216,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  private randomize() {
+  private randomize(): boolean {
     var now = new Date().getTime();
     let confirmed = true;
     if (now < this.roomDetail.voteDeadline) {
@@ -225,6 +227,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         error: err => console.log(err)
       }));
     }
+    return confirmed;
   }
 
   setStarring(proposalId: string, starring: number) {
