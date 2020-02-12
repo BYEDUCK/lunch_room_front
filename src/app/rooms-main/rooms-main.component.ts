@@ -30,7 +30,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   timeCheckingSubscription: Subscription;
   proposalUpdateCheckerIntervalId;
-  proposals: Map<string, Proposal> = new Map();
+  starredProposals: Map<string, StarredProposal> = new Map();
+  staring: Map<string, number> = new Map();
   summary = false;
   winner: string;
   proposalWin: Proposal;
@@ -39,6 +40,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   public startTime = new Date().getTime();
   public initProgress = 0;
   public voteProgress = 0;
+  defaultStarring = 3;
 
   constructor(
     private roomService: RoomService,
@@ -71,12 +73,14 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
               next: (updatedProposals: ProposalResponse) => {
                 if (updatedProposals) {
                   updatedProposals.proposals.forEach(proposal => {
-                    this.proposals.set(proposal.proposalId, proposal);
+                    this.starredProposals.set(proposal.proposalId, new StarredProposal(
+                      proposal, this.starredProposals.has(proposal.proposalId) ? this.starredProposals.get(proposal.proposalId).starring : this.defaultStarring
+                    ));
                   });
-                  if (updatedProposals.total < this.proposals.size) {
-                    this.proposals.forEach(proposal => {
-                      if (!updatedProposals.proposals.includes(proposal)) {
-                        this.proposals.delete(proposal.proposalId);
+                  if (updatedProposals.total < this.starredProposals.size) {
+                    this.starredProposals.forEach(starredProposal => {
+                      if (!updatedProposals.proposals.includes(starredProposal.proposal)) {
+                        this.starredProposals.delete(starredProposal.proposal.proposalId);
                       }
                     });
                   }
@@ -97,7 +101,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
             this.subscriptions.push(this.lunchWsService.lotteryResultsEvent.subscribe({
               next: (results: LotteryResults) => {
                 this.winner = results.userNick;
-                this.proposalWin = this.proposals.get(results.winnerProposalId);
+                this.proposalWin = this.starredProposals.get(results.winnerProposalId).proposal;
                 this.summary = true;
                 this.clearCheckers();
                 this.voteProgress = 100;
@@ -193,12 +197,12 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
 
   editProposal(proposalId: string) {
     let modalRef = this.modalService.open(CreateProposalComponent, { centered: true });
-    let proposal = this.proposals.get(proposalId);
+    let starredProposal = this.starredProposals.get(proposalId);
     modalRef.componentInstance.proposalId = proposalId;
-    modalRef.componentInstance.proposalTitle = proposal.title;
-    modalRef.componentInstance.proposalMenuUrl = proposal.menuUrl;
+    modalRef.componentInstance.proposalTitle = starredProposal.proposal.title;
+    modalRef.componentInstance.proposalMenuUrl = starredProposal.proposal.menuUrl;
     let menuItemsCopy: MenuItem[] = []
-    proposal.menuItems.forEach(item => menuItemsCopy.push(new MenuItem(item.description, item.price)));
+    starredProposal.proposal.menuItems.forEach(item => menuItemsCopy.push(new MenuItem(item.description, item.price)));
     modalRef.componentInstance.menuItems = menuItemsCopy;
   }
 
@@ -221,5 +225,15 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
         error: err => console.log(err)
       }));
     }
+  }
+
+  setStarring(proposalId: string, starring: number) {
+    this.starredProposals.get(proposalId).starring = starring;
+  }
+}
+
+export class StarredProposal {
+  constructor(public proposal: Proposal, public starring: number) {
+
   }
 }
