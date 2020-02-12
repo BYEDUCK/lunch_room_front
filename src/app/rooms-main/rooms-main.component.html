@@ -12,7 +12,9 @@
 </div>
 <div class="grid">
     <article *ngFor="let user of roomUsers">
-        <h6 class="alert alert-info" style="width: fit-content;">User <b>{{user?.nick}}</b> has <b>{{user?.points}}</b>
+        <h6 [ngClass]="(currentUser?.id===user.id)?'alert-success':'alert-secondary'" style="width: fit-content;">
+            <img *ngIf="user.id === roomDetail?.ownerId" src="assets/crown.png"/>User
+            <b>{{user?.nick}}</b> has <b>{{user?.points}}</b>
             points
             remaining</h6>
     </article>
