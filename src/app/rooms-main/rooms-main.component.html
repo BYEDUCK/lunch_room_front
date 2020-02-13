@@ -34,43 +34,41 @@
     <article *ngFor="let starredProposal of starredProposals | keyvalue"
         style="border: 5px solid sienna; border-radius: 1rem;">
         <header class="card__header">
-            <h1 class="room__name"><b>{{starredProposal?.value.proposal.title}}</b></h1>
-            <h1 class="room__name"><a href="{{starredProposal?.value.proposal.menuUrl}}" target="_blank">Menu</a></h1>
+            <h1 class="room__name"><b>{{starredProposal.value.proposal.title}}</b></h1>
+            <h1 class="room__name"><a href="{{starredProposal.value.proposal.menuUrl}}" target="_blank">Menu</a></h1>
         </header>
-        <div *ngFor="let item of starredProposal?.value.proposal.menuItems" class="card__content"
+        <div *ngFor="let item of starredProposal.value.proposal.menuItems" class="card__content"
             style="border: 3px solid burlywood;">
-            <h6 class="alert alert-dark">{{item?.description}}</h6>
-            <h6 class="alert alert-dark">{{item?.price}} PLN</h6>
+            <h6 class="alert alert-dark">{{item.description}}</h6>
+            <h6 class="alert alert-dark">{{item.price}} PLN</h6>
         </div>
         <div class="card__content">
-            <h6 class="alert alert-info">Total rating: <b>{{starredProposal?.value.proposal.ratingSum}}</b></h6>
-            <h6 class="alert alert-info">Total votes: <b>{{starredProposal?.value.proposal.votesCount}}</b></h6>
+            <h6 class="alert alert-info">Total rating: <b>{{starredProposal.value.proposal.ratingSum}}</b></h6>
+            <h6 class="alert alert-info">Total votes: <b>{{starredProposal.value.proposal.votesCount}}</b></h6>
         </div>
         <div *ngIf="!ended">
             <div *ngIf="phase===1" class="card__actions my-4">
                 <div>
-                    <img [src]="(starredProposal?.value.starring >= 1)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 1)" />
-                    <img [src]="(starredProposal?.value.starring >= 2)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 2)" />
-                    <img [src]="(starredProposal?.value.starring >= 3)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 3)" />
-                    <img [src]="(starredProposal?.value.starring >= 4)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 4)" />
-                    <img [src]="(starredProposal?.value.starring >= 5)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 5)" />
-                    <img [src]="(starredProposal?.value.starring >= 6)?'assets/full_star.png':'assets/empty_star.png'"
-                        (click)="setStarring(starredProposal?.value.proposal.proposalId, 6)" />
+                    <img [src]="(starredProposal.value.starring >= 1)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 1)" />
+                    <img [src]="(starredProposal.value.starring >= 2)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 2)" />
+                    <img [src]="(starredProposal.value.starring >= 3)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 3)" />
+                    <img [src]="(starredProposal.value.starring >= 4)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 4)" />
+                    <img [src]="(starredProposal.value.starring >= 5)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 5)" />
+                    <img [src]="(starredProposal.value.starring >= 6)?'assets/full_star.png':'assets/empty_star.png'"
+                        (click)="setStarring(starredProposal.key, 6)" />
                 </div>
                 <button class="btn btn-lg btn-primary" style="margin-top: 1rem;"
-                    (click)="vote(starredProposal?.value.proposal.proposalId, starredProposal?.value.starring)">VOTE</button>
+                    (click)="vote(starredProposal.key, starredProposal.value.starring)">VOTE</button>
             </div>
-            <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 0 && currentUser?.id === starredProposal?.value.proposal.proposalOwnerId)"
+            <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 0 && currentUser?.id === starredProposal.value.proposal.proposalOwnerId)"
                 class="card__actions my-4">
-                <button class="btn btn-lg btn-danger"
-                    (click)="delete(starredProposal?.value.proposal.proposalId)">DELETE</button>
-                <button class="btn btn-lg btn-warning"
-                    (click)="editProposal(starredProposal?.value.proposal.proposalId)">EDIT</button>
+                <button class="btn btn-lg btn-danger" (click)="delete(starredProposal.key)">DELETE</button>
+                <button class="btn btn-lg btn-warning" (click)="editProposal(starredProposal.key)">EDIT</button>
             </div>
         </div>
     </article>
