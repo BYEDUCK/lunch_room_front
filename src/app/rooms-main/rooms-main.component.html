@@ -42,7 +42,7 @@
             <h6 class="alert alert-dark">{{item.description}}</h6>
             <h6 class="alert alert-dark">{{item.price}} PLN</h6>
         </div>
-        <div class="card__content">
+        <div class="card__content" *ngIf="ended">
             <h6 class="alert alert-info">Total rating: <b>{{starredProposal.value.proposal.ratingSum}}</b></h6>
             <h6 class="alert alert-info">Total votes: <b>{{starredProposal.value.proposal.votesCount}}</b></h6>
         </div>
