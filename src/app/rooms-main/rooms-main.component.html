@@ -64,8 +64,6 @@
                     <img [src]="(starredProposal.value.starring >= 6)?'assets/full_star.png':'assets/empty_star.png'"
                         (click)="setStarring(starredProposal.key, 6)" />
                 </div>
-                <button class="btn btn-lg btn-primary" style="margin-top: 1rem;"
-                    (click)="vote(starredProposal.key, starredProposal.value.starring)">VOTE</button>
             </div>
             <div *ngIf="currentUser?.id === roomDetail?.ownerId || (phase === 0 && currentUser?.id === starredProposal.value.proposal.proposalOwnerId)"
                 class="card__actions my-4">

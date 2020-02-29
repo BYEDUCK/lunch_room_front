@@ -4,7 +4,7 @@ import { LoginService } from "../login/service/login.service";
 import { User } from "../model/User";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Subscription, Subject } from "rxjs";
 import { Proposal } from "../model/lunch/Proposal";
 import { LunchWsService } from './service/lunch-ws.service';
 import { LotteryResults } from '../model/LotteryResults';
@@ -16,6 +16,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateProposalComponent } from './create-proposal/create-proposal.component';
 import { MenuItem } from '../model/lunch/MenuItem';
 import { environment } from 'src/environments/environment';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: "app-rooms-main",
@@ -74,7 +75,8 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
                 if (updatedProposals) {
                   updatedProposals.proposals.forEach(proposal => {
                     this.starredProposals.set(proposal.proposalId, new StarredProposal(
-                      proposal, this.starredProposals.has(proposal.proposalId) ? this.starredProposals.get(proposal.proposalId).starring : this.defaultStarring
+                      proposal, this.starredProposals.has(proposal.proposalId) ? this.starredProposals.get(proposal.proposalId).starring : this.defaultStarring,
+                      (id: string, stars: number) => this.lunchWsService.voteForProposal(id, stars)
                     ));
                   });
                   if (updatedProposals.total < this.starredProposals.size) {
@@ -231,12 +233,22 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   }
 
   setStarring(proposalId: string, starring: number) {
-    this.starredProposals.get(proposalId).starring = starring;
+    let proposal: StarredProposal = this.starredProposals.get(proposalId);
+    proposal.starring = starring;
+    proposal.starringSubject.next(starring);
   }
 }
 
 export class StarredProposal {
-  constructor(public proposal: Proposal, public starring: number) {
 
+  public starringSubject: Subject<number> = new Subject<number>();
+
+  constructor(public proposal: Proposal, public starring: number, startChangeCallback) {
+    this.starringSubject.next(starring);
+    this.starringSubject
+      .pipe(debounceTime(650), distinctUntilChanged())
+      .subscribe(stars => {
+        startChangeCallback(proposal.proposalId, stars);
+      })
   }
 }
