@@ -42,13 +42,15 @@
             <h6 class="alert alert-dark">{{item.description}}</h6>
             <h6 class="alert alert-dark">{{item.price}} PLN</h6>
         </div>
-        <div class="card__content">
+        <div class="card__content" *ngIf="ended">
             <h6 class="alert alert-info">Total rating: <b>{{starredProposal.value.proposal.ratingSum}}</b></h6>
             <h6 class="alert alert-info">Total votes: <b>{{starredProposal.value.proposal.votesCount}}</b></h6>
         </div>
         <div *ngIf="!ended">
             <div *ngIf="phase===1" class="card__actions my-4">
                 <div>
+                    <img [src]="(starredProposal.value.starring == 0)?'assets/cross_active.png':'assets/cross_nonactive.png'"
+                        (click)="setStarring(starredProposal.key, 0)" />
                     <img [src]="(starredProposal.value.starring >= 1)?'assets/full_star.png':'assets/empty_star.png'"
                         (click)="setStarring(starredProposal.key, 1)" />
                     <img [src]="(starredProposal.value.starring >= 2)?'assets/full_star.png':'assets/empty_star.png'"
