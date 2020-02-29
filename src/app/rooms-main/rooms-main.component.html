@@ -49,6 +49,8 @@
         <div *ngIf="!ended">
             <div *ngIf="phase===1" class="card__actions my-4">
                 <div>
+                    <img [src]="(starredProposal.value.starring == 0)?'assets/cross_active.png':'assets/cross_nonactive.png'"
+                        (click)="setStarring(starredProposal.key, 0)" />
                     <img [src]="(starredProposal.value.starring >= 1)?'assets/full_star.png':'assets/empty_star.png'"
                         (click)="setStarring(starredProposal.key, 1)" />
                     <img [src]="(starredProposal.value.starring >= 2)?'assets/full_star.png':'assets/empty_star.png'"

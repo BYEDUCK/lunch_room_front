@@ -40,7 +40,7 @@ export class RoomsMainComponent implements OnInit, OnDestroy {
   public startTime = new Date().getTime();
   public initProgress = 0;
   public voteProgress = 0;
-  defaultStarring = 3;
+  defaultStarring = 0;
 
   constructor(
     private roomService: RoomService,
