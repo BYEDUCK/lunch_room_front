@@ -1,6 +1,10 @@
 <div class="justify-content-center">
     <div class="card bg-dark text-white">
         <h2 class="card-title text-center">
+            <div style="margin-top: 2rem;">
+                <h2 style="color: #fff;">{{title}}</h2>
+                <img src="assets/lunchrom_icon_large.png" width="200" height="200" style="margin-bottom: 1rem;" />
+            </div>
             <span class="badge">
                 <div class="d-flex flex-wrap justify-content-center mt-2">
                     <a><span class="hours"></span></a>{{hours}}:
@@ -10,8 +14,7 @@
             </span>
         </h2>
     </div>
-    <div class="page-header text-center">
-        <h1 class="jumbotron">{{title}}</h1>
+    <div class="page-header text-center" style="margin-top: 1rem;">
         <button *ngIf="!router.url.includes('404') && !router.url.includes('signUp') && !router.url.includes('signIn')"
             class="btn-info btn-lg" (click)="logout()">LOGOUT</button>
     </div>
@@ -20,8 +23,12 @@
     <br />
     <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
         <div *ngIf="router.url.includes('signIn')">
-            <a routerLink="/signUp" routerLinkActive="active" class="btn-info btn-lg">SIGN UP</a>
-            <img src="assets/btn_google.png" class="btn" (click)="signWithGoogle()" />
+            <div class="justify-content-center">
+                <a routerLink="/signUp" routerLinkActive="active" class="btn-info btn-lg">SIGN UP</a>
+                <div>
+                    <img src="assets/btn_google.png" class="btn" (click)="signWithGoogle()" />
+                </div>
+            </div>
         </div>
         <div *ngIf="router.url.includes('signUp')">
             <a routerLink="/signIn" routerLinkActive="active" class="btn-info btn-lg">SIGN IN</a>
