@@ -1,15 +1,14 @@
 <h1>Hello {{currentUser?.nick}}</h1>
 <h2>You have {{rooms?.length}} room(s) available:</h2>
 <button class="btn-lg btn-success" (click)="openModal()">CREATE ROOM</button>
-    <div style="border: 2px solid skyblue; width: fit-content; margin-top: 2rem;">
-        <label for="searchRoomInput" class="alert-info">Search for new room</label>
+    <div class="border border-info rounded" style="width: fit-content; margin-top: 2rem;">
         <div>
-            <input id="searchRoomInput" #searchRoomName type="text" placeholder="room name" />
+            <input id="searchRoomInput" #searchRoomName type="text" placeholder="Search by room name" />
             <button class="btn-primary" (click)="searchRoomByName(searchRoomName.value)">SEARCH</button>
         </div>
     </div>
 <div class="grid" style="margin-top: 2rem;">
-    <article *ngFor="let room of rooms" style="border: 5px solid skyblue; margin-top: 1rem;">
+    <article *ngFor="let room of rooms" class="border border-success rounded">
         <header class="card__header">
             <h1 class="room__name">{{room.roomName}}</h1>
         </header>
