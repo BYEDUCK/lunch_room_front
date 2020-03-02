@@ -29,6 +29,7 @@ export class WebsocketService {
       let ws = new SockJS(`${environment.serverUrl}/propose`);
       this.stompClient = Stomp.over(ws);
       this.stompClient.connect({}, frame => {
+        this.stompClient.debug = () => {};
         var url = this.stompClient.ws._transport.url;
         url = url
           .replace(`${environment.serverWsUrl}/propose/`, '')
