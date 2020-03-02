@@ -32,13 +32,13 @@
 </div>
 <div class="grid">
     <article *ngFor="let starredProposal of starredProposals | keyvalue"
-        style="border: 5px solid sienna; border-radius: 1rem;">
+        class="border border-dark rounded" style="margin-top: 1rem; margin-bottom: 1rem;">
         <header class="card__header">
             <h1 class="room__name"><b>{{starredProposal.value.proposal.title}}</b></h1>
             <h1 class="room__name"><a href="{{starredProposal.value.proposal.menuUrl}}" target="_blank">Menu</a></h1>
         </header>
         <div *ngFor="let item of starredProposal.value.proposal.menuItems" class="card__content"
-            style="border: 3px solid burlywood;">
+            class="border-top border-bottom border-warning">
             <h6 class="alert alert-dark">{{item.description}}</h6>
             <h6 class="alert alert-dark">{{item.price}} PLN</h6>
         </div>
