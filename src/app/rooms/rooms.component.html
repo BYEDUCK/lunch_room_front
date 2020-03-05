@@ -1,12 +1,18 @@
 <h1>Hello {{currentUser?.nick}}</h1>
 <h2>You have {{rooms?.length}} room(s) available:</h2>
 <button class="btn-lg btn-success" (click)="openModal()">CREATE ROOM</button>
-    <div class="border border-info rounded" style="width: fit-content; margin-top: 2rem;">
-        <div>
-            <input id="searchRoomInput" #searchRoomName type="text" placeholder="Search by room name" />
-            <button class="btn-primary" (click)="searchRoomByName(searchRoomName.value)">SEARCH</button>
-        </div>
+<div style="width: fit-content; margin-top: 2rem;">
+    <div>
+        <input id="searchRoomInput" #searchRoomName type="text" placeholder="Join room by name"
+            (input)="searchNameUpdate(searchRoomName.value)" autocomplete="off" />
+        <ul class="list=group">
+            <li *ngFor="let room of foundRooms$ | async" class="list-group-item list-group-item-action"
+                (click)="joinRoomById(room.roomId)" style="cursor: pointer;">
+                {{room.roomName}}
+            </li>
+        </ul>
     </div>
+</div>
 <div class="grid" style="margin-top: 2rem;">
     <article *ngFor="let room of rooms" class="border border-success rounded">
         <header class="card__header">

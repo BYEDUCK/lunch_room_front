@@ -7,11 +7,12 @@ import { Room } from '../model/Room';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoomsCreateComponent } from './create-room/rooms.create.component';
 import { CookieService } from 'ngx-cookie-service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, Observable } from 'rxjs';
 import { TimeService } from '../time.service';
 import { SummariesResponse } from '../model/SummariesResponse';
 import { SummaryPopupComponent, Summary } from '../summary-popup/summary-popup.component';
 import { environment } from 'src/environments/environment';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rooms',
@@ -22,8 +23,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
   public rooms: Room[] = [];
+  public foundRooms$: Observable<Room[]>;
   subscriptions: Subscription[] = [];
   now: number = new Date().getTime();
+  private roomNameSubject: Subject<string> = new Subject<string>()
 
   constructor(
     private loginService: LoginService,
@@ -53,6 +56,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
       },
       complete: () => { console.log('complete'); }
     }));
+    this.foundRooms$ = this.roomNameSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(roomName => this.roomService.findRoomByName(roomName))
+      );
   }
 
   ngOnDestroy(): void {
@@ -83,7 +92,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   public searchRoomByName(roomName: string) {
-    this.subscriptions.push(this.roomService.findRoomByName(roomName).subscribe({
+    this.subscriptions.push(this.roomService.findRoomByName1(roomName).subscribe({
       next: resp => {
         this.rooms.push(resp);
       },
@@ -95,6 +104,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
         console.log('completed');
       }
     }))
+  }
+
+  public searchNameUpdate(roomName: string) {
+    this.roomNameSubject.next(roomName);
   }
 
   public deleteRoom(id: string) {

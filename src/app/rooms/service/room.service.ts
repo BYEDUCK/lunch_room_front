@@ -21,8 +21,17 @@ export class RoomService {
     });
   }
 
-  public findRoomByName(roomName: string): Observable<Room> {
-    return this.http.get<Room>(`${this.serverUrl}/search`, {
+  public findRoomByName1(roomName: string): Observable<Room> {
+    return this.http.get<Room>(`${this.serverUrl}/byName`, {
+      params: {
+        'name': roomName
+      },
+      withCredentials: true
+    });
+  }
+
+  public findRoomByName(roomName: string): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.serverUrl}/search`, {
       params: {
         'name': roomName
       },
