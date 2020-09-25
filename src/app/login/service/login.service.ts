@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/model/User';
 import { CookieService } from 'ngx-cookie-service';
@@ -23,6 +23,8 @@ export class LoginService {
     return this.http.post<any>(this.serverUrl + '/signUp', {
       nick: userNick,
       password: userPassword
+    }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue)
     });
   }
 
@@ -31,6 +33,7 @@ export class LoginService {
       nick: userNick,
       password: userPassword
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }

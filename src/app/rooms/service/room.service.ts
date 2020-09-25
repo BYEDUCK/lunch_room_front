@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Room } from 'src/app/model/Room';
 import { LoginService } from 'src/app/login/service/login.service';
@@ -50,6 +50,7 @@ export class RoomService {
       params: {
         'defaults': '' + (useDefaults ? useDefaults : 'false')
       },
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -58,6 +59,7 @@ export class RoomService {
     return this.http.post<Room>(this.serverUrl + '/join', {
       'roomId': roomId
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -66,6 +68,7 @@ export class RoomService {
     return this.http.post<any>(`${this.serverUrl}/leave`, {
       'roomId': roomId
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -84,6 +87,7 @@ export class RoomService {
         'voteDeadline': voteDead
       }
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -92,6 +96,7 @@ export class RoomService {
     return this.http.post<any>(`${this.serverUrl}/random`, {
       'roomId': roomId
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -100,6 +105,7 @@ export class RoomService {
     return this.http.post<any>(`${this.serverUrl}/lucky_shot`, {
       'roomId': roomId
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }
@@ -108,6 +114,7 @@ export class RoomService {
     return this.http.post<SummariesResponse>(`${this.serverUrl}/summary`, {
       'roomId': roomId
     }, {
+      headers: new HttpHeaders().append(environment.contentTypeHeaderName, environment.applicationJsonHeaderValue),
       withCredentials: true
     });
   }

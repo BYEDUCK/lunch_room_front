@@ -13,7 +13,9 @@ export const environment = {
   userNickCookieName: 'user',
   tokenCookieName: 'token',
   userIdCookieName: 'id',
-  roomIdCookieName: 'room'
+  roomIdCookieName: 'room',
+  contentTypeHeaderName: 'Content-Type',
+  applicationJsonHeaderValue: 'application/json'
 };
 
 /*
